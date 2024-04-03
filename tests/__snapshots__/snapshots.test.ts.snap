@@ -108,19 +108,19 @@ x: 2
  1`] = `
 [
   {
+    "card": null,
     "timestamp": 1706012788684,
     "type": "card-draw",
-    "x": 2,
   },
   {
+    "card": null,
     "timestamp": 1706012792713,
     "type": "card-draw",
-    "x": 2,
   },
   {
+    "card": null,
     "timestamp": 1706012795173,
     "type": "card-draw",
-    "x": 2,
   },
 ]
 `;
@@ -142,9 +142,9 @@ THIS SHOULD NOT BE PRESENT IN PARSED RESULT
  1`] = `
 [
   {
+    "card": null,
     "timestamp": 1706012788684,
     "type": "card-draw",
-    "x": NaN,
   },
 ]
 `;
