@@ -2,11 +2,11 @@ import { ItemView, WorkspaceLeaf } from "obsidian";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "./context.js";
 import { ReactBaseView } from "./ReactBaseView.jsx";
-import { VIEW_TYPE_EXAMPLE } from "./TruthOrDarePlugin.js";
+import { TRUTH_OR_DARE_SIDEBAR_VIEW } from "./TruthOrDarePlugin.js";
 
 import React from "react";
 
-export class ObsidianBaseView extends ItemView {
+export class ObsidianSidebarView extends ItemView {
 
 	root: ReactRoot | null = null;
 
@@ -15,7 +15,7 @@ export class ObsidianBaseView extends ItemView {
 	}
 
 	getViewType() {
-		return VIEW_TYPE_EXAMPLE;
+		return TRUTH_OR_DARE_SIDEBAR_VIEW;
 	}
 
 	getDisplayText() {
