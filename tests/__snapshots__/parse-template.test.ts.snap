@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse-template document how mast-util-from-markdown parses images 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 4,
+        "line": 1,
+        "offset": 3,
+      },
+      "start": {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+    },
+    "type": "text",
+    "value": "123",
+  },
+  {
+    "alt": "",
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 1,
+        "offset": 39,
+      },
+      "start": {
+        "column": 4,
+        "line": 1,
+        "offset": 3,
+      },
+    },
+    "title": null,
+    "type": "image",
+    "url": "https://example.com/favicon.ico",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 43,
+        "line": 1,
+        "offset": 42,
+      },
+      "start": {
+        "column": 40,
+        "line": 1,
+        "offset": 39,
+      },
+    },
+    "type": "text",
+    "value": "456",
+  },
+]
+`;

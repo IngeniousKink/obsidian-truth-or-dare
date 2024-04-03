@@ -112,7 +112,7 @@ function extractCardsFromListItem(listItem: ListItem, refCounter: number, stackR
   }, []);
 }
 
-function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): Card {
+export function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): Card {
   let children : PhrasingContent[]  = [];
 
   if (paragraph.type == 'html') {

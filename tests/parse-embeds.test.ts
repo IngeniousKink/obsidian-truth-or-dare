@@ -2,40 +2,44 @@ import { parseEmbeds } from '../src/parse-embeds.js';
 
 describe('parse-embeds', () => {
   test('embed at start of textNode', () => {
-    const result = parseEmbeds([{
-      "type": "text",
-      "value": "![[a_video.mp4]] and here goes some text",
-      "position": {
-        "start": {
-          "line": 4,
-          "column": 3,
-          "offset": 72
+    const value = "![[a_video.mp4]] and here goes some text";
+    const result = parseEmbeds([
+      {
+        value,
+        "position": {
+          "start": {
+            "column": 1,
+            "line": 1,
+            "offset": 0,
+          },
+          "end": {
+            "column": value.length + 1,
+            "line": 1,
+            "offset": value.length,
+          },
         },
-        "end": {
-          "line": 4,
-          "column": 40,
-          "offset": 109
-        }
-      }
-    }]);
+        "type": "text",
+      },
+    ]);
     expect(result).toMatchSnapshot();
     expect(result.length).toBe(2);
   });
 
   test('embed at end of textNode', () => {
+    const value = "And here is another video: ![[another_video.mp4]]";
     const result = parseEmbeds([{
+      value,
       "type": "text",
-      "value": "And here is another video: ![[another_video.mp4]]",
       "position": {
         "start": {
-          "line": 4,
-          "column": 3,
-          "offset": 72
+          "column": 1,
+          "line": 1,
+          "offset": 0,
         },
         "end": {
-          "line": 4,
-          "column": 40,
-          "offset": 109
+          "column": value.length + 1,
+          "line": 1,
+          "offset": value.length,
         }
       }
     }]);
@@ -44,19 +48,21 @@ describe('parse-embeds', () => {
   });
 
   test('embed in the middle of a textNode', () => {
+    const value = "First some text ![[then_a_video.mp4]] then some more text";
+
     const result = parseEmbeds([{
+      value,
       "type": "text",
-      "value": "First some text ![[then_a_video.mp4]] then some more text",
       "position": {
         "start": {
-          "line": 4,
-          "column": 3,
-          "offset": 72
+          "column": 1,
+          "line": 1,
+          "offset": 0,
         },
         "end": {
-          "line": 4,
-          "column": 40,
-          "offset": 109
+          "column": value.length + 1,
+          "line": 1,
+          "offset": value.length,
         }
       }
     }]);
@@ -65,19 +71,20 @@ describe('parse-embeds', () => {
   });
 
   test('two embeds', () => {
+    const value = "text ![[video1.mp4]] and ![[picture2.webp]] the end";
     const result = parseEmbeds([{
+      value,
       "type": "text",
-      "value": "text ![[video1.mp4]] and ![[picture2.webp]] the end",
       "position": {
         "start": {
-          "line": 4,
+          "line": 1,
           "column": 3,
           "offset": 72
         },
         "end": {
-          "line": 4,
-          "column": 40,
-          "offset": 109
+          "column": value.length + 1,
+          "line": 1,
+          "offset": value.length,
         }
       }
     }]);
@@ -87,19 +94,22 @@ describe('parse-embeds', () => {
 
 
   test('embed with size info', () => {
+
+    const value = "Here's an embedded picture: ![[a_picture.webp|100]]";
+
     const result = parseEmbeds([{
+      value,
       "type": "text",
-      "value": "Here's an embedded picture: ![[a_picture.webp|100]]",
       "position": {
         "start": {
-          "line": 3,
-          "column": 3,
-          "offset": 18
+          "column": 1,
+          "line": 1,
+          "offset": 0,
         },
         "end": {
-          "line": 3,
-          "column": 54,
-          "offset": 69
+          "column": value.length + 1,
+          "line": 1,
+          "offset": value.length,
         }
       }
     }]);
