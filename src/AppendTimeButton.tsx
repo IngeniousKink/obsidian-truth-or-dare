@@ -14,7 +14,13 @@ export const AppendTimeButton: React.FC = () => {
     }
 
     await vault.process(activeFile, (data) => {
-      return `${data}\n\`\`\`truth-or-dare:event\ntype:card-draw\ntimestamp:${new Date().getTime()}\nx: 2\n\`\`\`\n`;
+      return `${data}
+\`\`\`truth-or-dare:event
+type:card-draw
+timestamp:${new Date().getTime()}
+x: 2
+\`\`\`
+`;
     });
   };
 
