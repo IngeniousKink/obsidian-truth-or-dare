@@ -122,8 +122,31 @@ export function selectCardByRef(gameState: GameState, ref: string | undefined): 
     return null;
 }
 
+function getNextActorId(gameState: GameState, lastActorId: string): string | null {
+    let currentActorIndex = gameState.actors.findIndex(
+        actor => actor.id === lastActorId);
 
+    if (currentActorIndex === -1) {
+        return null;
+    }
 
+    if (gameState.actors.length < 1) {
+        return null;
+    } 
+
+    const nextActorIndex = (currentActorIndex + 1) % gameState.actors.length;
+    return gameState.actors[nextActorIndex].id;
+}
+
+function updateAllocation(gameState: GameState, lastActorId: string): (string | null)[] {
+    const newAllocation = [...gameState.allocation];
+
+    if (lastActorId) {
+        newAllocation[0] = lastActorId;
+    }
+
+    return newAllocation;
+}
 
 function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameState {
     const card = findCardInGameTemplate(gameState.template, event.cardRef);
@@ -134,32 +157,47 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
         previousCards.push(gameState.displayedCard);
     }
 
+    const lastActorId = gameState.preview.allocation[0] || gameState.actors[0]?.id;
+
+    if (!lastActorId) {
+        return {
+            ...gameState,
+            allocation: [],
+            previousCards: previousCards,
+            displayedCard: card.ref,
+            preview: {
+                ...gameState.preview,
+                allocation: [],
+            },
+        }; 
+    }
+
+    const nextPlayerId = getNextActorId(gameState, lastActorId);
+    const newAllocation = updateAllocation(gameState, lastActorId);
+
+    let previewAllocation: string[] = [];
+    if (newAllocation.length > 0 && nextPlayerId) {
+        previewAllocation = [nextPlayerId];
+    }
+
     return {
         ...gameState,
+        allocation: newAllocation,
         previousCards: previousCards,
         displayedCard: card.ref,
+        preview: {
+            ...gameState.preview,
+            allocation: previewAllocation,
+        },
     };
 }
 
 
 function handleCompleteCardEvent(gameState: GameState, event: CompleteCardEvent): GameState {
-    const lastActorId = gameState.allocation[0];
-
-    const currentActorIndex = gameState.actors.findIndex(
-        actor => actor.id === lastActorId);
-
-    const nextPlayerId = gameState.actors[
-        (currentActorIndex + 1) % gameState.actors.length
-    ].id;
-
     return {
         ...gameState,
         allocation: [],
         displayedCard: undefined,
-        preview: {
-            ...gameState.preview,
-            allocation: [nextPlayerId],
-        },
     };
 }
 
