@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useApp } from "./hooks";
+import { useApp, useRegisterEvent } from "./hooks";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from 'parse';
 
-
 export const ReactView: React.FC = () => {
-  const { vault, metadataCache, workspace } = useApp();
   const [text, setText] = useState<string>("");
-  const [stacks, setStacks] = useState<any[]>([]); // replace 'any' with your data structure
+  const [stacks, setStacks] = useState<any[]>([]);
+  const app = useApp();
+  const registerEvent = useRegisterEvent();
+
+  if (!app) return;
+  if (!registerEvent) return;
+
+  const { vault, metadataCache, workspace } = app;
 
   const update = async () => {
-    console.log(new Date().getTime(), "Active leaf changed!");
+    console.log(new Date().getTime(), 'updating');
     const activeFile = workspace.getActiveFile();
 
     if (!activeFile) {
@@ -30,19 +35,21 @@ export const ReactView: React.FC = () => {
   };
 
   useEffect(() => {
-    const updateOnFileChange = metadataCache.on("changed", async (file) => {
-      console.log(new Date().getTime(), 'file changed!', file);
-      return update();
-    });
+    registerEvent(
+        metadataCache.on("changed", async (file) => {
+            console.log(new Date().getTime(), 'file changed!', file);
+            return update();
+        })
+    );
 
-    const updateOnLeafChange = workspace.on("active-leaf-change", async () => { return update(); });
+    registerEvent(
+        workspace.on("active-leaf-change", async () => {
+            console.log(new Date().getTime(), "Active leaf changed!");
+           return update();
+        })
+    );
 
     update();
-
-    return () => {
-      updateOnFileChange.remove();
-      updateOnLeafChange.remove();
-    };
   }, []);
 
   return (
@@ -52,3 +59,4 @@ export const ReactView: React.FC = () => {
     </div>
   );
 };
+

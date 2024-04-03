@@ -1,7 +1,7 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { Root as ReactRoot, createRoot } from "react-dom/client";
-import { AppContext } from "context";
+import { AppContext, EventRegistryContext } from "context";
 import { ReactView } from "./ReactView";
 import { VIEW_TYPE_EXAMPLE } from "main";
 import { getCardsUnderHeading } from "parse";
@@ -61,25 +61,16 @@ export class ExampleView extends ItemView {
 		this.root = createRoot(this.containerEl.children[1]);
 		this.root.render(
 			<AppContext.Provider value={this.app}>
-				<ReactView />
+				<EventRegistryContext.Provider value={this.registerEvent.bind(this)}>
+					<ReactView />
+				</EventRegistryContext.Provider>
 			</AppContext.Provider>
 		);
-
-		// this.registerEvent(this.app.metadataCache.on("changed", async (file) => {
-		// 	console.log(new Date().getTime(), 'file changed!', file);
-		// 	return this.update();
-		// }));
-
-		// this.registerEvent(
-		// 	this.app.workspace.on("active-leaf-change", async () => { return this.update(); })
-		// );
 
 		// this.update();
 	}
 
 	async onClose() {
-		// Nothing to clean up.
 		this.root?.unmount();
-
 	}
 }
