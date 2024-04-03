@@ -16,6 +16,17 @@ type HandleEventFunction = (data: { content: string, id: string, kind: number}, 
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
 
+type WebSocketStates = {
+  [key: number]: string;
+};
+
+const WEBSOCKET_STATES: WebSocketStates = {
+  0: '🟡 CONNECTING',
+  1: '🟢 OPEN',
+  2: '🟠 CLOSING',
+  3: '🔴 CLOSED',
+};
+
 function getParamsFromHash(): {
   id: string | null,
   author: string | null,
@@ -86,10 +97,6 @@ function getKeys(): [string, Uint8Array] {
   return [privKey, pubKey];
 }
 
-let websockets: WebSocket[] = [];
-const eventIds: { [key: string]: boolean } = {};
-
-
 const relays = [
   'wss://relay.snort.social',
   'wss://nos.lol',
@@ -97,49 +104,6 @@ const relays = [
   'wss://offchain.pub',
 ]
 
-function openWebsockets(pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
-  console.log('connecting...');
-  for (const relay of relays) {
-    const ws = new WebSocket(relay);
-    websockets.push(ws);
-    addEventListeners(ws, pubKey, handleEvent);
-  }
-}
-
-
-function addEventListeners(ws: WebSocket, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
-  ws.onerror = (error: ErrorEvent) => {
-    console.log('HANDLE ERROR! Error occurred:', error.message);
-    websockets = websockets.filter((w) => w.url !== ws.url);
-  };
-  ws.onopen = () => handleOpen(ws, pubKey);
-  ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
-  ws.onclose = (event: CloseEvent) => {
-    console.log(`Socket closed. Reason: ${event.reason ? event.reason : 'None provided'}. Code: ${event.code}`);
-  };
-}
-
-
-function handleOpen(ws: WebSocket, pubKey: Uint8Array): void {
-  const status = `${websockets.length}/${relays.length}`;
-  console.log('#relay', `Connected to ${status} relays`);
-
-  const { id, author } = getParamsFromHash();
-
-  if (!id || !author) {
-    throw new Error('Missing id or author in URL hash parameters');
-  }
-
-  ws.send(JSON.stringify(['REQ', 'kinds:30023', {
-    "authors": [author],
-    "#d": [id]
-  }]));
-
-  ws.send(JSON.stringify(['REQ', 'kinds:1', {
-    "#a": [`30023:${author}:${id}`],
-    "kinds": [1]
-  }]));
-}
 
 function handleMessage(event: MessageEvent, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
   const [msgType, subscriptionId, data] = JSON.parse(event.data);
@@ -162,7 +126,52 @@ export const MultiplayerActiveFile = () => {
 
   console.log('rendering...');
 
-  const [status, setStatus] = useState('connecting');
+  const [websockets, setWebsockets] = useState<WebSocket[]>([]);
+  const [eventIds, setEventIds] = useState<{ [key: string]: boolean }>({});
+
+  function openWebsockets(pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
+    console.log('connecting...');
+    for (const relay of relays) {
+      const ws = new WebSocket(relay);
+      websockets.push(ws);
+      addEventListeners(ws, pubKey, handleEvent);
+    }
+  }
+  
+  
+  function addEventListeners(ws: WebSocket, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
+    ws.onerror = (error: ErrorEvent) => {
+      console.log('HANDLE ERROR! Error occurred:', error.message);
+      setWebsockets(websockets.filter((w) => w.url !== ws.url));
+    };
+    ws.onopen = () => handleOpen(ws, pubKey);
+    ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
+    ws.onclose = (event: CloseEvent) => {
+      console.log(`Socket closed. Reason: ${event.reason ? event.reason : 'None provided'}. Code: ${event.code}`);
+    };
+  }
+  
+  
+  function handleOpen(ws: WebSocket, pubKey: Uint8Array): void {
+    const status = `${websockets.length}/${relays.length}`;
+    console.log('#relay', `Connected to ${status} relays`);
+  
+    const { id, author } = getParamsFromHash();
+  
+    if (!id || !author) {
+      throw new Error('Missing id or author in URL hash parameters');
+    }
+  
+    ws.send(JSON.stringify(['REQ', 'kinds:30023', {
+      "authors": [author],
+      "#d": [id]
+    }]));
+  
+    ws.send(JSON.stringify(['REQ', 'kinds:1', {
+      "#a": [`30023:${author}:${id}`],
+      "kinds": [1]
+    }]));
+  }
 
   const handleEvent = (data: { content: string, id: string, kind: number}, pubKey: string): void => {
     const { content, id, kind } = data;
@@ -234,22 +243,29 @@ export const MultiplayerActiveFile = () => {
     }, [activeFile]); // Add activeFile as a dependency
   
 
-  useEffect(() => {
-    const pubKey = getKeys()[1];
-    openWebsockets(pubKey, handleEvent);
-    setStatus('connected');
-    
-    return () => {
-      console.log('Component unmounting');
-      websockets.map((ws) => ws.close());
-    };
-
-  }, []);
-
+    useEffect(() => {
+      const pubKey = getKeys()[1];
+      openWebsockets(pubKey, handleEvent);
+      
+      return () => {
+        console.log('Component unmounting');
+        websockets.map((ws) => ws.close());
+        setWebsockets([]);
+        setEventIds({});
+      };
+    }, []);
+  
   return (
     <>
       <button onClick={publish}>Publish</button>
-      <span>{status}</span>
+      <br/>
+      <br/>
+      <span>Connection status</span>
+      <ul>
+        {websockets.map((ws, index) => (
+          <li key={index}>{ws.url} {WEBSOCKET_STATES[ws.readyState] || 'UNKNOWN'}</li>
+        ))}
+      </ul>
     </>
   );
 };
