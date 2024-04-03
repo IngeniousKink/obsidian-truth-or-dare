@@ -35,6 +35,8 @@ even here is text 1`] = `
           "annotations": [
             {
               "category": "truth",
+              "endPos": "30",
+              "startPos": "0",
             },
           ],
           "ref": "#HTML inline field^0",
@@ -64,6 +66,8 @@ even here is text 1`] = `
           "annotations": [
             {
               "category": "truth",
+              "endPos": "30",
+              "startPos": "0",
             },
           ],
           "ref": "#HTML inline field^0",
@@ -73,9 +77,13 @@ even here is text 1`] = `
           "annotations": [
             {
               "category": "truth",
+              "endPos": "30",
+              "startPos": "0",
             },
             {
               "category": "dare",
+              "endPos": "62",
+              "startPos": "33",
             },
           ],
           "ref": "#HTML inline field^1",
@@ -85,10 +93,14 @@ even here is text 1`] = `
           "annotations": [
             {
               "actor": "0",
+              "endPos": "41",
               "replace": "name",
+              "startPos": "0",
             },
             {
               "category": "dare",
+              "endPos": "99",
+              "startPos": "70",
             },
           ],
           "ref": "#HTML inline field^2",
