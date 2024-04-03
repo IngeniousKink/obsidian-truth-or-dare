@@ -137,7 +137,7 @@ exports[`renders NoCard 1`] = `
 exports[`renders PlayView 1`] = `
 <div>
   <h1>
-    Truth or Dare
+    Truth or Dare?
   </h1>
   <div
     className="card"

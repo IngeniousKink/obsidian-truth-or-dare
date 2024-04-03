@@ -122,6 +122,10 @@ export function selectCardByRef(gameState: GameState, ref: string | undefined): 
     return null;
 }
 
+export function selectActorName(gameState: GameState, actorId: string): Actor | undefined {
+    return gameState.actors.find(actor => actor.id === actorId);
+}
+
 function getNextActorId(gameState: GameState, lastActorId: string): string | null {
     let currentActorIndex = gameState.actors.findIndex(
         actor => actor.id === lastActorId);

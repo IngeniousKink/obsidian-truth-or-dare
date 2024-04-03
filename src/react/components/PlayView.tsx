@@ -5,6 +5,7 @@ import { DisplayedCard } from './DisplayedCard.js';
 import { 
   GameState, 
   getAvailableCards, 
+  selectActorName, 
   selectCardByRef, 
   selectCardsByCategory, 
   selectRandomAvailableCard, 
@@ -20,7 +21,13 @@ export interface PlayViewProps {
 }
 
 export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
-  const heading: string = "Truth or Dare";
+  let heading: string = "Truth or Dare";
+  
+  if(gameState.allocation?.length > 0 && gameState.allocation[0]) {
+    heading += `, ${selectActorName(gameState, gameState.allocation[0])?.name}`;
+  }
+
+  heading += '?'
 
   let cardsByCategory: { [x: string]: any; } = {};
 
