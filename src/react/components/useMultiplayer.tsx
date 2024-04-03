@@ -1,8 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { MultiplayerContext } from './MultiplayerContext.js';
 import { useInMemoryTemplate } from '@obsidian-truth-or-dare/InMemoryTemplateContext.js';
-import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
-import { decode } from 'nostr-tools/nip19';
+import NDK, { NDKEvent, NDKTag, NDKKind, NDKPrivateKeySigner, filterFromId } from "@nostr-dev-kit/ndk";
 
 const explicitRelayUrls = [
   'wss://nos.lol',
@@ -43,23 +42,23 @@ export const useMultiplayer = () => {
       throw new Error('No signer!');
     }
 
-    const decoded = decode(loadValue);
-
-    if (decoded.type != 'naddr') { return; }
-
     await ensureConnection();
 
-    client.subscribe({
-      kinds: [30023],
-      authors: [decoded.data.pubkey],
-      '#d': [decoded.data.identifier]
-    }).on('event', ((event: NDKEvent) => {
+    const filter = filterFromId(loadValue);
+
+    if (!filter.authors) { throw new Error('No author!'); }
+    if (!filter['#d']) { throw new Error('No #d!'); }
+    if (!filter.kinds) { throw new Error('No kinds!'); }
+
+    client.subscribe(
+      filter
+    ).on('event', ((event: NDKEvent) => {
       setTemplateFileContent(event.content);
     }))
 
     client.subscribe({
       kinds: [1],
-      '#a': [`30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
+      '#a': [`${filter.kinds[0]}:${filter.authors[0]}:${filter['#d'][0]}`]
     }).on('event', ((event: NDKEvent) => {
       setEventsFileContent((data: string) => `${data}\n${event.content}`);
     }))
@@ -74,7 +73,7 @@ export const useMultiplayer = () => {
     await ensureConnection();
 
     const event = new NDKEvent(client);
-    event.kind = 30023;
+    event.kind = NDKKind.Article;
     event.tags = [];
     event.content = templateFileContent;
 
@@ -89,18 +88,18 @@ export const useMultiplayer = () => {
       throw new Error('No entity');
     }
 
-    const decoded = decode(loadValue);
-
-    if (decoded.type != 'naddr') {
-      throw new Error('Could not decode entity as naddr')
-    }
-
     await ensureConnection();
 
+    const filter = filterFromId(loadValue);
+
+    if (!filter.authors) { throw new Error('No author!'); }
+    if (!filter['#d']) { throw new Error('No #d!'); }
+    if (!filter.kinds) { throw new Error('No kinds!'); }
+
     const event = new NDKEvent(client);
-    event.kind = 1;
+    event.kind = NDKKind.Text;
     event.tags = [
-      ["a", `30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
+      ["a", `${filter.kinds[0]}:${filter.authors[0]}:${filter['#d'][0]}`] as NDKTag
     ];
     event.content = content;
 

@@ -43,7 +43,6 @@
 		"@vitejs/plugin-react": "^4.2.1",
 		"jest": "^29.7.0",
 		"mdast-util-from-markdown": "^2.0.0",
-		"nostr-tools": "^2.3.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"seedrandom": "^3.0.5",
