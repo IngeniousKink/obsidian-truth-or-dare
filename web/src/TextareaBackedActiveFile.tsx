@@ -13,15 +13,20 @@ export const TextareaBackedActiveFile = () => {
   };
 
   const style = {
-    width: '50ch',
+    width: '100%',
     height: '30em',
   };
 
   return (
-    <textarea
-      style={style}
-      value={activeFile || ''}
-      onChange={handleChange}
-    />
+
+    <fieldset>
+      <legend>Template</legend>
+
+      <textarea
+        style={style}
+        value={activeFile || ''}
+        onChange={handleChange}
+      />
+    </fieldset>
   );
 };

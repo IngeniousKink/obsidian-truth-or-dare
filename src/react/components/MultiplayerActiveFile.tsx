@@ -4,6 +4,8 @@ import { Buffer } from 'buffer';
 import { BIP32Factory, BIP32Interface } from 'bip32';
 import ecc, { signSchnorr, verifySchnorr } from '@bitcoinerlab/secp256k1';
 
+import * as nip19 from 'nostr-tools/nip19'
+
 import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
 
 import * as nobleSecp256k1 from '@noble/secp256k1';
@@ -11,7 +13,7 @@ import * as nobleSecp256k1 from '@noble/secp256k1';
 import { useWebApp } from '../../../web/src/hooks.web.js';
 import { sha256 } from 'bitcoinjs-lib/src/crypto.js';
 
-type HandleEventFunction = (data: { content: string, id: string, kind: number}, pubKey: string) => void;
+type HandleEventFunction = (data: { content: string, id: string, kind: number }, pubKey: string) => void;
 
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -28,33 +30,31 @@ const WEBSOCKET_STATES: WebSocketStates = {
 };
 
 function getParamsFromHash(): {
-  id: string | null,
-  author: string | null,
+  load: string | null,
   seed: string | null
 } {
   const hashParams = new URLSearchParams(
     window.location.hash.slice(1) // remove the '#'
   );
-  const id = hashParams.get('id');
-  const author = hashParams.get('author');
+  const load = hashParams.get('load');
   let seed = hashParams.get('seed');
 
   // If seed is not present, add it to the URL's hash part and call the function again
   if (!seed) {
     seed = Math.random().toString(36).substring(2, 10) +
-           Math.random().toString(36).substring(2, 10);
+      Math.random().toString(36).substring(2, 10);
     hashParams.set('seed', seed);
     window.location.hash = hashParams.toString();
     return getParamsFromHash();
   }
 
-  return { id, author, seed };
+  return { load, seed };
 }
 
 function getSeed(): Buffer {
   const { seed } = getParamsFromHash();
   if (seed === null) {
-      throw new Error('Seed is null');
+    throw new Error('Seed is null');
   }
   return Buffer.from(seed);
 }
@@ -87,7 +87,7 @@ function getPrivKeyHex(): string {
   return keyPair.privateKey.toString('hex');
 }
 
-function getPubKey(privKey: string) : Uint8Array {
+function getPubKey(privKey: string): Uint8Array {
   return nobleSecp256k1.getPublicKey(privKey, true);
 }
 
@@ -124,7 +124,8 @@ export const MultiplayerActiveFile = () => {
 
   const { setActiveFile, activeFile } = webAppContext;
 
-  console.log('rendering...');
+  const [loadValue, setLoadValue] = useState<string | null>(getParamsFromHash().load);
+  const [seedValue, setSeedValue] = useState<string | null>(getParamsFromHash().seed);
 
   const [websockets, setWebsockets] = useState<WebSocket[]>([]);
   const [eventIds, setEventIds] = useState<{ [key: string]: boolean }>({});
@@ -152,27 +153,30 @@ export const MultiplayerActiveFile = () => {
   }
 
   const loadEvents = () => {
-    const { id, author } = getParamsFromHash();
-
-    if (!id || !author) {
-      throw new Error('Missing id or author in URL hash parameters');
+    if (!loadValue) {
+      throw new Error('Missing load in URL hash parameters');
     }
+
+    const decoded = nip19.decode(loadValue);
+
+    if (decoded.type != 'naddr') { return; }
 
     for (const ws of websockets) {
       ws.send(JSON.stringify(['REQ', 'kinds:30023', {
-        "authors": [author],
-        "#d": [id]
+        "authors": [decoded.data.pubkey],
+        "#d": [decoded.data.identifier]
       }]));
 
       ws.send(JSON.stringify(['REQ', 'kinds:1', {
-        "#a": [`30023:${author}:${id}`],
+        "#a": [`30023:${decoded.data.pubkey}:${decoded.data.identifier}`],
         "kinds": [1]
       }]));
     }
   }
 
-  const handleEvent = (data: { content: string, id: string, kind: number}, pubKey: string): void => {
+  const handleEvent = (data: { content: string, id: string, kind: number, pubkey: string }, pubKey: string): void => {
     const { content, id, kind } = data;
+
     if (eventIds[id]) return;
     eventIds[id] = true;
 
@@ -181,92 +185,116 @@ export const MultiplayerActiveFile = () => {
     if (kind === 30023) {
       setActiveFile(content);
     } else if (kind === 1) {
-      setActiveFile((prevState : string) => prevState.concat('\n').concat(content));
+      setActiveFile((prevState: string) => prevState.concat('\n').concat(content));
 
     } else {
       console.log('Unknown kind:', kind, data);
     }
   };
 
-    // Wrap publish function in useCallback to prevent unnecessary re-renders
-    const publish = useCallback(async () => {
+  // Wrap publish function in useCallback to prevent unnecessary re-renders
+  const publish = useCallback(async () => {
 
-      const node = getNode();
-      const path = getPath();
-      const keyPair = computeRawPrivkey(node.derivePath(path));
+    const node = getNode();
+    const path = getPath();
+    const keyPair = computeRawPrivkey(node.derivePath(path));
 
+    if (!keyPair) { return; }
+    if (!keyPair.privateKey) { return; }
 
-      if(!keyPair) { return; }
-      if(!keyPair.privateKey) { return; }
+    const pubKey = keyPair.publicKey;
 
-      const pubKey = keyPair.publicKey;
+    const content = activeFile;
+    const created_at = Math.floor(Date.now() / 1000);
+    const kind = 30023;
+    const tags: string[] = [];
+    const event = [
+      0,
+      pubKey.toString('hex').substring(2),
+      created_at,
+      kind,
+      tags,
+      content
+    ];
+    const message = JSON.stringify(event);
+    console.log('signing', message)
 
-      const content = activeFile;
-      const created_at = Math.floor(Date.now() / 1000);
-      const kind = 30023;
-      const tags : string[] = [];
-      const event = [
-        0,
-        pubKey.toString('hex').substring(2),
+    const hash = sha256(Buffer.from(message));
+
+    const sig = keyPair.signSchnorr(hash);
+    const isValidSig = keyPair.verifySchnorr(hash, sig);
+
+    if (isValidSig) {
+      const fullevent = {
+        id: hash.toString('hex'),
+        pubkey: pubKey.toString('hex').substring(2),
         created_at,
         kind,
         tags,
-        content
-      ];
-      const message = JSON.stringify(event);
-      console.log('signing', message)
-
-      const hash = sha256(Buffer.from(message));
-
-      const sig = keyPair.signSchnorr(hash);
-      const isValidSig = keyPair.verifySchnorr(hash, sig);
-
-      if (isValidSig) {
-        const fullevent = {
-          id: hash.toString('hex'),
-          pubkey: pubKey.toString('hex').substring(2),
-          created_at,
-          kind,
-          tags,
-          content,
-          sig: sig.toString('hex')
-        };
-        const serializedEvent = JSON.stringify(['EVENT', fullevent]);
-        console.log(`Publishing event to ${websockets.length} relays.`, serializedEvent);
-        for (const ws of websockets) {
-          console.log('Publishing to', ws.url);
-          ws.send(serializedEvent);
-        }
-      }
-    }, [activeFile]); // Add activeFile as a dependency
-
-
-    useEffect(() => {
-      const pubKey = getKeys()[1];
-      openWebsockets(pubKey, handleEvent);
-
-      return () => {
-        console.log('Component unmounting');
-        websockets.map((ws) => ws.close());
-        setWebsockets([]);
-        setEventIds({});
+        content,
+        sig: sig.toString('hex')
       };
-    }, []);
+      const serializedEvent = JSON.stringify(['EVENT', fullevent]);
+      console.log(`Publishing event to ${websockets.length} relays.`, serializedEvent);
+      for (const ws of websockets) {
+        console.log('Publishing to', ws.url);
+        ws.send(serializedEvent);
+      }
+    }
+  }, [activeFile]); // Add activeFile as a dependency
+
+
+  useEffect(() => {
+    const pubKey = getKeys()[1];
+    openWebsockets(pubKey, handleEvent);
+
+    return () => {
+      console.log('Component unmounting');
+      websockets.map((ws) => ws.close());
+      setWebsockets([]);
+      setEventIds({});
+    };
+  }, []);
 
   return (
     <>
-      <button onClick={publish}>Publish</button>
-      <button onClick={loadEvents}>Load</button>
-      <br/>
-      <br/>
-      <span>Connection status</span>
-      <ul>
-        {websockets.map((ws, index) => (
-          <li key={index}>{ws.url} {WEBSOCKET_STATES[ws.readyState] || 'UNKNOWN'}</li>
-        ))}
-      </ul>
+      <fieldset>
+        <legend>Multiplayer</legend>
+
+        <label>
+          Load:
+          <input
+            type="text"
+            value={loadValue || ''}
+            onChange={(e) => setLoadValue(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Seed:
+          <input
+            type="text"
+            disabled
+            value={seedValue || ''}
+            onChange={(e) => setSeedValue(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <button onClick={publish}>Publish Template</button>
+        <button onClick={loadEvents}>Load Template</button>
+        <br />
+        <br />
+        <span>Connection status</span>
+        <ul>
+          {websockets.map((ws, index) => (
+            <li key={index}>{ws.url} {WEBSOCKET_STATES[ws.readyState] || 'UNKNOWN'}</li>
+          ))}
+        </ul>
+      </fieldset>
     </>
   );
+
 };
 
 export default MultiplayerActiveFile;

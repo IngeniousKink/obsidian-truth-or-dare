@@ -10,8 +10,6 @@ import { TextareaBackedActiveFile } from './TextareaBackedActiveFile.js';
 
 function App() {
 
-  const [activeTab, setActiveTab] = useState('multiplayer');
-
   useEffect(() => {
     return () => {
       console.log('App component unmounting');
@@ -20,18 +18,13 @@ function App() {
 
   return (
     <WebAppProvider>
-
       <div className="game-source">
-        <button onClick={() => setActiveTab('textarea')}>Textarea</button>
-        <button onClick={() => setActiveTab('multiplayer')}>Multiplayer</button>
-        <br />
-        <br />
-        {activeTab === 'multiplayer' && <MultiplayerActiveFile />}
-        {activeTab === 'textarea' && <TextareaBackedActiveFile />}
+        <TextareaBackedActiveFile />
+        <MultiplayerActiveFile />
       </div>
 
       <div className="game-play">
-        <ReactBaseView  GameView={PlayView} />
+        <ReactBaseView GameView={PlayView} />
       </div>
     </WebAppProvider>
   )
