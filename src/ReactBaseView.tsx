@@ -66,13 +66,20 @@ export const ReactBaseView: React.FC = () => {
   return (
     <div>
       <h1>{heading}</h1>
-      {gameState.template && gameState.template.stacks && (
-        <StacksDisplay stacks={gameState.template.stacks} />
-      )}
-      {gameState.template && gameState.events && (
-        <EventsDisplay events={gameState.events} />
-      )}
+      <h2>Buttons</h2>
       <AppendTimeButton />
+      {gameState.template && gameState.events && (
+        <>
+          <h2>Events</h2>
+          <EventsDisplay events={gameState.events} />
+        </>
+      )}
+      {gameState.template && gameState.template.stacks && (
+        <>
+          <h2>Template</h2>
+          <StacksDisplay stacks={gameState.template.stacks} />
+        </>
+      )}
     </div >
   );
 };
