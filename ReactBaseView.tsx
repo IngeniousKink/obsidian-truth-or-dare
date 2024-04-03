@@ -4,16 +4,18 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from 'parse';
 import type { CardMap } from 'parse';
 import { AppendTimeButton } from 'AppendTimeButton';
+import { StacksDisplay } from 'StacksDisplay';
 
-const StacksDisplay: React.FC = () => {
+export const ReactBaseView: React.FC = () => {
   const [stacks, setStacks] = useState<CardMap>({} as CardMap);
   const app = useApp();
   const registerEvent = useRegisterEvent();
 
-  if (!app) return null;
-  if (!registerEvent) return null;
+  if (!app || !registerEvent) return null;
 
   const { vault, metadataCache, workspace } = app;
+
+  const heading: string = vault.getName() + 'xxx';
 
   const update = useCallback(async () => {
     console.log(new Date().getTime(), 'updating');
@@ -50,24 +52,10 @@ const StacksDisplay: React.FC = () => {
     update();
   }, [registerEvent, metadataCache, workspace, update]);
 
-  return <pre>{JSON.stringify(stacks, undefined, 2)}</pre>;
-};
-
-export const ReactBaseView: React.FC = () => {
-  const [text, setText] = useState<string>("");
-  const app = useApp();
-
-  if (!app) return null;
-
-  const { vault } = app;
-
-  const newText: string = vault.getName() + 'xxx';
-  setText(newText);
-
   return (
     <div>
-      <h3>{text}</h3>
-      <StacksDisplay />
+      <h1>{heading}</h1>
+      <StacksDisplay stacks={stacks} />
       <AppendTimeButton />
     </div >
   );
