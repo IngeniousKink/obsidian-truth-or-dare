@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { MultiplayerContext } from './MultiplayerContext.js';
 import { useInMemoryTemplate } from '@obsidian-truth-or-dare/InMemoryTemplateContext.js';
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
@@ -29,8 +29,11 @@ export const useMultiplayer = () => {
     throw new Error('useMultiplayer must be used within a InMemoryTemplateProvider');
   }
 
-  const { templateFileContent, setTemplateFileContent, setEventsFileContent } = templateValue;
-
+  const {
+    templateFileContent,
+    setTemplateFileContent,
+    setEventsFileContent
+  } = templateValue;
 
   const loadEvents = useCallback(async () => {
     if (!loadValue) {
@@ -44,10 +47,7 @@ export const useMultiplayer = () => {
 
     if (decoded.type != 'naddr') { return; }
 
-    const user = await client.signer.user();
-    client.activeUser = user;
-
-    await client.connect();
+    await ensureConnection();
 
     client.subscribe({
       kinds: [30023],
@@ -66,48 +66,48 @@ export const useMultiplayer = () => {
 
   }, [loadValue]);
 
-  const publishMultiplayerData = useCallback(async (kind: number, content: string, tags: string[][] = []) => {
-
-    if (!client.signer) {
-      return;
+  const publishTemplate = useCallback(async () => {
+    if (!templateFileContent) {
+      throw new Error('No template content');
     }
 
+    await ensureConnection();
+
     const event = new NDKEvent(client);
-    event.kind = kind;
-    event.tags = tags;
+    event.kind = 30023;
+    event.tags = [];
+    event.content = templateFileContent;
+
+    await event.sign();
+    await event.publish();
+
+    setLoadValue(event.encode());
+  }, [templateFileContent]);
+
+  const publishGameEvent = useCallback(async (content: string) => {
+    if (!loadValue) {
+      throw new Error('No entity');
+    }
+
+    const decoded = decode(loadValue);
+
+    if (decoded.type != 'naddr') {
+      throw new Error('Could not decode entity as naddr')
+    }
+
+    await ensureConnection();
+
+    const event = new NDKEvent(client);
+    event.kind = 1;
+    event.tags = [
+      ["a", `30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
+    ];
     event.content = content;
 
     await event.sign();
     await event.publish();
 
-  }, [templateFileContent]);
-
-  const publishTemplate = useCallback(async () => {
-    const kind = 30023;
-    if (!templateFileContent) return;
-
-    publishMultiplayerData(kind, templateFileContent);
-  }, [templateFileContent, publishMultiplayerData]);
-
-  const publishGameEvent = useCallback(async (content: string) => {
-    const kind = 1;
-
-    if (!loadValue) {
-      throw new Error('Unknown entity, unable to publish gameEvent');
-    }
-
-    const decoded = decode(loadValue);
-
-    if (decoded.type != 'naddr') { return; }
-
-    publishMultiplayerData(
-      kind,
-      content,
-      [
-        ["a", `30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
-      ]
-    );
-  }, [loadValue, publishMultiplayerData]);
+  }, [loadValue]);
 
   return {
     publishTemplate,
@@ -120,3 +120,13 @@ export const useMultiplayer = () => {
     relays: client.pool?.relays
   };
 };
+
+async function ensureConnection() {
+  if (!client.signer) {
+    throw new Error('No signer!');
+  }
+  const user = await client.signer.user();
+  client.activeUser = user;
+  await client.connect();
+}
+
