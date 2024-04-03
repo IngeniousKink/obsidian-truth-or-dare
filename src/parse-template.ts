@@ -4,7 +4,7 @@ import type { ParsedCard } from "./parse-card.js";
 import { PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
 import { parseEmbeds } from "./parse-embeds.js";
 
-export type CardWithRef = ParsedCard & { ref: string; category?: string };
+export type CardWithRef = ParsedCard & { ref: string; };
 
 // Define a Stack type with a name, reference and an array of cards
 export type Stack = { name: string; ref: string; cards: CardWithRef[]; };

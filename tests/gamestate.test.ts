@@ -53,12 +53,12 @@ describe('selectCardsByCategory', () => {
 
   beforeEach(() => {
     cards = [
-      { ref: '1', text: 'Card 1', category: 'Category 1', annotations: [] },
-      { ref: '2', text: 'Card 2', category: 'Category 2', annotations: [] },
-      { ref: '3', text: 'Card 3', category: 'Category 3', annotations: [] },
-      { ref: '4', text: 'Card 4', category: 'Category 1', annotations: [] },
-      { ref: '5', text: 'Card 5', category: 'Category 2', annotations: [] },
-      { ref: '6', text: 'Card 6', category: 'Category 3', annotations: [] },
+      { ref: '1', text: 'Card 1', annotations: [{category: 'Category 1'}] },
+      { ref: '2', text: 'Card 2', annotations: [{category: 'Category 2'}] },
+      { ref: '3', text: 'Card 3', annotations: [{category: 'Category 3'}] },
+      { ref: '4', text: 'Card 4', annotations: [{category: 'Category 1'}] },
+      { ref: '5', text: 'Card 5', annotations: [{category: 'Category 2'}] },
+      { ref: '6', text: 'Card 6', annotations: [{category: 'Category 3'}] },
     ];
     stack = { name: 'Stack 1', ref: '#Stack 1', cards: cards };
     gameTemplate = { stacks: [stack] };
@@ -69,16 +69,16 @@ describe('selectCardsByCategory', () => {
     const result = selectCardsByCategory(gameState);
     expect(result).toEqual({
       'Category 1': [
-        { ref: '1', text: 'Card 1', category: 'Category 1', annotations: [] },
-        { ref: '4', text: 'Card 4', category: 'Category 1', annotations: [] }
+        { ref: '1', text: 'Card 1', annotations: [{category: 'Category 1'}] },
+        { ref: '4', text: 'Card 4', annotations: [{category: 'Category 1'}] }
       ],
       'Category 2': [
-        { ref: '2', text: 'Card 2', category: 'Category 2', annotations: [] },
-        { ref: '5', text: 'Card 5', category: 'Category 2', annotations: [] }
+        { ref: '2', text: 'Card 2', annotations: [{category: 'Category 2'}] },
+        { ref: '5', text: 'Card 5', annotations: [{category: 'Category 2'}] }
       ],
       'Category 3': [
-        { ref: '3', text: 'Card 3', category: 'Category 3', annotations: [] },
-        { ref: '6', text: 'Card 6', category: 'Category 3', annotations: [] }
+        { ref: '3', text: 'Card 3', annotations: [{category: 'Category 3'}] },
+        { ref: '6', text: 'Card 6', annotations: [{category: 'Category 3'}] }
       ],
     });
   });

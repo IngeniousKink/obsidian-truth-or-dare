@@ -1,3 +1,4 @@
+import { Annotation, ParsedCard } from "./parse-card.js";
 import { GameEvent } from "./parse-events.js";
 import { CardWithRef, GameTemplate } from "./parse-template.js";
 import seedrandom from 'seedrandom';
@@ -75,11 +76,16 @@ export function getAvailableCards(gameState: GameState): CardWithRef[] {
     return allCards.filter(card => !unavailableCards.includes(card.ref));
 }
 
+export function getCategories(card: ParsedCard): string[] {
+    return card.annotations
+      .map(annotation => annotation?.category)
+      .filter(category => category !== undefined) as string[];
+}
+
 export function selectCategories(gameState: GameState): string[] {
     const allCards = getAllCards(gameState.template);
-    const categories = allCards
-        .filter(card => card.category !== undefined)
-        .map(card => card.category as string);
+
+    const categories = allCards.flatMap(getCategories)
 
     return [...new Set(categories)];
 }
@@ -91,7 +97,7 @@ export function selectCardsByCategory(gameState: GameState): { [key: string]: Ca
 
     for (const category of categories) {
         cardsByCategory[category] = availableCards
-            .filter(card => card.category === category)
+            .filter(card => getCategories(card).includes(category))
     }
 
     return cardsByCategory;

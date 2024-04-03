@@ -73,7 +73,6 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
   return (
     <div className="card">
       <h2 className="card-text">{textWithImages}</h2>
-      {card.category && <h3 className="card-category">{card.category}</h3>}
     </div>
   );
 }
