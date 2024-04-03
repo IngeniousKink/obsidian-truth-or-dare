@@ -4,12 +4,12 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  root: 'export/',
+  root: 'web/',
   resolve: {
     alias: [
       {
         find: '@obsidian-truth-or-dare/hooks.js',
-        replacement: path.resolve(__dirname, './export/src/hooks.web.js')
+        replacement: path.resolve(__dirname, './web/src/hooks.web.js')
       },
       {
         find: '@obsidian-truth-or-dare',
