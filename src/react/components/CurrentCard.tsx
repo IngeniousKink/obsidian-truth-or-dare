@@ -41,7 +41,7 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
   }
 
   const textWithImages = React.useMemo(() => {
-    let text = card.text;
+    const text = card.text;
 
     card.annotations.sort((a, b) => (a.startPos || 0) - (b.startPos || 0));
 

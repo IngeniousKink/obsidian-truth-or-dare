@@ -37,7 +37,7 @@ const PerformCard: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
 
 
 export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
-  let heading: string = "Truth or Dare";
+  let heading = "Truth or Dare";
 
   if (gameState.allocation?.length > 0 && gameState.allocation[0]) {
     heading += `, ${selectActorName(gameState, gameState.allocation[0])?.name}`;

@@ -15,7 +15,7 @@ export const TextareaBackedActiveFile = () => {
   const style = {
     width: '50ch',
     height: '30em',
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '0',
     left: '0',
     // display: 'none',

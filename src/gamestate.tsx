@@ -129,7 +129,7 @@ export function selectActorName(gameState: GameState, actorId: string): Actor | 
 }
 
 function getNextActorId(gameState: GameState, lastActorId: string): string | null {
-    let currentActorIndex = gameState.actors.findIndex(
+    const currentActorIndex = gameState.actors.findIndex(
         actor => actor.id === lastActorId);
 
     if (currentActorIndex === -1) {
@@ -184,7 +184,7 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
     const card = findCardInGameTemplate(gameState.template, event.cardRef);
     if (!card) return gameState;
 
-    let updatedGameState = maintainAllocation(gameState);
+    const updatedGameState = maintainAllocation(gameState);
 
     return {
         ...updatedGameState,
@@ -197,7 +197,7 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
 function handleCompleteCardEvent(gameState: GameState, event: CompleteCardEvent): GameState {
     const card = findCardInGameTemplate(gameState.template, event.cardRef);
 
-    let previousCards = [...gameState.previousCards];
+    const previousCards = [...gameState.previousCards];
     if (card) {
         previousCards.push(card.ref);
     }

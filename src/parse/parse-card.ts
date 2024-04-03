@@ -56,7 +56,7 @@ function parseObsidianEmbed(match: RegExpMatchArray): Annotation {
 export function parseCard(content: PhrasingContent[]): ParsedCard {
 
   const imageAnnotations: Annotation[] = [];
-  let html = content.reduce((acc, textNode: PhrasingContent) => {
+  const html = content.reduce((acc, textNode: PhrasingContent) => {
     if (textNode.type === 'image' && textNode.position?.start.column) {
       imageAnnotations.push({
         type:'image',

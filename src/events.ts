@@ -83,7 +83,7 @@ export function timestampEvent<T extends GameEvent>(event: T): T & WithTimestamp
 }
 
 export function createActor(): CreateActorEvent {
-    let actorId = (
+    const actorId = (
         (Date.now() - 1700000000000) /** for good measure */
         .toString(32)
         .split('')

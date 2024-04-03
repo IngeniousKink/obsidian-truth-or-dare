@@ -7,7 +7,7 @@ export const __dirname = path.dirname(__filename);
 
 export function readFileContents(subFolder: string) {
     const directoryPath = path.join(__dirname, '__markdown_test_cases__', subFolder);
-    let fileContentsMap: { [key: string]: string; } = {};
+    const fileContentsMap: { [key: string]: string; } = {};
 
     const files = fs.readdirSync(directoryPath);
     for (const fileName of files) {

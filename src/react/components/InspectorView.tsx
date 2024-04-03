@@ -18,7 +18,7 @@ export interface InspectorViewProps {
 }
 
 export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: InspectorViewProps) => {
-  const heading: string = "Truth or Dare";
+  const heading = "Truth or Dare";
 
   let cardsByCategory: { [x: string]: any; } = {};
 
