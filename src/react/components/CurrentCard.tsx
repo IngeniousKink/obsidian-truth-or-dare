@@ -41,7 +41,7 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
       const mediaPath = app.metadataCache.getFirstLinkpathDest(url, ".")?.path;
       if (mediaPath) {
         const mediaResource = app.vault.adapter.getResourcePath(mediaPath);
-        const mediaElement = createMediaElement(`m-{i}`, mediaResource, extension);
+        const mediaElement = createMediaElement(`m-${i}`, mediaResource, extension);
         if (mediaElement) {
           cardElements.push(mediaElement);
         }
