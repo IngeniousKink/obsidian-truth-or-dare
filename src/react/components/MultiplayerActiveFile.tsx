@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMultiplayer } from './useMultiplayer.js';
-import NDK, { NDKRelay } from "@nostr-dev-kit/ndk";
+import { NDKRelay } from "@nostr-dev-kit/ndk";
 
 export const LoadEntityInput = () => {
   const { loadValue, setLoadValue } = useMultiplayer();
