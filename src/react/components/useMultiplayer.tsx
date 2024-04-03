@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useContext } from 'react';
-import * as nip19 from 'nostr-tools/nip19'
 import { MultiplayerContext } from './MultiplayerContext.js';
 import { useInMemoryTemplate } from '@obsidian-truth-or-dare/InMemoryTemplateContext.js';
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
+import { decode } from 'nostr-tools/nip19';
 
 const explicitRelayUrls = [
   'wss://nos.lol',
@@ -14,8 +14,6 @@ const client = new NDK({
   signer: NDKPrivateKeySigner.generate()
 });
 
-window.ndk = client;
-
 export const useMultiplayer = () => {
   const multiplayerContext = useContext(MultiplayerContext);
 
@@ -23,7 +21,7 @@ export const useMultiplayer = () => {
     throw new Error('useMultiplayer must be used within a MultiplayerProvider');
   }
 
-  const { eventIds, loadValue, setLoadValue, seedValue, setSeedValue } = multiplayerContext;
+  const { loadValue, setLoadValue, seedValue, setSeedValue } = multiplayerContext;
 
   const templateValue = useInMemoryTemplate();
 
@@ -33,20 +31,6 @@ export const useMultiplayer = () => {
 
   const { templateFileContent, setTemplateFileContent, setEventsFileContent } = templateValue;
 
-  const handleNDKEvent = (event: NDKEvent) => {
-    const { content, id, kind } = event;
-
-    if (eventIds[id]) return;
-    eventIds[id] = true;
-
-    if (kind === 30023) {
-      setTemplateFileContent(content);
-    } else if (kind === 1) {
-      setEventsFileContent((data: string) => `${data}\n${content}`);
-    } else {
-      console.log('Unknown kind:', kind, event);
-    }
-  };
 
   const loadEvents = useCallback(async () => {
     if (!loadValue) {
@@ -56,7 +40,7 @@ export const useMultiplayer = () => {
       throw new Error('No signer!');
     }
 
-    const decoded = nip19.decode(loadValue);
+    const decoded = decode(loadValue);
 
     if (decoded.type != 'naddr') { return; }
 
@@ -65,24 +49,26 @@ export const useMultiplayer = () => {
 
     await client.connect();
 
-    const subscr1 = client.subscribe({
+    client.subscribe({
       kinds: [30023],
       authors: [decoded.data.pubkey],
       '#d': [decoded.data.identifier]
-    });
+    }).on('event', ((event: NDKEvent) => {
+      setTemplateFileContent(event.content);
+    }))
 
-    const subscr2 = client.subscribe({
+    client.subscribe({
       kinds: [1],
       '#a': [`30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
-    });
+    }).on('event', ((event: NDKEvent) => {
+      setEventsFileContent((data: string) => `${data}\n${event.content}`);
+    }))
 
-    subscr1.on('event', handleNDKEvent);
-    subscr2.on('event', handleNDKEvent);
   }, [loadValue]);
 
   const publishMultiplayerData = useCallback(async (kind: number, content: string, tags: string[][] = []) => {
 
-    if(!client.signer) {
+    if (!client.signer) {
       return;
     }
 
@@ -94,9 +80,6 @@ export const useMultiplayer = () => {
     await event.sign();
     await event.publish();
 
-    // setLoadValue(
-    //   event.encode()
-    // );
   }, [templateFileContent]);
 
   const publishTemplate = useCallback(async () => {
@@ -113,7 +96,7 @@ export const useMultiplayer = () => {
       throw new Error('Unknown entity, unable to publish gameEvent');
     }
 
-    const decoded = nip19.decode(loadValue);
+    const decoded = decode(loadValue);
 
     if (decoded.type != 'naddr') { return; }
 
@@ -125,13 +108,6 @@ export const useMultiplayer = () => {
       ]
     );
   }, [loadValue, publishMultiplayerData]);
-
-  useEffect(() => {
-    return () => {
-      // console.log('Component with useMultiplayer unmounting');
-      // client.disconnect();
-    };
-  }, []);
 
   return {
     publishTemplate,
