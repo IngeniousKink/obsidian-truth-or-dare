@@ -1,4 +1,4 @@
-import { Html, Image, PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
+import { PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
 
 export interface Annotation {
   actor?: string;
@@ -15,7 +15,7 @@ export interface ParsedCard {
 const REGEX_HTML_DATA_ATTRIBUTE = /<([^>]+?)>/g;
 const REGEX_DATA_ATTRIBUTE = /data-(\w+)="([^"]*)"/g;
 const REGEX_MEDIA_ATTRIBUTE = /<(img|video)\s+src="([^"]*)"/g;
-const REGEX_OBSIDIAN_EMBED = /\!\[\[([^]|]+)(?:\|[^]]+)?\]\]/g;
+const REGEX_OBSIDIAN_EMBED = /!\[\[([^]|]+)(?:\|[^]]+)?\]\]/g;
 
 function createAnnotation(
   dataMatches: RegExpMatchArray[],

@@ -8,10 +8,7 @@ import { PreviousCards } from './PreviousCards.js';
 import { 
   GameState, 
   getAvailableCards, 
-  selectCardsByCategory, 
 } from '../../gamestate.js';
-
-import type { CardWithRef } from '../../parse/parse-template.js';
 
 export interface InspectorViewProps {
   gameState: GameState,
@@ -19,12 +16,6 @@ export interface InspectorViewProps {
 
 export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: InspectorViewProps) => {
   const heading = "Truth or Dare";
-
-  let cardsByCategory: { [x: string]: any; } = {};
-
-  if (gameState.template) {
-    cardsByCategory = selectCardsByCategory(gameState);
-  }
 
   return (
     <div>

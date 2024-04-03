@@ -1,4 +1,3 @@
-import { PhrasingContent } from 'node_modules/mdast-util-from-markdown/lib/index.js';
 import { parseEmbeds } from '../src/parse/parse-embeds.js';
 
 describe('parse-embeds', () => {
@@ -24,7 +23,7 @@ describe('parse-embeds', () => {
       },
     ]);
 
-    expect(result as any).toEqual([
+    expect(result).toEqual([
       {
         "position": {
           "start": { "column": 1, "line": 1, "offset": 0, },

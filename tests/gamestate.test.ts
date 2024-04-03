@@ -1,5 +1,5 @@
-import { GameEvent, TimestampedEvent } from '@obsidian-truth-or-dare/events.js';
-import { createGameState, findCardInGameTemplate, getAllCards, selectRandomAvailableCard, getAvailableCards, selectCardsByCategory, GameState } from '../src/gamestate.js';
+import { TimestampedEvent } from '@obsidian-truth-or-dare/events.js';
+import { createGameState, findCardInGameTemplate, getAllCards, getAvailableCards, selectCardsByCategory, GameState } from '../src/gamestate.js';
 import { CardWithRef, GameTemplate, Stack } from '@obsidian-truth-or-dare/parse/parse-template.js';
 
 describe('Game State', () => {

@@ -1,4 +1,4 @@
-import type { Root, Html, Heading, List, ListItem, Paragraph, Text, Image } from "mdast";
+import type { Root, Html, Heading, List, ListItem, Paragraph, Text } from "mdast";
 import { parseCard } from "./parse-card.js";
 import type { ParsedCard } from "./parse-card.js";
 import { PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import type { App } from "obsidian";
 import { EventRegistryContext, EventRegistryFunction, AppContext } from "./react/context.js";
-import { GameEvent, TimestampedEvent, timestampEvent } from "@obsidian-truth-or-dare/events.js";
+import { TimestampedEvent } from "@obsidian-truth-or-dare/events.js";
 import { appendEventToActiveFile } from "./obsidian/appendEventToActiveFile.js";
 
 export const useApp = (): App | undefined => {

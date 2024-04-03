@@ -1,6 +1,6 @@
 import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
 import { ReactBaseView } from "./ReactBaseView.js";
-import TruthOrDarePlugin, { TRUTH_OR_DARE_EDITABLE_VIEW } from "./TruthOrDarePlugin.js";
+import { TRUTH_OR_DARE_EDITABLE_VIEW } from "./TruthOrDarePlugin.js";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "../react/context.js";
 
@@ -66,8 +66,6 @@ export class ObsidianEditableView extends EditableFileView {
 
 	async renderPlay(): Promise<boolean> {
 		if (!this.file) { return false; }
-		const text = await this.app.vault.cachedRead(this.file!);
-		const metadata = await this.app.metadataCache.getFileCache(this.file!);
 
 		this.root = createRoot(this.containerEl.children[1]);
 		this.root.render(

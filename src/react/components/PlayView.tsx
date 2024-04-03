@@ -45,7 +45,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
 
   heading += '?'
 
-  let cardsByCategory: { [x: string]: any; } = {};
+  let cardsByCategory: { [x: string]: CardWithRef[]; } = {};
 
   if (gameState.template) {
     cardsByCategory = selectCardsByCategory(gameState);

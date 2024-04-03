@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { changeActorName, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
 

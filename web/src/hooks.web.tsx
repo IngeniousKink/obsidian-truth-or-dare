@@ -1,5 +1,4 @@
-import { GameEvent, TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
-import { GameState } from "@obsidian-truth-or-dare/gamestate.js";
+import { TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 
 const initialFileContents = `# game

@@ -7,7 +7,6 @@ import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/react/components/
 import { GameStateWithDisplayedCard, PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
 import { InspectorView } from '@obsidian-truth-or-dare/react/components/InspectorView.js';
 import CurrentCard from '@obsidian-truth-or-dare/react/components/CurrentCard.js';
-import { GameState } from '@obsidian-truth-or-dare/gamestate.js';
 
 const testCard : CardWithRef = {
    text: 'Do something.',

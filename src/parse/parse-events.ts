@@ -1,4 +1,4 @@
-import { AdvanceStackEvent, AssignSlotEvent, ChangeActorInventoryAddEvent, ChangeActorInventoryRemoveEvent, ChangeActorNameEvent, CompleteCardEvent, CreateActorEvent, DeleteActorEvent, DrawCardEvent, GameEvent, SkipCardEvent, TimestampedEvent, UnassignSlotEvent, WithTimestamp } from "@obsidian-truth-or-dare/events.js";
+import { AdvanceStackEvent, AssignSlotEvent, ChangeActorInventoryAddEvent, ChangeActorInventoryRemoveEvent, ChangeActorNameEvent, CompleteCardEvent, CreateActorEvent, DeleteActorEvent, DrawCardEvent, SkipCardEvent, TimestampedEvent, UnassignSlotEvent, WithTimestamp } from "@obsidian-truth-or-dare/events.js";
 import type { Root, Code } from "mdast";
 
 /**

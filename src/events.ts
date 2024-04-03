@@ -177,7 +177,7 @@ export const serializeEventToCodeBlock = (event: TimestampedEvent) => {
     eventString += `type:${event.type}\n`;
     eventString += `timestamp:${event.timestamp}\n`;
 
-    const eventWithStrKeys: { [key: string]: any } = event;
+    const eventWithStrKeys: { [key: string]: string | number } = event;
 
     for (const key in eventWithStrKeys) {
         if (key !== "type" && key !== "timestamp") {
