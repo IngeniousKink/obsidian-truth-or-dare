@@ -1,6 +1,6 @@
 import React from 'react';
-import type { CardMap } from './parse-template.js';
+import type { Stack } from './parse-template.js';
 
-export const StacksDisplay: React.FC<{ stacks: CardMap; }> = ({ stacks }) => {
+export const StacksDisplay: React.FC<{ stacks: Stack[]; }> = ({ stacks }) => {
   return <pre>{JSON.stringify(stacks, undefined, 2)}</pre>;
 };
