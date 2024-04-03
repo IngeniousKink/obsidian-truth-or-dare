@@ -35,7 +35,13 @@ function processMarkdownNode(gameEvents: TimestampedEvent[], child: Code): Times
   if (child.type === 'code' && child.lang === 'truth-or-dare:event') {
     try {
       const event = extractEventFromCode(child as Code);
-      return [...gameEvents, event];
+      return [...gameEvents, event].sort(
+        // ideally, events would reference each other so that
+        // the order can be derived from that
+        // in multiplayer scenarios the timestamp 
+        // is most likely not accurate enough
+        (a, b) => Number(a.timestamp) - Number(b.timestamp)
+      );
     } catch(error) {
       if (error instanceof UnparseableEventError) {
         console.warn(error);
