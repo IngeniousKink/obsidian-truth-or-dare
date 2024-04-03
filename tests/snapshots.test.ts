@@ -1,5 +1,5 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { getCardsUnderHeading } from '../parse.js';
+import { getCardsUnderHeading } from '../src/parse.js';
 import fs, { read } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

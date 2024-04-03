@@ -3,8 +3,8 @@ import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from './parse.js';
 import type { CardMap } from './parse.js';
-import { AppendTimeButton } from './AppendTimeButton.js';
-import { StacksDisplay } from './StacksDisplay.js';
+import { AppendTimeButton } from './AppendTimeButton.jsx';
+import { StacksDisplay } from './StacksDisplay.jsx';
 
 export const ReactBaseView: React.FC = () => {
   const [stacks, setStacks] = useState<CardMap>({} as CardMap);

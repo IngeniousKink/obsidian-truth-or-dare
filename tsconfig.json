@@ -7,7 +7,7 @@
     "target": "ES6",
     "allowJs": true,
     "noImplicitAny": true,
-		"moduleResolution": "node16",
+    "moduleResolution": "node16",
     "importHelpers": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -23,6 +23,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "main.ts"
-, "tests/snapshots.test.mts"  ]
+    "src/main.ts",
+    "tests/snapshots.test.mts"
+  ]
 }
