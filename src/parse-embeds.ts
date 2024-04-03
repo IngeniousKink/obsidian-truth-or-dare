@@ -1,26 +1,19 @@
 import { PhrasingContent } from "mdast";
 import { Image, Text } from "node_modules/mdast-util-from-markdown/lib/index.js";
 
-function createTextNode(content: PhrasingContent, newValue: string, startOffset: number, endOffset: number): Text {
-    return {
-        type: 'text',
-        value: newValue,
+function createContentNode<T extends Text | Image>(type: T['type'], content: PhrasingContent, newValue: string, startOffset: number, endOffset: number): T {
+    const commonProps = {
         position: content.position ? {
             start: { ...content.position.start, offset: startOffset, column: startOffset + 1 },
             end: { ...content.position.end, offset: endOffset, column: endOffset + 1 }
         } : undefined
     };
-}
 
-function createImageContent(content: PhrasingContent, newValue: string, startOffset: number, endOffset: number): Image {
-    return {
-        type: 'image',
-        url: newValue,
-        position: content.position ? {
-            start: { ...content.position.start, offset: startOffset, column: startOffset + 1 },
-            end: { ...content.position.end, offset: endOffset, column: endOffset + 1 }
-        } : undefined
-    };
+    if (type === 'image') {
+        return { ...commonProps, type, url: newValue } as Image as T;
+    }
+
+    return { ...commonProps, type, value: newValue } as Text as T;
 }
 
 function processImageLink(
@@ -31,7 +24,8 @@ function processImageLink(
 ): number {
     if (regexMatch.index !== previousIndex) {
         processedContent.push(
-            createTextNode(
+            createContentNode<Text>(
+                'text',
                 content,
                 content.value.substring(previousIndex, regexMatch.index),
                 previousIndex,
@@ -40,7 +34,7 @@ function processImageLink(
         );
     }
 
-    processedContent.push(createImageContent(content, regexMatch[1], regexMatch.index, regexMatch.index + regexMatch[1].length));
+    processedContent.push(createContentNode<Image>('image', content, regexMatch[1], regexMatch.index, regexMatch.index + regexMatch[1].length));
 
     // Update the previousIndex to the end of the matched string
     return regexMatch.index + regexMatch[0].length;
@@ -65,7 +59,8 @@ function processMarkdownContent(content: PhrasingContent): PhrasingContent[] {
 
     if (previousIndex !== content.value.length) {
         processedContent.push(
-            createTextNode(
+            createContentNode<Text>(
+                'text',
                 content,
                 content.value.substring(previousIndex),
                 previousIndex,
