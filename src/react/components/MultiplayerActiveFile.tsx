@@ -135,7 +135,7 @@ function handleMessage(event: MessageEvent, pubKey: string, handleEvent: Functio
   if (msgType === 'EVENT') {
     handleEvent(data, subscriptionId, pubKey);
   } else {
-    console.log('Unknown EVENT', event)
+    console.log('Unknown EVENT', [msgType, subscriptionId, data])
   }
 }
 
