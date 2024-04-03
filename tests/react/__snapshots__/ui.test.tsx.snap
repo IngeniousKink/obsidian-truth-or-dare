@@ -154,6 +154,7 @@ exports[`renders PlayView 1`] = `
     Buttons
   </h2>
   <br />
+  <br />
   <div />
 </div>
 `;

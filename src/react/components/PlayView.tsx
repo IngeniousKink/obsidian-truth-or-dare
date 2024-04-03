@@ -1,7 +1,6 @@
 import React from 'react';
 import { DrawCardButton } from './DrawCardButton.js';
 import { DisplayedCard } from './DisplayedCard.js';
-import { DeleteActorButton } from './DeleteActorButton.js';
 
 import { 
   GameState, 
@@ -14,6 +13,7 @@ import {
 
 import type { CardWithRef } from '../../parse/parse-template.js';
 import { AddActorButton } from './AddActorButton.js';
+import { ActorList } from './ActorList.js';
 
 export interface PlayViewProps {
   gameState: GameState,
@@ -27,19 +27,6 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
   if (gameState.template) {
     cardsByCategory = selectCardsByCategory(gameState);
   }
-
-  // New ActorList component
-  const ActorList: React.FC<{ actors: any[] }> = ({ actors }) => {
-    return (
-      <div>
-        {actors.map((actor) => (
-          <p key={actor.id}>
-            ID: {actor.id} — Name: {actor.name} — <DeleteActorButton id={actor.id} />
-          </p>
-        ))}
-      </div>
-    );
-  };
 
   return (
     <div>
@@ -69,10 +56,8 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
         })}
 
         <br />
+        <br />
 
-        <AddActorButton />
-
-        {/* Render ActorList component */}
         <ActorList actors={gameState.actors} />
 
       </>)}
