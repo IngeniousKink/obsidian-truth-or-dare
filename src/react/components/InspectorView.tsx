@@ -44,6 +44,12 @@ export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: Inspe
             <EventsDisplay events={gameState.events} />
           </>
         )}
+        {gameState.allocation && (
+          <>
+            <h2>Slots</h2>
+            <JsonStringifyOutput javascriptObject={gameState.allocation} />
+          </>
+        )}
         {gameState.actors && (
           <>
             <h2>Players</h2>
