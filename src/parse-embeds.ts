@@ -1,19 +1,25 @@
 import { PhrasingContent } from "mdast";
 import { Image, Text } from "node_modules/mdast-util-from-markdown/lib/index.js";
 
-function createTextNode(content: PhrasingContent, newValue: string): Text {
+function createTextNode(content: PhrasingContent, newValue: string, startOffset: number, endOffset: number): Text {
     return {
         type: 'text',
         value: newValue,
-        position: content.position
+        position: content.position ? {
+            start: { ...content.position.start, offset: startOffset, column: startOffset + 1 },
+            end: { ...content.position.end, offset: endOffset, column: endOffset + 1 }
+        } : undefined
     };
 }
 
-function createImageContent(content: PhrasingContent, newValue: string): Image {
+function createImageContent(content: PhrasingContent, newValue: string, startOffset: number, endOffset: number): Image {
     return {
         type: 'image',
         url: newValue,
-        position: content.position
+        position: content.position ? {
+            start: { ...content.position.start, offset: startOffset, column: startOffset + 1 },
+            end: { ...content.position.end, offset: endOffset, column: endOffset + 1 }
+        } : undefined
     };
 }
 
@@ -27,17 +33,18 @@ function processImageLink(
         processedContent.push(
             createTextNode(
                 content,
-                content.value.substring(previousIndex, regexMatch.index)
+                content.value.substring(previousIndex, regexMatch.index),
+                previousIndex,
+                regexMatch.index
             )
         );
     }
 
-    processedContent.push(createImageContent(content, regexMatch[1]));
+    processedContent.push(createImageContent(content, regexMatch[1], regexMatch.index, regexMatch.index + regexMatch[1].length));
 
     // Update the previousIndex to the end of the matched string
     return regexMatch.index + regexMatch[0].length;
 }
-
 
 function processMarkdownContent(content: PhrasingContent): PhrasingContent[] {
     const processedContent: PhrasingContent[] = [];
@@ -60,7 +67,9 @@ function processMarkdownContent(content: PhrasingContent): PhrasingContent[] {
         processedContent.push(
             createTextNode(
                 content,
-                content.value.substring(previousIndex)
+                content.value.substring(previousIndex),
+                previousIndex,
+                content.value.length
             )
         );
     }

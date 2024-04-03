@@ -1,8 +1,10 @@
+import { PhrasingContent } from 'node_modules/mdast-util-from-markdown/lib/index.js';
 import { parseEmbeds } from '../src/parse-embeds.js';
 
 describe('parse-embeds', () => {
   test('embed at start of textNode', () => {
     const value = "![[a_video.mp4]] and here goes some text";
+
     const result = parseEmbeds([
       {
         value,
@@ -21,7 +23,25 @@ describe('parse-embeds', () => {
         "type": "text",
       },
     ]);
-    expect(result).toMatchSnapshot();
+
+    expect(result as any).toEqual([
+      {
+        "position": {
+          "start": { "column": 1, "line": 1, "offset": 0, },
+          "end": { "column": 12, "line": 1, "offset": 11, },
+        },
+        "type": "image",
+        "url": "a_video.mp4",
+      },
+      {
+        "position": {
+          "start": { "column": 17, "line": 1, "offset": 16, },
+          "end": { "column": 41, "line": 1, "offset": 40, },
+        },
+        "type": "text",
+        "value": " and here goes some text",
+      }]
+    );
     expect(result.length).toBe(2);
   });
 

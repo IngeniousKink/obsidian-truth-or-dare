@@ -149,8 +149,8 @@ exports[`parses template: media_embedded_image.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "53",
-              "startPos": "3",
+              "endPos": "46",
+              "startPos": "1",
               "type": "image",
               "url": "MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100",
             },
@@ -174,8 +174,8 @@ exports[`parses template: media_embedded_video_mp4.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "40",
-              "startPos": "3",
+              "endPos": "33",
+              "startPos": "22",
               "type": "image",
               "url": "a_video.mp4",
             },
@@ -249,8 +249,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "54",
-              "startPos": "3",
+              "endPos": "47",
+              "startPos": "29",
               "type": "image",
               "url": "a_picture.webp|100",
             },
@@ -261,8 +261,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "40",
-              "startPos": "3",
+              "endPos": "33",
+              "startPos": "22",
               "type": "image",
               "url": "a_video.mp4",
             },

@@ -5,9 +5,9 @@ exports[`parse-embeds embed at end of textNode 1`] = `
   {
     "position": {
       "end": {
-        "column": 50,
+        "column": 28,
         "line": 1,
-        "offset": 49,
+        "offset": 27,
       },
       "start": {
         "column": 1,
@@ -21,55 +21,18 @@ exports[`parse-embeds embed at end of textNode 1`] = `
   {
     "position": {
       "end": {
-        "column": 50,
+        "column": 45,
         "line": 1,
-        "offset": 49,
+        "offset": 44,
       },
       "start": {
-        "column": 1,
+        "column": 28,
         "line": 1,
-        "offset": 0,
+        "offset": 27,
       },
     },
     "type": "image",
     "url": "another_video.mp4",
-  },
-]
-`;
-
-exports[`parse-embeds embed at start of textNode 1`] = `
-[
-  {
-    "position": {
-      "end": {
-        "column": 41,
-        "line": 1,
-        "offset": 40,
-      },
-      "start": {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "type": "image",
-    "url": "a_video.mp4",
-  },
-  {
-    "position": {
-      "end": {
-        "column": 41,
-        "line": 1,
-        "offset": 40,
-      },
-      "start": {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "type": "text",
-    "value": " and here goes some text",
   },
 ]
 `;
@@ -79,9 +42,9 @@ exports[`parse-embeds embed in the middle of a textNode 1`] = `
   {
     "position": {
       "end": {
-        "column": 58,
+        "column": 17,
         "line": 1,
-        "offset": 57,
+        "offset": 16,
       },
       "start": {
         "column": 1,
@@ -95,14 +58,14 @@ exports[`parse-embeds embed in the middle of a textNode 1`] = `
   {
     "position": {
       "end": {
-        "column": 58,
+        "column": 33,
         "line": 1,
-        "offset": 57,
+        "offset": 32,
       },
       "start": {
-        "column": 1,
+        "column": 17,
         "line": 1,
-        "offset": 0,
+        "offset": 16,
       },
     },
     "type": "image",
@@ -116,9 +79,9 @@ exports[`parse-embeds embed in the middle of a textNode 1`] = `
         "offset": 57,
       },
       "start": {
-        "column": 1,
+        "column": 38,
         "line": 1,
-        "offset": 0,
+        "offset": 37,
       },
     },
     "type": "text",
@@ -132,9 +95,9 @@ exports[`parse-embeds embed with size info 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 29,
         "line": 1,
-        "offset": 51,
+        "offset": 28,
       },
       "start": {
         "column": 1,
@@ -148,14 +111,14 @@ exports[`parse-embeds embed with size info 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 47,
         "line": 1,
-        "offset": 51,
+        "offset": 46,
       },
       "start": {
-        "column": 1,
+        "column": 29,
         "line": 1,
-        "offset": 0,
+        "offset": 28,
       },
     },
     "type": "image",
@@ -169,14 +132,14 @@ exports[`parse-embeds two embeds 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 6,
         "line": 1,
-        "offset": 51,
+        "offset": 5,
       },
       "start": {
-        "column": 3,
+        "column": 1,
         "line": 1,
-        "offset": 72,
+        "offset": 0,
       },
     },
     "type": "text",
@@ -185,14 +148,14 @@ exports[`parse-embeds two embeds 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 16,
         "line": 1,
-        "offset": 51,
+        "offset": 15,
       },
       "start": {
-        "column": 3,
+        "column": 6,
         "line": 1,
-        "offset": 72,
+        "offset": 5,
       },
     },
     "type": "image",
@@ -201,14 +164,14 @@ exports[`parse-embeds two embeds 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 26,
         "line": 1,
-        "offset": 51,
+        "offset": 25,
       },
       "start": {
-        "column": 3,
+        "column": 21,
         "line": 1,
-        "offset": 72,
+        "offset": 20,
       },
     },
     "type": "text",
@@ -217,14 +180,14 @@ exports[`parse-embeds two embeds 1`] = `
   {
     "position": {
       "end": {
-        "column": 52,
+        "column": 39,
         "line": 1,
-        "offset": 51,
+        "offset": 38,
       },
       "start": {
-        "column": 3,
+        "column": 26,
         "line": 1,
-        "offset": 72,
+        "offset": 25,
       },
     },
     "type": "image",
@@ -238,9 +201,9 @@ exports[`parse-embeds two embeds 1`] = `
         "offset": 51,
       },
       "start": {
-        "column": 3,
+        "column": 44,
         "line": 1,
-        "offset": 72,
+        "offset": 43,
       },
     },
     "type": "text",
