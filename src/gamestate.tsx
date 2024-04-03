@@ -152,7 +152,7 @@ function maintainAllocation(gameState: GameState): GameState {
         };
     }
 
-    const nextPlayerId = getNextActorId(gameState, lastActorId);
+    const nextActorId = getNextActorId(gameState, lastActorId);
     const newAllocation = [...gameState.allocation];
 
     if (lastActorId) {
@@ -160,8 +160,8 @@ function maintainAllocation(gameState: GameState): GameState {
     }
 
     let previewAllocation: string[] = [];
-    if (newAllocation.length > 0 && nextPlayerId) {
-        previewAllocation = [nextPlayerId];
+    if (newAllocation.length > 0 && nextActorId) {
+        previewAllocation = [nextActorId];
     }
 
     return {
