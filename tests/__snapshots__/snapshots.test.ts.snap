@@ -22,6 +22,29 @@ exports[`parses correctly:
 `;
 
 exports[`parses correctly:
+# HTML inline field
+
+* <span data-category="truth" />
+
+even here is text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "category": "truth",
+          "ref": "#HTML inline field^0",
+          "text": "<span data-category="truth" />",
+        },
+      ],
+      "name": "HTML inline field",
+      "ref": "#HTML inline field",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
 # Heading one
 * card 1
 * card 1
@@ -59,28 +82,6 @@ exports[`parses correctly:
       ],
       "name": "Heading two",
       "ref": "#Heading two",
-    },
-  ],
-}
-`;
-
-exports[`parses correctly:
-# Markdown Page
-
-* <span data-category="truth" />
-
-even here is text 1`] = `
-{
-  "stacks": [
-    {
-      "cards": [
-        {
-          "ref": "#Markdown Page^0",
-          "text": "<span data-category="truth" />",
-        },
-      ],
-      "name": "Markdown Page",
-      "ref": "#Markdown Page",
     },
   ],
 }

@@ -34,6 +34,8 @@ const REGEX_INLINE_FIELDS =
     "\\)" + // Match a literal ')' character
   ")"; // End of capturing group 4
 
+const REGEX_HTML_DATA_ATTRIBUTE = /data-(\w+)="([^"]+)"/g;
+
 
 export function parseCard(line: string): ParsedCard {
   const result: ParsedCard = {};
@@ -59,5 +61,14 @@ export function parseCard(line: string): ParsedCard {
     annotatedText = annotatedText.replace(match[0], '').trim();
   }
   result.text = line.replace(/\s*\[.+?\]\s*/g, ' ').trim();
+  return result;
+}
+
+export function parseHTMLCard(html: string): ParsedCard {
+  const result: ParsedCard = {};
+  const matches = html.matchAll(REGEX_HTML_DATA_ATTRIBUTE);
+  for (const match of matches) {
+    result[match[1]] = match[2];
+  }
   return result;
 }
