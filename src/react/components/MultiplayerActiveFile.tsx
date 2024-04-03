@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMultiplayer } from './useMultiplayer.js';
+import NDK, { NDKRelay } from "@nostr-dev-kit/ndk";
 
 export const LoadEntityInput = () => {
   const { loadValue, setLoadValue } = useMultiplayer();
@@ -48,13 +49,43 @@ export const LoadButton = () => {
   );
 };
 
+
+const CONNECTION_STATES = {
+  0: '🟡 CONNECTING',
+  1: '🟢 CONNECTED',
+  2: '🟠 DISCONNECTING',
+  3: '🔴 DISCONNECTED',
+  4: '🟡 RECONNECTING',
+  5: '🔵 FLAPPING',
+  6: '🔓 AUTH_REQUIRED',
+  7: '🔐 AUTHENTICATING',
+};
+
+// declare enum NDKRelayStatus {
+//   CONNECTING = 0,
+//   CONNECTED = 1,
+//   DISCONNECTING = 2,
+//   DISCONNECTED = 3,
+//   RECONNECTING = 4,
+//   FLAPPING = 5,
+//   AUTH_REQUIRED = 6,
+//   AUTHENTICATING = 7
+// }
+
 export const ConnectionStatus = () => {
-  const { websockets, WEBSOCKET_STATES } = useMultiplayer();
+  const { relays } = useMultiplayer();
+
+  if (!relays) {
+    return 'connecting ...';
+  }
 
   return (
     <ul>
-      {websockets.map((ws, index) => (
-        <li key={index}>{ws.url} {WEBSOCKET_STATES[ws.readyState] || 'UNKNOWN'}</li>
+      {Array.from(relays.entries()).map(([name, relay]: [string, NDKRelay]) => (
+        <li key={name}>
+          {relay.url}
+          {CONNECTION_STATES[relay.connectivity.status] || 'UNKNOWN'}
+        </li>
       ))}
     </ul>
   );
