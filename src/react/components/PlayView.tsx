@@ -36,10 +36,17 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
   }
 
   return (
-    <div>
+    <div className="obsidian-truth-or-dare-container">
       <h1>{heading}</h1>
 
-      <DisplayedCard card={selectCardByRef(gameState, gameState.displayedCard)} />
+      <div className="card-stack">
+        <div className="card"></div>
+        <div className="card"></div>
+        <div className="card"></div>
+        <div className="card"></div>
+        <div className="card"></div>
+        <DisplayedCard card={selectCardByRef(gameState, gameState.displayedCard)} />
+      </div>
 
       {gameState.template && (<>
 

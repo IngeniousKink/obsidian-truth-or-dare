@@ -135,20 +135,41 @@ exports[`renders NoCard 1`] = `
 `;
 
 exports[`renders PlayView 1`] = `
-<div>
+<div
+  className="obsidian-truth-or-dare-container"
+>
   <h1>
     Truth or Dare?
   </h1>
   <div
-    className="card"
+    className="card-stack"
   >
-    <h2
-      className="card-text"
+    <div
+      className="card"
+    />
+    <div
+      className="card"
+    />
+    <div
+      className="card"
+    />
+    <div
+      className="card"
+    />
+    <div
+      className="card"
+    />
+    <div
+      className="card"
     >
-      <span>
-        one card
-      </span>
-    </h2>
+      <h2
+        className="card-text"
+      >
+        <span>
+          one card
+        </span>
+      </h2>
+    </div>
   </div>
   <h2>
     Buttons
