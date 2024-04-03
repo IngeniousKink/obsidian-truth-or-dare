@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useState } from 'react'
 import './App.css'
-import { JsonStringifyOutput } from '../../src/react/components/JsonStringifyOutput.js'
+import { JsonStringifyOutput } from '@obsidian-truth-or-dare/react/components/JsonStringifyOutput.js';
 
 function App() {
   const [count, setCount] = useState(0)
