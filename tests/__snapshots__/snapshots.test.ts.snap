@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getCardsUnderHeading renders correctly 1`] = `
+{
+  "": [
+    {
+      "ref": "#^0",
+      "text": "card 1",
+    },
+    {
+      "ref": "#^1",
+      "text": "card 2",
+    },
+  ],
+}
+`;
