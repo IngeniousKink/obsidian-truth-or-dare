@@ -1,5 +1,5 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { extractCardFromParagraph } from '../src/parse-template.js';
+import { extractCardFromParagraph } from '../src/parse/parse-template.js';
 import { Paragraph } from 'node_modules/mdast-util-from-markdown/lib/index.js';
 
 describe('parse-template', () => {

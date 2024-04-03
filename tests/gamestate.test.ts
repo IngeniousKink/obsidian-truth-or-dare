@@ -1,6 +1,6 @@
-import { GameEvent } from 'src/parse-events.js';
+import { GameEvent } from '@obsidian-truth-or-dare/parse/parse-events.js';
 import { createGameState, findCardInGameTemplate, getAllCards, selectRandomAvailableCard, getAvailableCards, selectCardsByCategory, GameState } from '../src/gamestate.js';
-import { CardWithRef, GameTemplate, Stack } from 'src/parse-template.js';
+import { CardWithRef, GameTemplate, Stack } from '@obsidian-truth-or-dare/parse/parse-template.js';
 
 describe('Game State', () => {
   const mockGameTemplate = {

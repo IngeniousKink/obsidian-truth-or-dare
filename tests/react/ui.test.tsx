@@ -1,12 +1,12 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer';
 
-import { CardWithRef } from 'src/parse-template.js';
+import { CardWithRef } from '@obsidian-truth-or-dare/parse/parse-template.js';
 
-import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/DisplayedCard.js'
-import { PlayView } from '@obsidian-truth-or-dare/PlayView.js';
-import { InspectorView } from '@obsidian-truth-or-dare/InspectorView.js';
-import CurrentCard from '@obsidian-truth-or-dare/CurrentCard.js';
+import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/react/components/DisplayedCard.js'
+import { PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
+import { InspectorView } from '@obsidian-truth-or-dare/react/components/InspectorView.js';
+import CurrentCard from '@obsidian-truth-or-dare/react/components/CurrentCard.js';
 
 const testCard : CardWithRef = {
    text: 'Do something.',

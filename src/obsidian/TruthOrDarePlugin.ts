@@ -1,5 +1,5 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { ObsidianSidebarView } from "./ObsidianSidebarView.jsx";
+import { ObsidianSidebarView } from "./ObsidianSidebarView.js";
 import { ObsidianEditableView } from "./ObsidianEditableView.js";
 
 export const TRUTH_OR_DARE_SIDEBAR_VIEW = "truth-or-dare-view-sidebar";

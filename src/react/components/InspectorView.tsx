@@ -15,9 +15,9 @@ import {
   selectCardsByCategory, 
   selectRandomAvailableCard, 
   selectRandomCard 
-} from './gamestate.js';
+} from '../../gamestate.js';
 
-import type { CardWithRef } from './parse-template.js';
+import type { CardWithRef } from '../../parse/parse-template.js';
 
 export interface InspectorViewProps {
   gameState: GameState,

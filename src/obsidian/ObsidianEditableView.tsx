@@ -1,11 +1,11 @@
 import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
-import { ReactBaseView } from "./ReactBaseView.jsx";
+import { ReactBaseView } from "../react/components/ReactBaseView.js";
 import TruthOrDarePlugin, { TRUTH_OR_DARE_EDITABLE_VIEW } from "./TruthOrDarePlugin.js";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
-import { AppContext, EventRegistryContext } from "./context.js";
+import { AppContext, EventRegistryContext } from "../react/context.js";
 
 import React from "react";
-import { PlayView } from "./PlayView.js";
+import { PlayView } from "../react/components/PlayView.js";
 
 export class ObsidianEditableView extends EditableFileView {
 	root: ReactRoot | null = null;

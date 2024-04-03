@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ParsedCard, Annotation } from './parse-card.js';
-import { useApp } from './hooks.js';
+import { ParsedCard, Annotation } from '../../parse/parse-card.js';
+import { useApp } from '../hooks.js';
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];

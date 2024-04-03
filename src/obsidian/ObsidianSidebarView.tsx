@@ -2,11 +2,11 @@ import React from "react";
 
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
-import { AppContext, EventRegistryContext } from "./context.js";
+import { AppContext, EventRegistryContext } from "../react/context.js";
 import { TRUTH_OR_DARE_SIDEBAR_VIEW } from "./TruthOrDarePlugin.js";
 
-import { ReactBaseView } from "./ReactBaseView.jsx";
-import { InspectorView } from "./InspectorView.js";
+import { ReactBaseView } from "../react/components/ReactBaseView.js";
+import { InspectorView } from "../react/components/InspectorView.js";
 
 export class ObsidianSidebarView extends ItemView {
 

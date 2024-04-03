@@ -1,6 +1,6 @@
-import { Annotation, ParsedCard } from "./parse-card.js";
-import { GameEvent } from "./parse-events.js";
-import { CardWithRef, GameTemplate } from "./parse-template.js";
+import { Annotation, ParsedCard } from "./parse/parse-card.js";
+import { GameEvent } from "./parse/parse-events.js";
+import { CardWithRef, GameTemplate } from "./parse/parse-template.js";
 import seedrandom from 'seedrandom';
 
 export type GameState = {

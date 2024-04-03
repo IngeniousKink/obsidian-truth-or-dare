@@ -1,5 +1,5 @@
 import { PhrasingContent } from 'node_modules/mdast-util-from-markdown/lib/index.js';
-import { parseEmbeds } from '../src/parse-embeds.js';
+import { parseEmbeds } from '../src/parse/parse-embeds.js';
 
 describe('parse-embeds', () => {
   test('embed at start of textNode', () => {

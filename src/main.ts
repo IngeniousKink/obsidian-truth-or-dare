@@ -1,3 +1,3 @@
-import TruthOrDarePlugin from './TruthOrDarePlugin.js';
+import TruthOrDarePlugin from './obsidian/TruthOrDarePlugin.js';
 
 export default TruthOrDarePlugin;

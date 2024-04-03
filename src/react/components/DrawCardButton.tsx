@@ -1,6 +1,6 @@
 import React from 'react';
-import { useApp } from "./hooks.js";
-import { CardWithRef } from './parse-template.js';
+import { useApp } from "../hooks.js";
+import { CardWithRef } from '../../parse/parse-template.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;

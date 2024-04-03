@@ -1,6 +1,6 @@
 import * as React from 'react'
 import CurrentCard from './CurrentCard.js';
-import { ParsedCard } from './parse-card.js';
+import { ParsedCard } from '../../parse/parse-card.js';
 
 export const NoCard: React.FC = () => (
   <p>There is no card to display (yet).</p>
