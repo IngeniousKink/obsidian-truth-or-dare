@@ -4,7 +4,7 @@ import { useMultiplayer } from './useMultiplayer.js';
 
 export const MultiplayerActiveFile = () => {
   const {
-    publish,
+    publishTemplate,
     loadEvents,
     websockets,
     WEBSOCKET_STATES,
@@ -39,7 +39,7 @@ export const MultiplayerActiveFile = () => {
         </label>
         <br />
         <br />
-        <button onClick={publish}>Publish Template</button>
+        <button onClick={publishTemplate}>Publish Template</button>
         <button onClick={loadEvents}>Load Template</button>
         <br />
         <br />
