@@ -1,5 +1,5 @@
 import type { Root, Html, Heading, List, ListItem, Paragraph, Text, PhrasingContent, Break } from "mdast";
-import { parseCard, parseHTMLCard } from "./parse-card.js";
+import { parseHTMLCard } from "./parse-card.js";
 
 // Define a Card type with a reference and text
 export type Card = { ref: string; text: string; category?: string };
@@ -127,7 +127,6 @@ function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: numbe
     ref: stackRef + '^' + refCounter,
     text: textValue,
     ...{
-      ...parseCard(textValue),
       ...parseHTMLCard(textValue),
     }
   };
