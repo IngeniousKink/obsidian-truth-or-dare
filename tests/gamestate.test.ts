@@ -68,9 +68,18 @@ describe('selectCardsByCategory', () => {
   it('should return cards grouped by category', () => {
     const result = selectCardsByCategory(gameState);
     expect(result).toEqual({
-      'Category 1': ['1', '4'],
-      'Category 2': ['2', '5'],
-      'Category 3': ['3', '6'],
+      'Category 1': [
+        { ref: '1', text: 'Card 1', category: 'Category 1' },
+        { ref: '4', text: 'Card 4', category: 'Category 1' }
+      ],
+      'Category 2': [
+        { ref: '2', text: 'Card 2', category: 'Category 2' },
+        { ref: '5', text: 'Card 5', category: 'Category 2' }
+      ],
+      'Category 3': [
+        { ref: '3', text: 'Card 3', category: 'Category 3' },
+        { ref: '6', text: 'Card 6', category: 'Category 3' }
+      ],
     });
   });
 
@@ -100,7 +109,6 @@ describe('selectCardsByCategory', () => {
       previousCards: ['4']
     };
     const result = selectCardsByCategory(gameState);
-    console.log(result);
     expect(result['Category 1']).not.toContain('4');
   });
 

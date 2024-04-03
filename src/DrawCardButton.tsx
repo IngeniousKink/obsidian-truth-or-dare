@@ -4,9 +4,17 @@ import { Card } from './parse-template.js';
 
 interface DrawCardButtonProps {
   nextCard: Card | null;
+  remainingCount: number;
+  categoryLabel: string;
 }
 
-export const DrawCardButton: React.FC<DrawCardButtonProps> = ({ nextCard }) => {
+export const DrawCardButton: React.FC<DrawCardButtonProps> = (
+  {
+    nextCard,
+    remainingCount,
+    categoryLabel
+  }) => {
+
   const app = useApp();
   if (!app) return null;
 
@@ -28,6 +36,9 @@ card: ${nextCard.ref}
     });
   };
 
-  const buttonText = nextCard ? "Draw a card" : "(No more cards)";
+  const buttonText = nextCard
+   ? `Draw a ${categoryLabel} card (${remainingCount})` 
+   : `(No more ${categoryLabel} cards)`;
+
   return <button onClick={drawCard} disabled={!nextCard}>{buttonText}</button>;
 };

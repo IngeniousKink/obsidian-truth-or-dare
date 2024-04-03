@@ -7,7 +7,7 @@ import { DrawCardButton } from './DrawCardButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
 import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, createGameState, getAvailableCards, selectRandomAvailableCard } from './gamestate.jsx';
+import { GameState, createGameState, getAvailableCards, selectCardsByCategory, selectRandomAvailableCard, selectRandomCard } from './gamestate.jsx';
 
 
 export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
@@ -74,6 +74,14 @@ export const ReactBaseView: React.FC = () => {
     update();
   }, [registerEvent, metadataCache, workspace, update]);
 
+
+  let cardsByCategory: { [x: string]: any; } = {};
+
+  if (gameState.template) {
+    cardsByCategory = selectCardsByCategory(gameState);
+    console.log({cardsByCategory});
+  }
+
   return (
     <div>
       <h1>{heading}</h1>
@@ -87,7 +95,25 @@ export const ReactBaseView: React.FC = () => {
 
         <h2>Buttons</h2>
 
-        <DrawCardButton nextCard={selectRandomAvailableCard(gameState)} />
+        <DrawCardButton
+          categoryLabel='random'
+          remainingCount={getAvailableCards(gameState).length}
+          nextCard={selectRandomAvailableCard(gameState)}
+        />
+
+        {Object.keys(cardsByCategory).map(key => {
+            const value: Card[] = cardsByCategory[key];
+            const nextCard = selectRandomCard(value, gameState);
+            console.log({key, value, nextCard})
+            return (
+                <DrawCardButton 
+                    key={key}
+                    categoryLabel={key} 
+                    remainingCount={value.length} 
+                    nextCard={nextCard}
+                />
+            )
+        })}
 
         {gameState.events && (
           <>

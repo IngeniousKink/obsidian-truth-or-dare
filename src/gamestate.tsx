@@ -57,13 +57,17 @@ export function getAllCards(gameTemplate: GameTemplate): Card[] {
     return gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as Card[]);
 }
 
-export function selectRandomAvailableCard(gameState: GameState): Card | null {
-    const allCards = getAvailableCards(gameState);
-    if (allCards.length === 0) return null;
+export function selectRandomCard(cards: Card[], gameState: GameState): Card | null {
+    if (cards.length === 0) return null;
 
     const rng = seedrandom(gameState.seed);
-    const randomIndex = Math.floor(rng() * allCards.length);
-    return allCards[randomIndex];
+    const randomIndex = Math.floor(rng() * cards.length);
+    return cards[randomIndex];
+}
+
+export function selectRandomAvailableCard(gameState: GameState): Card | null {
+    const allCards = getAvailableCards(gameState);
+    return selectRandomCard(allCards, gameState);
 }
 
 export function getAvailableCards(gameState: GameState): Card[] {
@@ -81,15 +85,14 @@ export function selectCategories(gameState: GameState): string[] {
     return [...new Set(categories)];
 }
 
-export function selectCardsByCategory(gameState: GameState): { [key: string]: string[] } {
+export function selectCardsByCategory(gameState: GameState): { [key: string]: Card[] } {
     const categories = selectCategories(gameState);
     const availableCards = getAvailableCards(gameState);
-    const cardsByCategory: { [key: string]: string[] } = {};
+    const cardsByCategory: { [key: string]: Card[] } = {};
 
     for (const category of categories) {
         cardsByCategory[category] = availableCards
             .filter(card => card.category === category)
-            .map(card => card.ref);
     }
 
     return cardsByCategory;
