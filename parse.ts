@@ -1,17 +1,17 @@
 import type { Root as MarkdownRoot } from "mdast-util-from-markdown/lib";
 
-// Remember to rename these classes and interfaces!
+export type Card = { ref: string; text: any; };
+export type CardMap = { [key: string]: Card[] };
 
-export function getCardsUnderHeading(node: MarkdownRoot) {
+export function getCardsUnderHeading(node: MarkdownRoot): CardMap {
 	let headingText = '';
-
-	const allCardsUnderHeadings = {};
+	const allCardsUnderHeadings: CardMap = {};
 
 	node.children.forEach(child => {
 		let refCounter = 0;
-		const cardsUnderHeading: { ref: string; text: any; }[] = [];
+		const cardsUnderHeading: Card[] = [];
 
-		if (child.type === 'heading' && child.children) {
+		if (child.type === 'heading' && child.children.length > 1 && 'value' in child.children[0]) {
 			headingText = child.children[0].value;
 			return;
 		}
@@ -22,16 +22,19 @@ export function getCardsUnderHeading(node: MarkdownRoot) {
 
 		child.children.forEach(listItem => {
 			listItem.children.forEach(paragraph => {
-
+				if (!('children' in paragraph)) {
+					return
+				}
 				paragraph.children.forEach(textNode => {
-					if (textNode.type === 'text') {
-
-						const filePath = '';
-						cardsUnderHeading.push({
-							ref: filePath + '#' + headingText + '^' + refCounter++,
-							text: textNode.value,
-						});
+					if (textNode.type !== 'text') {
+						return;
 					}
+
+					const filePath = '';
+					cardsUnderHeading.push({
+						ref: filePath + '#' + headingText + '^' + refCounter++,
+						text: textNode.value,
+					});
 				});
 			});
 		});

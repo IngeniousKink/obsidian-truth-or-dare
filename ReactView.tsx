@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useApp, useRegisterEvent } from "./hooks";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from 'parse';
+import type { CardMap } from 'parse';
 
 export const ReactView: React.FC = () => {
   const [text, setText] = useState<string>("");
-  const [stacks, setStacks] = useState<any[]>([]);
+  const [stacks, setStacks] = useState<CardMap>({} as CardMap);
   const app = useApp();
   const registerEvent = useRegisterEvent();
 
-  if (!app) return;
-  if (!registerEvent) return;
+  if (!app) return null;
+  if (!registerEvent) return null;
 
   const { vault, metadataCache, workspace } = app;
 
@@ -19,7 +20,7 @@ export const ReactView: React.FC = () => {
     const activeFile = workspace.getActiveFile();
 
     if (!activeFile) {
-      return;
+      return null;
     }
 
     const fileContents: string = await vault.cachedRead(activeFile);
