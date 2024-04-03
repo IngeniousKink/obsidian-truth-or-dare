@@ -52,14 +52,13 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
 
   const textWithImages = React.useMemo(() => {
     let text = card.text;
-    let annotations = card.annotations.filter((annotation): annotation is Annotation => annotation.type === 'image');
 
-    annotations.sort((a, b) => (a.startPos || 0) - (b.startPos || 0));
+    card.annotations.sort((a, b) => (a.startPos || 0) - (b.startPos || 0));
 
     let cardElements: JSX.Element[] = [];
     let lastEndPos = 0;
-    for (let i = 0; i < annotations.length; i++) {
-      const annotation = annotations[i];
+    for (let i = 0; i < card.annotations.length; i++) {
+      const annotation = card.annotations[i];
       const processed = processAnnotation(annotation, i, text, lastEndPos);
       cardElements = [...cardElements, ...processed.cardElements];
       lastEndPos = processed.endPos;
@@ -69,7 +68,6 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
     return cardElements;
   }, [card]);
 
-  console.log('annotations!', card.annotations);
   return (
     <div className="card">
       <h2 className="card-text">{textWithImages}</h2>
