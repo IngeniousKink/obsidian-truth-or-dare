@@ -71,3 +71,26 @@ export function getAvailableCards(gameState: GameState): Card[] {
     const unavailableCards = [gameState.displayedCard, ...gameState.previousCards];
     return allCards.filter(card => !unavailableCards.includes(card.ref));
 }
+
+export function selectCategories(gameState: GameState): string[] {
+    const allCards = getAllCards(gameState.template);
+    const categories = allCards
+        .filter(card => card.category !== undefined)
+        .map(card => card.category as string);
+
+    return [...new Set(categories)];
+}
+
+export function selectCardsByCategory(gameState: GameState): { [key: string]: string[] } {
+    const categories = selectCategories(gameState);
+    const availableCards = getAvailableCards(gameState);
+    const cardsByCategory: { [key: string]: string[] } = {};
+
+    for (const category of categories) {
+        cardsByCategory[category] = availableCards
+            .filter(card => card.category === category)
+            .map(card => card.ref);
+    }
+
+    return cardsByCategory;
+}

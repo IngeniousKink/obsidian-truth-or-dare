@@ -2,7 +2,7 @@ import type { Root, Heading, List, ListItem, Paragraph, Text } from "mdast";
 import { parseCard } from "./parse-card.js";
 
 // Define a Card type with a reference and text
-export type Card = { ref: string; text: string; };
+export type Card = { ref: string; text: string; category?: string };
 
 // Define a Stack type with a name, reference and an array of cards
 export type Stack = { name: string; ref: string; cards: Card[]; };
