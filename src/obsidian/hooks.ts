@@ -59,7 +59,24 @@ export const useAppendEventToActiveFile = (eventAction : GameEvent) => {
   return appendEvent;
 };
 
+export const useMediaResource = () => {
+  const app = useApp();
 
+  return (url: string) => {
+    let mediaResource = null;
+
+    if (url.startsWith('http')) {
+      mediaResource = url;
+    } else if (app) {
+      const mediaPath = app.metadataCache.getFirstLinkpathDest(url, ".")?.path;
+      if (mediaPath) {
+        mediaResource = app.vault.adapter.getResourcePath(mediaPath);
+      }
+    }
+
+    return mediaResource;
+  }
+}
 
 export const useGameState = (): GameState => {
   const [gameState, setGameState] = useState<GameState>({} as GameState);
@@ -81,3 +98,4 @@ export const useGameState = (): GameState => {
 
   return gameState;
 };
+
