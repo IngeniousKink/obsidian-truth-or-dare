@@ -1,8 +1,8 @@
 import { TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
-import { createContext, useCallback, useContext } from "react";
+import { createContext, useContext } from "react";
 import { useMultiplayer } from "./components/useMultiplayer.js";
 import { useInMemoryTemplate } from "@obsidian-truth-or-dare/InMemoryTemplateContext.js";
-import { DispatchGameEventFunction, DispatchGameEventHook } from "./DispatchGameEventFunction.js";
+import { DispatchGameEventHook } from "./DispatchGameEventFunction.js";
 
 export const DispatchGameEventContext = createContext<DispatchGameEventHook>(() => (eventAction: TimestampedEvent) => null);
 

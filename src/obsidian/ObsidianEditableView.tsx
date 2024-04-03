@@ -51,6 +51,7 @@ export class ObsidianEditableView extends EditableFileView {
 			);
 		});
 		this.containerEl.on('click', 'a.tag', (e, el) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(this.app as any).internalPlugins.getPluginById('global-search')
 				.instance.openGlobalSearch(`tag:${el.getAttr('href')}`);
 		});

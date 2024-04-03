@@ -1,20 +1,17 @@
 
-import React, { useCallback, useEffect, useContext } from 'react';
+import { useCallback, useEffect, useContext } from 'react';
 import { Buffer } from 'buffer';
 
-import { BIP32Factory, BIP32Interface } from 'bip32';
+import { BIP32Factory } from 'bip32';
 import ecc from '@bitcoinerlab/secp256k1';
 
 import * as nip19 from 'nostr-tools/nip19'
 
-import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
+import { ECPairFactory, ECPairAPI } from 'ecpair';
 
-import * as nobleSecp256k1 from '@noble/secp256k1';
 import { sha256 } from 'bitcoinjs-lib/src/crypto.js';
 import { MultiplayerContext } from './MultiplayerContext.js';
 import { useInMemoryTemplate } from '@obsidian-truth-or-dare/InMemoryTemplateContext.js';
-
-type HandleEventFunction = (data: { content: string, id: string, kind: number }, pubKey: string) => void;
 
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);

@@ -49,7 +49,7 @@ function processMarkdownNode(gameEvents: TimestampedEvent[], child: Code): Times
 }
 
 export class UnparseableEventError extends Error {
-  constructor(public event: any) {
+  constructor(public event: { type: string; }) {
     super(`Unable to parse the event ${event.type ? `of type ${event.type}` : ''} ${JSON.stringify(event)}`);
     this.name = "UnparseableEventError";
     this.event = event;
@@ -59,6 +59,7 @@ export class UnparseableEventError extends Error {
 // Extract the game event from a code block
 function extractEventFromCode(node: Code): TimestampedEvent {
   const lines = node.value.split('\n');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const event: any = {};
 
   for (const line of lines) {

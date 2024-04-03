@@ -1,5 +1,4 @@
-import { TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useState } from "react";
 
 interface InMemoryTemplateContextValue {
   templateFileContent: string | null;
