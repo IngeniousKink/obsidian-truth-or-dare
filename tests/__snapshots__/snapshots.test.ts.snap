@@ -8,7 +8,12 @@ exports[`parses correctly:
 {
   "stacks": [
     {
-      "cards": [],
+      "cards": [
+        {
+          "ref": "#List of one image^0",
+          "text": "",
+        },
+      ],
       "name": "List of one image",
       "ref": "#List of one image",
     },
@@ -54,6 +59,28 @@ exports[`parses correctly:
       ],
       "name": "Heading two",
       "ref": "#Heading two",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+* <span data-category="truth" />
+
+even here is text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "#Markdown Page^0",
+          "text": "<span data-category="truth" />",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
     },
   ],
 }
@@ -264,6 +291,28 @@ Noël:: Un jeu de console
       "cards": [],
       "name": "Markdown Page",
       "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Regression HTML Tag with children
+
+* Do something <b>bold</b>!
+
+even here is text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "#Regression HTML Tag with children^0",
+          "text": "Do something <b>bold</b>!",
+        },
+      ],
+      "name": "Regression HTML Tag with children",
+      "ref": "#Regression HTML Tag with children",
     },
   ],
 }

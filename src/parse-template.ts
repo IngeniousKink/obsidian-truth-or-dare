@@ -1,4 +1,4 @@
-import type { Root, Heading, List, ListItem, Paragraph, Text } from "mdast";
+import type { Root, Html, Heading, List, ListItem, Paragraph, Text, PhrasingContent, Break } from "mdast";
 import { parseCard } from "./parse-card.js";
 
 // Define a Card type with a reference and text
@@ -103,21 +103,29 @@ function extractCardsFromList(listNode: List, stackRef: string): Card[] {
 
 // Extract cards from a list item
 function extractCardsFromListItem(listItem: ListItem, refCounter: number, stackRef: string): Card[] {
-  return listItem.children.reduce<Card[]>((cards, paragraph: Paragraph) => {
-    const paragraphCards = extractCardsFromParagraph(paragraph, refCounter, stackRef);
-    return [...cards, ...paragraphCards];
+  return listItem.children.reduce<Card[]>((cards, paragraph: Paragraph | Html) => {
+    const paragraphCard = extractCardFromParagraph(paragraph, refCounter, stackRef);
+    return [...cards, paragraphCard];
   }, []);
 }
 
-function extractCardsFromParagraph(paragraph: Paragraph, refCounter: number, stackRef: string): Card[] {
-  return paragraph.children.reduce<Card[]>((cards, textNode: Text) => {
-    if (textNode.type !== 'text') return cards;
+function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): Card {
+  let children = [];
 
-    const card = {
-      ref: stackRef + '^' + refCounter,
-      text: textNode.value,
-      ...parseCard(textNode.value),
-    };
-    return [...cards, card];
-  }, []);
+  if (paragraph.type == 'html') {
+    children = [paragraph];
+  } else {
+    children = paragraph.children;
+  }
+
+  let textValue = children.reduce((acc, textNode: Text | Html) => {
+    if (textNode.type !== 'text' && textNode.type !== 'html') return acc;
+    return acc + textNode.value;
+  }, '');
+
+  return {
+    ref: stackRef + '^' + refCounter,
+    text: textValue,
+    ...parseCard(textValue),
+  };
 }
