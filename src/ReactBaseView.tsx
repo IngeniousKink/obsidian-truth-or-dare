@@ -4,15 +4,17 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { convertMarkdownToGameTemplate } from './parse-template.js';
 import { convertMarkdownToGameEvents } from './parse-events.js';
 import { GameState, createGameState } from './gamestate.jsx';
-import { GameView } from './GameView.jsx';
 
-export const ReactBaseView: React.FC = () => {
+interface ReactBaseViewProps {
+  GameView: React.ComponentType<{ gameState: GameState }>;
+}
+
+export const ReactBaseView: React.FC<ReactBaseViewProps> = ({ GameView }) => {
   const [gameState, setGameState] = useState<GameState>({} as GameState);
   const app = useApp();
   const registerEvent = useRegisterEvent();
 
   if (!app || !registerEvent) return null;
-
   const { vault, metadataCache, workspace } = app;
 
   const update = useCallback(async () => {

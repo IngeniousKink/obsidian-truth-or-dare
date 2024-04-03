@@ -19,11 +19,11 @@ import {
 
 import type { Card } from './parse-template.js';
 
-export interface GameViewProps {
+export interface PlayViewProps {
   gameState: GameState,
 }
 
-export const GameView: React.FC<GameViewProps> = ({ gameState }: GameViewProps) => {
+export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
   const heading: string = "Truth or Dare";
 
   let cardsByCategory: { [x: string]: any; } = {};
@@ -36,17 +36,9 @@ export const GameView: React.FC<GameViewProps> = ({ gameState }: GameViewProps) 
     <div>
       <h1>{heading}</h1>
 
-      <h2>Card</h2>
       <DisplayedCard card={selectCardByRef(gameState, gameState.displayedCard)} />
 
-      <h2>Status</h2>
-
-      {gameState.previousCards && (
-        <PreviousCards previousCards={gameState.previousCards} />
-      )}
-
       {gameState.template && (<>
-        <RemainingCards remainingCards={getAvailableCards(gameState)} />
 
         <h2>Buttons</h2>
 
@@ -66,19 +58,6 @@ export const GameView: React.FC<GameViewProps> = ({ gameState }: GameViewProps) 
               nextCard={nextCard} />
           );
         })}
-
-        {gameState.events && (
-          <>
-            <h2>Events</h2>
-            <EventsDisplay events={gameState.events} />
-          </>
-        )}
-        {gameState.template.stacks && (
-          <>
-            <h2>Template</h2>
-            <StacksDisplay stacks={gameState.template.stacks} />
-          </>
-        )}
 
       </>)}
     </div>

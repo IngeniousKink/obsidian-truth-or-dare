@@ -4,7 +4,8 @@ import * as renderer from 'react-test-renderer';
 import { Card } from 'src/parse-template.js';
 
 import { NoCard, CurrentCard, DisplayedCard } from '@obsidian-truth-or-dare/DisplayedCard.js'
-import { GameView } from '@obsidian-truth-or-dare/GameView.js';
+import { PlayView } from '@obsidian-truth-or-dare/PlayView.js';
+import { InspectorView } from '@obsidian-truth-or-dare/InspectorView.js';
 
 const testCard : Card = { text: 'Do something.', ref: 'ref1'};
 
@@ -78,9 +79,16 @@ const testGameState = {
   "displayedCard": "#first stack^0"
 };
 
-it('renders DisplayedCard = null', () => {
+it('renders PlayView', () => {
   const tree = renderer
-    .create(<GameView gameState={testGameState} />)
+    .create(<PlayView gameState={testGameState} />)
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+it('renders InspectorView', () => {
+  const tree = renderer
+    .create(<InspectorView gameState={testGameState} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

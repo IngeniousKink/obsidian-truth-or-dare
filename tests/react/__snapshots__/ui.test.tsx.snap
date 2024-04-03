@@ -30,23 +30,12 @@ exports[`renders DisplayedCard = null 1`] = `
 </p>
 `;
 
-exports[`renders DisplayedCard = null 2`] = `
+exports[`renders InspectorView 1`] = `
 <div>
   <h1>
+    Inspecting 
     Truth or Dare
   </h1>
-  <h2>
-    Card
-  </h2>
-  <div
-    className="card"
-  >
-    <h2
-      className="card-text"
-    >
-      one card
-    </h2>
-  </div>
   <h2>
     Status
   </h2>
@@ -60,9 +49,6 @@ exports[`renders DisplayedCard = null 2`] = `
     2
      cards remaining.
   </p>
-  <h2>
-    Buttons
-  </h2>
   <h2>
     Events
   </h2>
@@ -116,4 +102,24 @@ exports[`renders NoCard 1`] = `
 <p>
   There is no card to display (yet).
 </p>
+`;
+
+exports[`renders PlayView 1`] = `
+<div>
+  <h1>
+    Truth or Dare
+  </h1>
+  <div
+    className="card"
+  >
+    <h2
+      className="card-text"
+    >
+      one card
+    </h2>
+  </div>
+  <h2>
+    Buttons
+  </h2>
+</div>
 `;

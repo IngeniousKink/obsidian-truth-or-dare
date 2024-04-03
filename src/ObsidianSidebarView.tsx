@@ -1,10 +1,12 @@
+import React from "react";
+
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "./context.js";
-import { ReactBaseView } from "./ReactBaseView.jsx";
 import { TRUTH_OR_DARE_SIDEBAR_VIEW } from "./TruthOrDarePlugin.js";
 
-import React from "react";
+import { ReactBaseView } from "./ReactBaseView.jsx";
+import { InspectorView } from "./InspectorView.js";
 
 export class ObsidianSidebarView extends ItemView {
 
@@ -27,7 +29,7 @@ export class ObsidianSidebarView extends ItemView {
 		this.root.render(
 			<AppContext.Provider value={this.app}>
 				<EventRegistryContext.Provider value={this.registerEvent.bind(this)}>
-					<ReactBaseView />
+					<ReactBaseView GameView={InspectorView}/>
 				</EventRegistryContext.Provider>
 			</AppContext.Provider>
 		);

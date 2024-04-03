@@ -5,6 +5,7 @@ import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "./context.js";
 
 import React from "react";
+import { PlayView } from "./PlayView.js";
 
 export class ObsidianEditableView extends EditableFileView {
 	root: ReactRoot | null = null;
@@ -72,7 +73,7 @@ export class ObsidianEditableView extends EditableFileView {
 		this.root.render(
 			<AppContext.Provider value={this.app}>
 				<EventRegistryContext.Provider value={this.registerEvent.bind(this)}>
-					<ReactBaseView />
+					<ReactBaseView GameView={PlayView}/>
 				</EventRegistryContext.Provider>
 			</AppContext.Provider>
 		);
