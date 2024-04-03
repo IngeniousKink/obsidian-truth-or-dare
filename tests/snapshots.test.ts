@@ -1,19 +1,29 @@
-
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from '../parse.js';
+import fs, { read } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-test.each([
-    'FULL_TIME',
-    'PART_TIME',
-    'SELF_EMPLOYED',
-    'UNEMPLOYED',
-    'RETIRED',
-])('can set employment type to %s', (type) => {
+function readFileContents() {
+    const directoryPath = path.join(__dirname, '__markdown_test_cases__');
+    let fileContentsMap: { [key: string]: string } = {};
 
-    const fileContents = `
-# Heading
-* card 1
-* ` + type;
+    const files = fs.readdirSync(directoryPath);
+    for (const fileName of files) {
+        const filePath = path.join(directoryPath, fileName);
+        const fileContents = fs.readFileSync(filePath, 'utf8');
+        fileContentsMap[fileName] = fileContents;
+    }
+    return fileContentsMap;
+}
+
+test.each(
+    Object.values(
+        readFileContents()
+    )
+)('parses correctly:\n%s', (fileContents) => {
     const mast = fromMarkdown(fileContents);
     const result = getCardsUnderHeading(mast);
 

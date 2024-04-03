@@ -1,21 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`can set employment type to FULL_TIME 1`] = `
+exports[`parses correctly:
+# Heading one
+* card 1
+* card 1
+
+# Heading two
+* foo
+* bar
+ 1`] = `
 {
   "": [
     {
       "ref": "#^0",
-      "text": "card 1",
+      "text": "foo",
     },
     {
       "ref": "#^1",
-      "text": "FULL_TIME",
+      "text": "bar",
     },
   ],
 }
 `;
 
-exports[`can set employment type to PART_TIME 1`] = `
+exports[`parses correctly:
+# a heading
+* card 1
+* card 1
+ 1`] = `
 {
   "": [
     {
@@ -24,67 +36,7 @@ exports[`can set employment type to PART_TIME 1`] = `
     },
     {
       "ref": "#^1",
-      "text": "PART_TIME",
-    },
-  ],
-}
-`;
-
-exports[`can set employment type to RETIRED 1`] = `
-{
-  "": [
-    {
-      "ref": "#^0",
       "text": "card 1",
-    },
-    {
-      "ref": "#^1",
-      "text": "RETIRED",
-    },
-  ],
-}
-`;
-
-exports[`can set employment type to SELF_EMPLOYED 1`] = `
-{
-  "": [
-    {
-      "ref": "#^0",
-      "text": "card 1",
-    },
-    {
-      "ref": "#^1",
-      "text": "SELF_EMPLOYED",
-    },
-  ],
-}
-`;
-
-exports[`can set employment type to UNEMPLOYED 1`] = `
-{
-  "": [
-    {
-      "ref": "#^0",
-      "text": "card 1",
-    },
-    {
-      "ref": "#^1",
-      "text": "UNEMPLOYED",
-    },
-  ],
-}
-`;
-
-exports[`getCardsUnderHeading renders correctly 1`] = `
-{
-  "": [
-    {
-      "ref": "#^0",
-      "text": "card 1",
-    },
-    {
-      "ref": "#^1",
-      "text": "card 2",
     },
   ],
 }
