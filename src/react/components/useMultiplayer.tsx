@@ -93,7 +93,7 @@ export const useMultiplayer = () => {
     if (kind === 30023) {
       setTemplateFileContent(content);
     } else if (kind === 1) {
-      setEventsFileContent((prevState: string) => (prevState || "").concat('\n').concat(content));
+      setEventsFileContent((data: string) => `${data}\n${content}`);
     } else {
       console.log('Unknown kind:', kind, data);
     }
@@ -121,7 +121,7 @@ export const useMultiplayer = () => {
     }
   }, [loadValue]);
 
-  const publish = useCallback(async () => {
+  const publishMultiplayerData = useCallback(async (kind: number, content: string, tags: string[][] = []) => {
     if (!seedValue) { return; }
 
     const node = bip32.fromSeed(Buffer.from(seedValue));
@@ -138,10 +138,7 @@ export const useMultiplayer = () => {
 
     const pubKey = keyPair.publicKey;
 
-    const content = templateFileContent;
     const created_at = Math.floor(Date.now() / 1000);
-    const kind = 30023;
-    const tags: string[] = [];
     const event = [
       0,
       pubKey.toString('hex').substring(2),
@@ -178,6 +175,32 @@ export const useMultiplayer = () => {
     }
   }, [templateFileContent, websockets]);
 
+  const publishTemplate = useCallback(async () => {
+    const kind = 30023;
+    if (!templateFileContent) return;
+    publishMultiplayerData(kind, templateFileContent);
+  }, [templateFileContent, publishMultiplayerData]);
+
+  const publishGameEvent = useCallback(async (content: string) => {
+    const kind = 1;
+
+    if (!loadValue) {
+      throw new Error('Unknown entity, unable to publish gameEvent');
+    }
+
+    const decoded = nip19.decode(loadValue);
+
+    if (decoded.type != 'naddr') { return; }
+
+    publishMultiplayerData(
+      kind,
+      content,
+      [
+        ["a", `30023:${decoded.data.pubkey}:${decoded.data.identifier}`]
+      ]
+    );
+  }, [loadValue, publishMultiplayerData]);
+
   useEffect(() => {
     if (websockets.length < 1) {
       openWebsockets();
@@ -192,7 +215,8 @@ export const useMultiplayer = () => {
   }, []);
 
   return {
-    publish,
+    publishTemplate,
+    publishGameEvent,
     loadEvents,
     websockets,
     WEBSOCKET_STATES,

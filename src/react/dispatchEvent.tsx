@@ -25,11 +25,14 @@ export const appendEventToEventsFile : DispatchGameEventHook = () => {
 };
 
 export const publishEventToMultiplayer : DispatchGameEventHook = () => {
-  const { publish } = useMultiplayer();
+  const { publishGameEvent } = useMultiplayer();
 
   return async (eventAction: TimestampedEvent) =>  {
-    if (!publish) return;
-    await console.log('publishEvent(eventAction)', eventAction, publish);
+    if (!publishGameEvent) return;
+
+    console.log('publishEvent(eventAction):', serializeEventToCodeBlock(eventAction));
+
+    await publishGameEvent(serializeEventToCodeBlock(eventAction));
   }
 };
 
