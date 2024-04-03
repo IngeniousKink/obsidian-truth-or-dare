@@ -3,29 +3,9 @@ import { useApp, useRegisterEvent } from "./hooks";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from 'parse';
 import type { CardMap } from 'parse';
+import { AppendTimeButton } from 'AppendTimeButton';
 
-const AppendTimeButton: React.FC = () => {
-  const app = useApp();
-  if (!app) return null;
-
-  const { vault, workspace } = app;
-  const activeFile = workspace.getActiveFile();
-
-  const appendTime = async () => {
-    if (!activeFile) {
-      return;
-    }
-
-    await vault.process(activeFile, (data) => {
-      return `${data}\n\`\`\`truth-or-dare:event\ntype:card-draw\ntimestamp:${new Date().getTime()}\nx: 2\n\`\`\`\n`;
-    });
-  };
-
-  return <button onClick={appendTime}>Append Time</button>;
-};
-
-export const ReactBaseView: React.FC = () => {
-  const [text, setText] = useState<string>("");
+const StacksDisplay: React.FC = () => {
   const [stacks, setStacks] = useState<CardMap>({} as CardMap);
   const app = useApp();
   const registerEvent = useRegisterEvent();
@@ -45,9 +25,6 @@ export const ReactBaseView: React.FC = () => {
 
     const fileContents: string = await vault.cachedRead(activeFile);
     console.log(fileContents);
-
-    const newText: string = vault.getName() + 'xxx';
-    setText(newText);
 
     const mast = fromMarkdown(fileContents);
     const newStacks = getCardsUnderHeading(mast);
@@ -73,10 +50,24 @@ export const ReactBaseView: React.FC = () => {
     update();
   }, [registerEvent, metadataCache, workspace, update]);
 
+  return <pre>{JSON.stringify(stacks, undefined, 2)}</pre>;
+};
+
+export const ReactBaseView: React.FC = () => {
+  const [text, setText] = useState<string>("");
+  const app = useApp();
+
+  if (!app) return null;
+
+  const { vault } = app;
+
+  const newText: string = vault.getName() + 'xxx';
+  setText(newText);
+
   return (
     <div>
-      <pre>{JSON.stringify(stacks, undefined, 2)}</pre>
       <h3>{text}</h3>
+      <StacksDisplay />
       <AppendTimeButton />
     </div >
   );
