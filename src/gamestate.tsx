@@ -1,4 +1,4 @@
-import { CreateActorEvent, DrawCardEvent, GameEvent, TimestampedEvent, DeleteActorEvent, ChangeActorNameEvent } from "./events.js";
+import { CreateActorEvent, DrawCardEvent, GameEvent, TimestampedEvent, DeleteActorEvent, ChangeActorNameEvent, AssignSlotEvent, UnassignSlotEvent, CompleteCardEvent } from "./events.js";
 import { ParsedCard } from "./parse/parse-card.js";
 import { CardWithRef, GameTemplate } from "./parse/parse-template.js";
 import seedrandom from 'seedrandom';
@@ -20,11 +20,11 @@ export type GameState = {
     actors: Actor[];
 
     displayedCard?: string;
-    allocation: string[];
+    allocation: (string | null)[];
 
     preview: {
         displayedCard?: string,
-        allocation: string[],
+        allocation: (string | null)[],
     }
 };
 
@@ -140,6 +140,30 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
         displayedCard: card.ref,
     };
 }
+
+
+function handleCompleteCardEvent(gameState: GameState, event: CompleteCardEvent): GameState {
+    const lastActorId = gameState.allocation[0];
+
+    const currentActorIndex = gameState.actors.findIndex(
+        actor => actor.id === lastActorId);
+
+    const nextPlayerId = gameState.actors[
+        (currentActorIndex + 1) % gameState.actors.length
+    ].id;
+
+    return {
+        ...gameState,
+        allocation: [],
+        displayedCard: undefined,
+        preview: {
+            ...gameState.preview,
+            allocation: [nextPlayerId],
+        },
+    };
+}
+
+
 function handleCreateActor(state: GameState, event: CreateActorEvent): GameState {
     return {
         ...state,
@@ -155,9 +179,17 @@ function handleCreateActor(state: GameState, event: CreateActorEvent): GameState
 }
 
 function handleDeleteActor(state: GameState, event: DeleteActorEvent): GameState {
+    let newState = { ...state };
+
+    newState.allocation.forEach((actorId, slotIndex) => {
+        if (actorId === event.actorId) {
+            newState = handleUnassignSlot(newState, { type: 'unassign_slot', slotIndex });
+        }
+    });
+
     return {
-        ...state,
-        actors: state.actors.filter(actor => actor.id !== event.actorId),
+        ...newState,
+        actors: newState.actors.filter(actor => actor.id !== event.actorId),
     };
 }
 
@@ -172,17 +204,49 @@ function handleChangeActorName(state: GameState, event: ChangeActorNameEvent): G
     };
 }
 
+function handleAssignSlot(state: GameState, event: AssignSlotEvent): GameState {
+    const newAllocation = [...state.allocation];
+
+    // Fill the array with null up to the slotIndex
+    while (newAllocation.length <= event.slotIndex) {
+        newAllocation.push(null);
+    }
+
+    newAllocation[event.slotIndex] = event.actorId;
+
+    return {
+        ...state,
+        allocation: newAllocation,
+    };
+}
+
+function handleUnassignSlot(state: GameState, event: UnassignSlotEvent): GameState {
+    const newAllocation = [...state.allocation];
+    newAllocation[event.slotIndex] = null;
+
+    return {
+        ...state,
+        allocation: newAllocation,
+    };
+}
+
 
 function applyEventToGameState(gameState: GameState, event: GameEvent): GameState {
     switch (event.type) {
         case 'draw_card':
             return handleDrawCardEvent(gameState, event as DrawCardEvent);
+        case 'complete_card':
+            return handleCompleteCardEvent(gameState, event as CompleteCardEvent);
         case 'create_actor':
             return handleCreateActor(gameState, event as CreateActorEvent);
         case 'delete_actor':
             return handleDeleteActor(gameState, event as DeleteActorEvent);
         case 'change_actor_name':
             return handleChangeActorName(gameState, event as ChangeActorNameEvent);
+        case 'assign_slot':
+            return handleAssignSlot(gameState, event as AssignSlotEvent);
+        case 'unassign_slot':
+            return handleUnassignSlot(gameState, event as UnassignSlotEvent);
         default:
             return gameState;
     }
