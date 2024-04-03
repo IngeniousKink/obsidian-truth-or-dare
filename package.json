@@ -39,6 +39,8 @@
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.1.1",
+		"@nfen/webcrypto-ts": "^0.1.8",
+		"@noble/secp256k1": "^2.0.0",
 		"@types/seedrandom": "^3.0.8",
 		"@vitejs/plugin-react": "^4.2.1",
 		"bip32": "^4.0.0",
@@ -47,7 +49,6 @@
 		"ecpair": "^2.1.0",
 		"jest": "^29.7.0",
 		"mdast-util-from-markdown": "^2.0.0",
-		"noble-secp256k1": "^1.2.14",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"seedrandom": "^3.0.5",

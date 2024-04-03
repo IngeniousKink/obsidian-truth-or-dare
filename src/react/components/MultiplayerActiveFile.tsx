@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 
 import { BIP32Factory, BIP32Interface } from 'bip32';
-import ecc from '@bitcoinerlab/secp256k1';
+import ecc, { signSchnorr, verifySchnorr } from '@bitcoinerlab/secp256k1';
 
 import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
 
-import * as nobleSecp256k1 from 'noble-secp256k1';
+import * as nobleSecp256k1 from '@noble/secp256k1';
 
 import { useWebApp } from '../../../web/src/hooks.web.js';
+import { sha256 } from 'bitcoinjs-lib/src/crypto.js';
 
 type HandleEventFunction = (data: { content: string, id: string, kind: number}, pubKey: string) => void;
 
@@ -75,11 +76,11 @@ function getPrivKeyHex(): string {
   return keyPair.privateKey.toString('hex');
 }
 
-function getPubKey(privKey: string): string {
-  return nobleSecp256k1.getPublicKey(privKey, true).substring(2);
+function getPubKey(privKey: string) : Uint8Array {
+  return nobleSecp256k1.getPublicKey(privKey, true);
 }
 
-function getKeys(): [string, string] {
+function getKeys(): [string, Uint8Array] {
   const privKey = getPrivKeyHex();
   const pubKey = getPubKey(privKey);
   return [privKey, pubKey];
@@ -90,12 +91,13 @@ const eventIds: { [key: string]: boolean } = {};
 
 
 const relays = [
-  // 'wss://relay.snort.social',
-  // 'wss://nos.lol',
-  'wss://relay.damus.io'
+  'wss://relay.snort.social',
+  'wss://nos.lol',
+  'wss://relay.damus.io',
+  'wss://offchain.pub',
 ]
 
-function openWebsockets(pubKey: string, handleEvent: HandleEventFunction): void {
+function openWebsockets(pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
   console.log('connecting...');
   for (const relay of relays) {
     const ws = new WebSocket(relay);
@@ -104,17 +106,18 @@ function openWebsockets(pubKey: string, handleEvent: HandleEventFunction): void 
   }
 }
 
-function addEventListeners(ws: WebSocket, pubKey: string, handleEvent: HandleEventFunction): void {
+function addEventListeners(ws: WebSocket, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
   ws.onerror = () => handleError(ws);
   ws.onopen = () => handleOpen(ws, pubKey);
   ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
 }
 
 function handleError(ws: WebSocket): void {
+  console.log('HANDLE ERROR!');
   websockets = websockets.filter((w) => w.url !== ws.url);
 }
 
-function handleOpen(ws: WebSocket, pubKey: string): void {
+function handleOpen(ws: WebSocket, pubKey: Uint8Array): void {
   const status = `${websockets.length}/${relays.length}`;
   console.log('#relay', `Connected to ${status} relays`);
 
@@ -135,7 +138,7 @@ function handleOpen(ws: WebSocket, pubKey: string): void {
   }]));
 }
 
-function handleMessage(event: MessageEvent, pubKey: string, handleEvent: HandleEventFunction): void {
+function handleMessage(event: MessageEvent, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
   const [msgType, subscriptionId, data] = JSON.parse(event.data);
 
   if (msgType === 'EVENT') {
@@ -152,7 +155,7 @@ export const MultiplayerActiveFile = () => {
     throw new Error('useWebApp must be used within a WebAppProvider');
   }
 
-  const { setActiveFile } = webAppContext;
+  const { setActiveFile, activeFile } = webAppContext;
 
   console.log('rendering...');
 
@@ -174,6 +177,59 @@ export const MultiplayerActiveFile = () => {
     }
   };
 
+    // Wrap publish function in useCallback to prevent unnecessary re-renders
+    const publish = useCallback(async () => {
+
+      const node = getNode();
+      const path = getPath();
+      const keyPair = computeRawPrivkey(node.derivePath(path));
+
+
+      if(!keyPair) { return; }
+      if(!keyPair.privateKey) { return; }
+
+      const pubKey = keyPair.publicKey;
+
+      const content = activeFile;
+      const created_at = Math.floor(Date.now() / 1000);
+      const kind = 30023;
+      const tags : string[] = [];
+      const event = [
+        0,
+        pubKey.toString('hex').substring(2),
+        created_at,
+        kind,
+        tags,
+        content
+      ];
+      const message = JSON.stringify(event);
+      console.log('signing', message)
+
+      const hash = sha256(Buffer.from(message));
+
+      const sig = keyPair.signSchnorr(hash);
+      const isValidSig = keyPair.verifySchnorr(hash, sig);
+
+      if (isValidSig) {
+        const fullevent = {
+          id: hash.toString('hex'),
+          pubkey: pubKey.toString('hex').substring(2),
+          created_at,
+          kind,
+          tags,
+          content,
+          sig: sig.toString('hex')
+        };
+        const serializedEvent = JSON.stringify(['EVENT', fullevent]);
+        console.log(`Publishing event to ${websockets.length} relays.`, serializedEvent);
+        for (const ws of websockets) {
+          console.log('Publishing to', ws.url);
+          ws.send(serializedEvent);
+        }
+      }
+    }, [activeFile]); // Add activeFile as a dependency
+  
+
   useEffect(() => {
     const pubKey = getKeys()[1];
     openWebsockets(pubKey, handleEvent);
@@ -187,7 +243,10 @@ export const MultiplayerActiveFile = () => {
   }, []);
 
   return (
-    <span>{status}</span>
+    <>
+      <button onClick={publish}>Publish</button>
+      <span>{status}</span>
+    </>
   );
 };
 
