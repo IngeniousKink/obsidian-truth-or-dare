@@ -60,6 +60,163 @@ exports[`parses correctly:
 `;
 
 exports[`parses correctly:
+# Markdown Page
+
+* [annotation:: without-text]
+
+even here is text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "annotation": "without-text",
+          "ref": "#Markdown Page^0",
+          "text": "",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+* [mood:: acceptable] at the start
+
+some text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "mood": "acceptable",
+          "ref": "#Markdown Page^0",
+          "text": "at the start",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+* I would rate this at the end with [rating:: 9]
+
+more text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "rating": "9",
+          "ref": "#Markdown Page^0",
+          "text": "I would rate this at the end with",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+* I would rate this with multiple annotations: a [rating:: 9] and it was [mood:: acceptable] — which is okay.
+
+another text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "mood": "acceptable",
+          "rating": "9",
+          "ref": "#Markdown Page^0",
+          "text": "I would rate this with multiple annotations: a and it was — which is okay.",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+* This will not show the (longKeyIDontNeedWhenReading:: key). 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "longKeyIDontNeedWhenReading": "key",
+          "ref": "#Markdown Page^0",
+          "text": "This will not show the (longKeyIDontNeedWhenReading:: key).",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+- [ ] Send an mail to David about the deadline [due:: 2022-04-05].
+
+some more text 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "due": "2022-04-05",
+          "ref": "#Markdown Page^0",
+          "text": "Send an mail to David about the deadline .",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
+Basic Field:: Some random Value
+**Bold Field**:: Nice!
+Noël:: Un jeu de console
+クリスマス:: 家庭用ゲーム機
+[🎅:: a console game]
+[xmas🎄:: a console game] 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
 # a heading
 * card 1
 * card 1

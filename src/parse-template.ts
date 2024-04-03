@@ -107,7 +107,32 @@ function extractCardsFromParagraph(paragraph: Paragraph, refCounter: number, sta
     const card = {
       ref: stackRef + '^' + refCounter,
       text: textNode.value,
+      ...parseLine(textNode.value),
     };
     return [...cards, card];
   }, []);
+}
+interface ParsedLine {
+  text?: string;
+  [key: string]: string | undefined;
+}
+
+function parseLine(line: string): ParsedLine {
+  const result: ParsedLine = {};
+  const textMatch = line.match(/^(.*?)( \[.+\]| \(.+\)| .+::.*|$)/);
+  if (textMatch) {
+    result.text = textMatch[1].trim();
+  }
+  const inlineFieldMatches = line.matchAll(/(\[|\()(\w+):: ([^\]]+|\([^\)]+\)|[^ ]+)(\]|\))/g);
+  let annotatedText = result.text || '';
+  for (const match of inlineFieldMatches) {
+    let value = match[3];
+    if (value.startsWith('(') && value.endsWith(')')) {
+      value = value.slice(1, -1);
+    }
+    result[match[2]] = value;
+    annotatedText = annotatedText.replace(match[0], '').trim();
+  }
+  result.text = line.replace(/\s*\[.+?\]\s*/g, ' ').trim();
+  return result;
 }
