@@ -123,7 +123,7 @@ function parseLine(line: string): ParsedLine {
   if (textMatch) {
     result.text = textMatch[1].trim();
   }
-  const inlineFieldMatches = line.matchAll(/(\[|\()(\w+):: ([^\]]+|\([^\)]+\)|[^ ]+)(\]|\))/g);
+  const inlineFieldMatches = line.matchAll(/(\[|\()(\w+)::\ ?([^\]]+|\([^\)]+\)|[^ ]+)(\]|\))/g);
   let annotatedText = result.text || '';
   for (const match of inlineFieldMatches) {
     let value = match[3];

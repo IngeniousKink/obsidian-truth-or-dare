@@ -85,6 +85,28 @@ even here is text 1`] = `
 exports[`parses correctly:
 # Markdown Page
 
+* [category::truth] <- has no space after the two colons
+ 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "category": "truth",
+          "ref": "#Markdown Page^0",
+          "text": "<- has no space after the two colons",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
 * [mood:: acceptable] at the start
 
 some text 1`] = `
