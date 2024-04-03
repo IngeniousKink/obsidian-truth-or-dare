@@ -2,23 +2,28 @@
 
 exports[`Game State createGameState 1`] = `
 {
+  "actors": [],
+  "allocation": [],
   "displayedCard": "card2",
   "events": [
     {
-      "card": "card1",
+      "cardRef": "card1",
       "timestamp": 0,
-      "type": "card-draw",
+      "type": "draw_card",
     },
     {
-      "card": "card2",
+      "cardRef": "card2",
       "timestamp": 0,
-      "type": "card-draw",
+      "type": "draw_card",
     },
   ],
+  "preview": {
+    "allocation": [],
+  },
   "previousCards": [
     "card1",
   ],
-  "seed": "{"stacks":[{"name":"stack1","ref":"stackRef","cards":[{"ref":"card1","text":"card1Text","annotations":[]},{"ref":"card2","text":"card2Text","annotations":[]},{"ref":"card3","text":"card3Text","annotations":[]}]}]}[{"type":"card-draw","card":"card1","timestamp":0},{"type":"card-draw","card":"card2","timestamp":0}]",
+  "seed": "{"stacks":[{"name":"stack1","ref":"stackRef","cards":[{"ref":"card1","text":"card1Text","annotations":[]},{"ref":"card2","text":"card2Text","annotations":[]},{"ref":"card3","text":"card3Text","annotations":[]}]}]}[{"type":"draw_card","cardRef":"card1","timestamp":0},{"type":"draw_card","cardRef":"card2","timestamp":0}]",
   "template": {
     "stacks": [
       {

@@ -1,21 +1,43 @@
-import { Annotation, ParsedCard } from "./parse/parse-card.js";
-import { GameEvent } from "./parse/parse-events.js";
+import { CreateActorEvent, DrawCardEvent, GameEvent, TimestampedEvent, DeleteActorEvent, ChangeActorNameEvent } from "./events.js";
+import { ParsedCard } from "./parse/parse-card.js";
 import { CardWithRef, GameTemplate } from "./parse/parse-template.js";
 import seedrandom from 'seedrandom';
 
-export type GameState = {
-    template: GameTemplate;
-    events: GameEvent[];
-    previousCards: string[];
-    displayedCard?: string;
-    seed: string;
+export type Actor = {
+    id: string;
+    name: string;
+    inventory: string[]
 };
 
-export function createGameState(gameTemplate: GameTemplate, gameEvents: GameEvent[], seed?: string): GameState {
+export type GameState = {
+    template: GameTemplate;
+
+    events: TimestampedEvent[];
+    seed: string;
+
+    previousCards: string[];
+
+    actors: Actor[];
+
+    displayedCard?: string;
+    allocation: string[];
+
+    preview: {
+        displayedCard?: string,
+        allocation: string[],
+    }
+};
+
+export function createGameState(gameTemplate: GameTemplate, gameEvents: TimestampedEvent[], seed?: string): GameState {
     let gameState: GameState = {
         template: gameTemplate,
         events: gameEvents,
         previousCards: [],
+        actors: [],
+        allocation: [],
+        preview: {
+            allocation: []
+        },
         seed: seed || JSON.stringify(gameTemplate) + JSON.stringify(gameEvents)
     };
 
@@ -26,21 +48,6 @@ export function createGameState(gameTemplate: GameTemplate, gameEvents: GameEven
     return gameState;
 }
 
-function applyEventToGameState(gameState: GameState, event: GameEvent): GameState {
-    if (event.type !== 'card-draw') return gameState;
-
-    if (!event.card) return gameState; // TODO this can be done in typescript ?
-
-    const card = findCardInGameTemplate(gameState.template, event.card);
-    if (!card) return gameState;
-
-    if (gameState.displayedCard) {
-        gameState.previousCards.push(gameState.displayedCard);
-    }
-
-    gameState.displayedCard = card.ref;
-    return gameState;
-}
 
 export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: string): CardWithRef | null {
     for (const stack of gameTemplate.stacks) {
@@ -78,8 +85,8 @@ export function getAvailableCards(gameState: GameState): CardWithRef[] {
 
 export function getCategories(card: ParsedCard): string[] {
     return card.annotations
-      .map(annotation => annotation?.category)
-      .filter(category => category !== undefined) as string[];
+        .map(annotation => annotation?.category)
+        .filter(category => category !== undefined) as string[];
 }
 
 export function selectCategories(gameState: GameState): string[] {
@@ -113,4 +120,70 @@ export function selectCardByRef(gameState: GameState, ref: string | undefined): 
         }
     }
     return null;
+}
+
+
+
+
+function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameState {
+    const card = findCardInGameTemplate(gameState.template, event.cardRef);
+    if (!card) return gameState;
+
+    let previousCards = [...gameState.previousCards];
+    if (gameState.displayedCard) {
+        previousCards.push(gameState.displayedCard);
+    }
+
+    return {
+        ...gameState,
+        previousCards: previousCards,
+        displayedCard: card.ref,
+    };
+}
+function handleCreateActor(state: GameState, event: CreateActorEvent): GameState {
+    return {
+        ...state,
+        actors: [
+            ...state.actors,
+            {
+                id: event.actorId,
+                name: `Player ${event.actorId}`,
+                inventory: []
+            }
+        ]
+    };
+}
+
+function handleDeleteActor(state: GameState, event: DeleteActorEvent): GameState {
+    return {
+        ...state,
+        actors: state.actors.filter(actor => actor.id !== event.actorId),
+    };
+}
+
+function handleChangeActorName(state: GameState, event: ChangeActorNameEvent): GameState {
+    return {
+        ...state,
+        actors: state.actors.map(actor =>
+            actor.id === event.actorId
+                ? { ...actor, name: event.value }
+                : actor
+        )
+    };
+}
+
+
+function applyEventToGameState(gameState: GameState, event: GameEvent): GameState {
+    switch (event.type) {
+        case 'draw_card':
+            return handleDrawCardEvent(gameState, event as DrawCardEvent);
+        case 'create_actor':
+            return handleCreateActor(gameState, event as CreateActorEvent);
+        case 'delete_actor':
+            return handleDeleteActor(gameState, event as DeleteActorEvent);
+        case 'change_actor_name':
+            return handleChangeActorName(gameState, event as ChangeActorNameEvent);
+        default:
+            return gameState;
+    }
 }

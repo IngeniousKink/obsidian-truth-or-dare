@@ -2,19 +2,19 @@
 ## Events
 
 ```truth-or-dare:event
-type:card-draw
+type:draw_card
 timestamp: 1706012788684
-x: 2
+cardRef: ^2
 ```
 
 ```truth-or-dare:event
-type:card-draw
+type:draw_card
 timestamp: 1706012792713
-x: 2
+cardRef: ^3
 ```
 
 ```truth-or-dare:event
-type:card-draw
+type:draw_card
 timestamp: 1706012795173
-x: 2
+cardRef: ^4
 ```

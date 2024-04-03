@@ -1,20 +1,14 @@
 import React from 'react';
 
-
-import { DrawCardButton } from './DrawCardButton.js';
-import { StacksDisplay } from './StacksDisplay.js';
+import { JsonStringifyOutput } from './JsonStringifyOutput.js';
 import { EventsDisplay } from './EventsDisplay.js';
-import { DisplayedCard } from './DisplayedCard.js';
 import { RemainingCards } from './RemainingCards.js';
 import { PreviousCards } from './PreviousCards.js';
 
 import { 
   GameState, 
   getAvailableCards, 
-  selectCardByRef, 
   selectCardsByCategory, 
-  selectRandomAvailableCard, 
-  selectRandomCard 
 } from '../../gamestate.js';
 
 import type { CardWithRef } from '../../parse/parse-template.js';
@@ -41,21 +35,8 @@ export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: Inspe
       {gameState.previousCards && (
         <PreviousCards previousCards={gameState.previousCards} />
       )}
-
       {gameState.template && (<>
         <RemainingCards remainingCards={getAvailableCards(gameState)} />
-
-        {Object.keys(cardsByCategory).map(key => {
-          const value: CardWithRef[] = cardsByCategory[key];
-          const nextCard = selectRandomCard(value, gameState);
-          return (
-            <DrawCardButton
-              key={key}
-              categoryLabel={key}
-              remainingCount={value.length}
-              nextCard={nextCard} />
-          );
-        })}
 
         {gameState.events && (
           <>
@@ -63,10 +44,16 @@ export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: Inspe
             <EventsDisplay events={gameState.events} />
           </>
         )}
+        {gameState.actors && (
+          <>
+            <h2>Players</h2>
+            <JsonStringifyOutput javascriptObject={gameState.actors} />
+          </>
+        )}
         {gameState.template.stacks && (
           <>
             <h2>Template</h2>
-            <StacksDisplay stacks={gameState.template.stacks} />
+            <JsonStringifyOutput javascriptObject={gameState.template.stacks} />
           </>
         )}
 

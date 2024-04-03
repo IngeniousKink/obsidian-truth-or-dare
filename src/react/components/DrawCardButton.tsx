@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from "../hooks.js";
 import { CardWithRef } from '../../parse/parse-template.js';
+import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;
@@ -21,16 +22,18 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
   const { vault, workspace } = app;
   const activeFile = workspace.getActiveFile();
 
-  const drawCard = async () => {
+  const handleClick = async () => {
     if (!activeFile) return;
     if (!nextCard) return;
+
+    const event = timestampEvent(drawCard(nextCard.ref));
 
     await vault.process(activeFile, (data) => {
       return `${data}
 \`\`\`truth-or-dare:event
-type:card-draw
-timestamp:${new Date().getTime()}
-card: ${nextCard.ref}
+type:${event.type}
+timestamp:${event.timestamp}
+cardRef: ${event.cardRef}
 \`\`\`
 `;
     });
@@ -40,5 +43,5 @@ card: ${nextCard.ref}
    ? `Draw a ${categoryLabel} card (${remainingCount})` 
    : `(No more ${categoryLabel} cards)`;
 
-  return <button onClick={drawCard} disabled={!nextCard}>{buttonText}</button>;
+  return <button onClick={handleClick} disabled={!nextCard}>{buttonText}</button>;
 };

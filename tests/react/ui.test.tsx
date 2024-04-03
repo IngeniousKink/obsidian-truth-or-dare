@@ -7,6 +7,7 @@ import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/react/components/
 import { PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
 import { InspectorView } from '@obsidian-truth-or-dare/react/components/InspectorView.js';
 import CurrentCard from '@obsidian-truth-or-dare/react/components/CurrentCard.js';
+import { GameState } from '@obsidian-truth-or-dare/gamestate.js';
 
 const testCard : CardWithRef = {
    text: 'Do something.',
@@ -43,7 +44,12 @@ it('renders DisplayedCard = null', () => {
   expect(tree).toMatchSnapshot();
 });
 
-const testGameState = {
+const testGameState : GameState = {
+  "actors": [],
+  "allocation": [],
+  "preview": {
+    "allocation": [],
+  },
   "template": {
       "stacks": [
           {
@@ -77,9 +83,9 @@ const testGameState = {
   },
   "events": [
       {
-          "type": "card-draw",
+          "type": "draw_card",
           "timestamp": 1706983496470,
-          "card": "#first stack^0"
+          "cardRef": "#first stack^0"
       }
   ],
   "previousCards": [],

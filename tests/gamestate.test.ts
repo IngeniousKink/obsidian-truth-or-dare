@@ -1,4 +1,4 @@
-import { GameEvent } from '@obsidian-truth-or-dare/parse/parse-events.js';
+import { GameEvent, TimestampedEvent } from '@obsidian-truth-or-dare/events.js';
 import { createGameState, findCardInGameTemplate, getAllCards, selectRandomAvailableCard, getAvailableCards, selectCardsByCategory, GameState } from '../src/gamestate.js';
 import { CardWithRef, GameTemplate, Stack } from '@obsidian-truth-or-dare/parse/parse-template.js';
 
@@ -17,9 +17,9 @@ describe('Game State', () => {
     ]
   }
 
-  const mockGameEvents: GameEvent[] = [
-    { type: 'card-draw', card: 'card1', timestamp: 0},
-    { type: 'card-draw', card: 'card2', timestamp: 0 }
+  const mockGameEvents: TimestampedEvent[] = [
+    { type: 'draw_card', cardRef: 'card1', timestamp: 0},
+    { type: 'draw_card', cardRef: 'card2', timestamp: 0}
   ]
 
   test('createGameState', () => {

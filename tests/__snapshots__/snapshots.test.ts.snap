@@ -3,9 +3,9 @@
 exports[`parses events: irrelevant_code_block.md 1`] = `
 [
   {
-    "card": null,
-    "timestamp": 1706012788684,
-    "type": "card-draw",
+    "cardRef": "should be present in parsed result",
+    "timestamp": "1706012788684",
+    "type": "draw_card",
   },
 ]
 `;
@@ -13,19 +13,19 @@ exports[`parses events: irrelevant_code_block.md 1`] = `
 exports[`parses events: simple.md 1`] = `
 [
   {
-    "card": null,
-    "timestamp": 1706012788684,
-    "type": "card-draw",
+    "cardRef": "^2",
+    "timestamp": "1706012788684",
+    "type": "draw_card",
   },
   {
-    "card": null,
-    "timestamp": 1706012792713,
-    "type": "card-draw",
+    "cardRef": "^3",
+    "timestamp": "1706012792713",
+    "type": "draw_card",
   },
   {
-    "card": null,
-    "timestamp": 1706012795173,
-    "type": "card-draw",
+    "cardRef": "^4",
+    "timestamp": "1706012795173",
+    "type": "draw_card",
   },
 ]
 `;

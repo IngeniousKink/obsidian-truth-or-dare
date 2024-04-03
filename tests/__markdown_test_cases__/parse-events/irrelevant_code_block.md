@@ -2,9 +2,9 @@
 ## Events
 
 ```truth-or-dare:event
-type:card-draw
+type:draw_card
 timestamp: 1706012788684
-x: should be present in parsed result
+cardRef: should be present in parsed result
 ```
 
 ```javascript

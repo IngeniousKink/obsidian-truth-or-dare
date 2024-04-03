@@ -62,6 +62,19 @@ exports[`renders InspectorView 1`] = `
      events played so far.
   </p>
   <h2>
+    Players
+  </h2>
+  <pre
+    style={
+      {
+        "fontSize": "80%",
+      }
+    }
+  >
+    []
+  </pre>
+  ;
+  <h2>
     Template
   </h2>
   <pre
@@ -130,5 +143,7 @@ exports[`renders PlayView 1`] = `
   <h2>
     Buttons
   </h2>
+  <br />
+  <div />
 </div>
 `;
