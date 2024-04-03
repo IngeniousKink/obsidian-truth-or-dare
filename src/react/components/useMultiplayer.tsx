@@ -110,7 +110,7 @@ export const useMultiplayer = () => {
 
   const loadEvents = useCallback(() => {
     if (!loadValue) {
-      throw new Error('Missing load in URL hash parameters');
+      throw new Error('Invalid entity to load');
     }
 
     const decoded = nip19.decode(loadValue);
