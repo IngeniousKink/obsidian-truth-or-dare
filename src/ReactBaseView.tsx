@@ -5,9 +5,16 @@ import { convertMarkdownToGameTemplate } from './parse-template.js';
 import type { GameTemplate } from './parse-template.js';
 import { AppendTimeButton } from './AppendTimeButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
+import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
+import { EventsDisplay } from './EventsDisplay.jsx';
+
+type GameState = {
+  template: GameTemplate,
+  events: GameEvent[]
+};
 
 export const ReactBaseView: React.FC = () => {
-  const [gameTemplate, setGameTemplate] = useState<GameTemplate>({} as GameTemplate);
+  const [gameState, setGameState] = useState<GameState>({} as GameState);
   const app = useApp();
   const registerEvent = useRegisterEvent();
 
@@ -26,12 +33,16 @@ export const ReactBaseView: React.FC = () => {
     }
 
     const fileContents: string = await vault.cachedRead(activeFile);
-    console.log(fileContents);
 
     const mast = fromMarkdown(fileContents);
     const newGameTemplate = convertMarkdownToGameTemplate(mast);
-    console.log(newGameTemplate);
-    setGameTemplate(newGameTemplate);
+    const newGameEvents = convertMarkdownToGameEvents(mast);
+
+    const newGameState: GameState = {
+      template: newGameTemplate,
+      events: newGameEvents,
+    };
+    setGameState(newGameState);
   }, [vault, workspace]);
 
   useEffect(() => {
@@ -55,8 +66,14 @@ export const ReactBaseView: React.FC = () => {
   return (
     <div>
       <h1>{heading}</h1>
-      <StacksDisplay stacks={gameTemplate.stacks} />
+      {gameState.template && gameState.template.stacks && (
+        <StacksDisplay stacks={gameState.template.stacks} />
+      )}
+      {gameState.template && gameState.events && (
+        <EventsDisplay events={gameState.events} />
+      )}
       <AppendTimeButton />
     </div >
   );
 };
+
