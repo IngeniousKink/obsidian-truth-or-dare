@@ -26,7 +26,6 @@ export function createGameState(gameTemplate: GameTemplate, gameEvents: GameEven
 }
 
 function applyEventToGameState(gameState: GameState, event: GameEvent): GameState {
-    console.log('processing event', event);
     if (event.type !== 'card-draw') return gameState;
 
     if (!event.card) return gameState; // TODO this can be done in typescript ?

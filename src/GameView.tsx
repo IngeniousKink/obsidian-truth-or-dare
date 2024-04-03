@@ -58,7 +58,6 @@ export const GameView: React.FC<GameViewProps> = ({ gameState }: GameViewProps) 
         {Object.keys(cardsByCategory).map(key => {
           const value: Card[] = cardsByCategory[key];
           const nextCard = selectRandomCard(value, gameState);
-          console.log({ key, value, nextCard });
           return (
             <DrawCardButton
               key={key}

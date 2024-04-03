@@ -5,8 +5,6 @@ import { readFileSync } from 'fs';
 
 const tsconfigJson = JSON.parse(readFileSync('./tsconfig.json', 'utf8'));
 
-console.log(tsconfigJson);
-
 function manageKey(key: string): string {
     return key.includes('(.*)') ? key.slice(0, -1) + '\\.js$' : key;
 }

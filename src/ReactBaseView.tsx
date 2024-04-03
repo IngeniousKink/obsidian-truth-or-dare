@@ -16,7 +16,6 @@ export const ReactBaseView: React.FC = () => {
   const { vault, metadataCache, workspace } = app;
 
   const update = useCallback(async () => {
-    console.log(new Date().getTime(), 'updating');
     const activeFile = workspace.getActiveFile();
 
     if (!activeFile) {
@@ -31,22 +30,18 @@ export const ReactBaseView: React.FC = () => {
 
     const newGameState = createGameState(newGameTemplate, newGameEvents);
 
-    console.log('gameState', newGameState);
-
     setGameState(newGameState);
   }, [vault, workspace]);
 
   useEffect(() => {
     registerEvent(
       metadataCache.on("changed", async (file) => {
-        console.log(new Date().getTime(), 'file changed!', file);
         return update();
       })
     );
 
     registerEvent(
       workspace.on("active-leaf-change", async () => {
-        console.log(new Date().getTime(), "Active leaf changed!");
         return update();
       })
     );
