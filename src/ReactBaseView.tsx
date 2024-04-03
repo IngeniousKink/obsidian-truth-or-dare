@@ -2,21 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { convertMarkdownToGameTemplate } from './parse-template.js';
-import type { Card, GameTemplate } from './parse-template.js';
-import { DrawCardButton } from './DrawCardButton.jsx';
-import { StacksDisplay } from './StacksDisplay.jsx';
-import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
-import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, createGameState, getAvailableCards, selectCardByRef, selectCardsByCategory, selectRandomAvailableCard, selectRandomCard } from './gamestate.jsx';
-import { DisplayedCard } from './DisplayedCard.jsx';
-
-export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
-  <p>So far, {previousCards.length} cards have been played.</p>
-);
-
-export const RemainingCards: React.FC<{ remainingCards: Card[]; }> = ({ remainingCards }) => (
-  <p>There are {remainingCards.length} cards remaining.</p>
-);
+import { convertMarkdownToGameEvents } from './parse-events.js';
+import { GameState, createGameState } from './gamestate.jsx';
+import { GameView } from './GameView.jsx';
 
 export const ReactBaseView: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>({} as GameState);
@@ -26,8 +14,6 @@ export const ReactBaseView: React.FC = () => {
   if (!app || !registerEvent) return null;
 
   const { vault, metadataCache, workspace } = app;
-
-  const heading: string = "Truth or Dare"
 
   const update = useCallback(async () => {
     console.log(new Date().getTime(), 'updating');
@@ -68,66 +54,5 @@ export const ReactBaseView: React.FC = () => {
     update();
   }, [registerEvent, metadataCache, workspace, update]);
 
-
-  let cardsByCategory: { [x: string]: any; } = {};
-
-  if (gameState.template) {
-    cardsByCategory = selectCardsByCategory(gameState);
-    console.log({cardsByCategory});
-  }
-
-  return (
-    <div>
-      <h1>{heading}</h1>
-
-      <h2>Card</h2>
-      <DisplayedCard card={selectCardByRef(gameState, gameState.displayedCard)} />
-
-      <h2>Status</h2>
-
-      {gameState.previousCards && (
-        <PreviousCards previousCards={gameState.previousCards} />
-      )}
-
-      {gameState.template && (<>
-        <RemainingCards remainingCards={getAvailableCards(gameState)} />
-
-        <h2>Buttons</h2>
-
-        <DrawCardButton
-          categoryLabel='random'
-          remainingCount={getAvailableCards(gameState).length}
-          nextCard={selectRandomAvailableCard(gameState)}
-        />
-
-        {Object.keys(cardsByCategory).map(key => {
-            const value: Card[] = cardsByCategory[key];
-            const nextCard = selectRandomCard(value, gameState);
-            console.log({key, value, nextCard})
-            return (
-                <DrawCardButton 
-                    key={key}
-                    categoryLabel={key} 
-                    remainingCount={value.length} 
-                    nextCard={nextCard}
-                />
-            )
-        })}
-
-        {gameState.events && (
-          <>
-            <h2>Events</h2>
-            <EventsDisplay events={gameState.events} />
-          </>
-        )}
-        {gameState.template.stacks && (
-          <>
-            <h2>Template</h2>
-            <StacksDisplay stacks={gameState.template.stacks} />
-          </>
-        )}
-
-      </>)}
-    </div >
-  );
+  return <GameView gameState={gameState} />;
 };
