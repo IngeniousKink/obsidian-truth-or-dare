@@ -137,40 +137,38 @@ export const MultiplayerActiveFile = () => {
       addEventListeners(ws, pubKey, handleEvent);
     }
   }
-  
-  
+
+
   function addEventListeners(ws: WebSocket, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
     ws.onerror = (error: ErrorEvent) => {
       console.log('HANDLE ERROR! Error occurred:', error.message);
       setWebsockets(websockets.filter((w) => w.url !== ws.url));
     };
-    ws.onopen = () => handleOpen(ws, pubKey);
+    ws.onopen = () => console.log(`Connected to relay ${ws.url}`);
     ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
     ws.onclose = (event: CloseEvent) => {
       console.log(`Socket closed. Reason: ${event.reason ? event.reason : 'None provided'}. Code: ${event.code}`);
     };
   }
-  
-  
-  function handleOpen(ws: WebSocket, pubKey: Uint8Array): void {
-    const status = `${websockets.length}/${relays.length}`;
-    console.log('#relay', `Connected to ${status} relays`);
-  
+
+  const loadEvents = () => {
     const { id, author } = getParamsFromHash();
-  
+
     if (!id || !author) {
       throw new Error('Missing id or author in URL hash parameters');
     }
-  
-    ws.send(JSON.stringify(['REQ', 'kinds:30023', {
-      "authors": [author],
-      "#d": [id]
-    }]));
-  
-    ws.send(JSON.stringify(['REQ', 'kinds:1', {
-      "#a": [`30023:${author}:${id}`],
-      "kinds": [1]
-    }]));
+
+    for (const ws of websockets) {
+      ws.send(JSON.stringify(['REQ', 'kinds:30023', {
+        "authors": [author],
+        "#d": [id]
+      }]));
+
+      ws.send(JSON.stringify(['REQ', 'kinds:1', {
+        "#a": [`30023:${author}:${id}`],
+        "kinds": [1]
+      }]));
+    }
   }
 
   const handleEvent = (data: { content: string, id: string, kind: number}, pubKey: string): void => {
@@ -241,12 +239,12 @@ export const MultiplayerActiveFile = () => {
         }
       }
     }, [activeFile]); // Add activeFile as a dependency
-  
+
 
     useEffect(() => {
       const pubKey = getKeys()[1];
       openWebsockets(pubKey, handleEvent);
-      
+
       return () => {
         console.log('Component unmounting');
         websockets.map((ws) => ws.close());
@@ -254,10 +252,11 @@ export const MultiplayerActiveFile = () => {
         setEventIds({});
       };
     }, []);
-  
+
   return (
     <>
       <button onClick={publish}>Publish</button>
+      <button onClick={loadEvents}>Load</button>
       <br/>
       <br/>
       <span>Connection status</span>
@@ -271,4 +270,3 @@ export const MultiplayerActiveFile = () => {
 };
 
 export default MultiplayerActiveFile;
-
