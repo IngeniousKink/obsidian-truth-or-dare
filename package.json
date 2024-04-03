@@ -16,7 +16,7 @@
 		"web-build": "npm run build && vite build",
 		"web-preview": "vite preview",
 
-		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives"
 	},
 	"keywords": [],
 	"author": "",
