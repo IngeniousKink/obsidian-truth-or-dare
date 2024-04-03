@@ -1,13 +1,14 @@
 import React from 'react';
-import { useApp } from "../../obsidian/hooks.js";
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
+import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/hooks.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;
   remainingCount: number;
   categoryLabel: string;
 }
+
 
 export const DrawCardButton: React.FC<DrawCardButtonProps> = (
   {
@@ -16,32 +17,19 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
     categoryLabel
   }) => {
 
-  const app = useApp();
-  if (!app) return null;
+  if (!nextCard) {
+    const buttonText = `(No more ${categoryLabel} cards)`;
+    return <button disabled>{buttonText}</button>;
+  }
 
-  const { vault, workspace } = app;
-  const activeFile = workspace.getActiveFile();
+  const event = timestampEvent(drawCard(nextCard.ref));
+  const drawCardEvent = useAppendEventToActiveFile(event);
 
-  const handleClick = async () => {
-    if (!activeFile) return;
-    if (!nextCard) return;
-
-    const event = timestampEvent(drawCard(nextCard.ref));
-
-    await vault.process(activeFile, (data) => {
-      return `${data}
-\`\`\`truth-or-dare:event
-type:${event.type}
-timestamp:${event.timestamp}
-cardRef: ${event.cardRef}
-\`\`\`
-`;
-    });
+  const handleClick = () => {
+    drawCardEvent();
   };
 
-  const buttonText = nextCard
-   ? `Draw a ${categoryLabel} card (${remainingCount})` 
-   : `(No more ${categoryLabel} cards)`;
+  const buttonText = `Draw a ${categoryLabel} card (${remainingCount})`;
 
-  return <button onClick={handleClick} disabled={!nextCard}>{buttonText}</button>;
+  return <button onClick={handleClick}>{buttonText}</button>;
 };

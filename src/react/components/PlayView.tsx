@@ -13,7 +13,6 @@ import {
 } from '../../gamestate.js';
 
 import type { CardWithRef } from '../../parse/parse-template.js';
-import { AddActorButton } from './AddActorButton.js';
 import { ActorList } from './ActorList.js';
 import { CompleteCardButton } from './CompleteCardButton.js';
 
@@ -102,7 +101,6 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
       <br />
       <br />
 
-      {gameState.template && <AddActorButton />}
       {gameState.template && <ActorList actors={gameState.actors} />}
     </div>
   );

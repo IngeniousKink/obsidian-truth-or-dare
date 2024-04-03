@@ -1,26 +1,14 @@
 import React from 'react';
-import { useApp } from "../../obsidian/hooks.js";
 import { completeCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { appendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/appendEventToActiveFile.js';
+import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/hooks.js';
 
 interface CompleteCardButtonProps {
   cardRef: string;
 }
 
 export const CompleteCardButton: React.FC<CompleteCardButtonProps> = ({ cardRef }) => {
-  const app = useApp();
-  if (!app) return null;
-
-  const { vault, workspace } = app;
-  const activeFile = workspace.getActiveFile();
-
-  const completeCardByRef = async () => {
-    if (!activeFile) return;
-
-    const event = timestampEvent(completeCard(cardRef));
-
-    await appendEventToActiveFile(vault, activeFile, event);
-  };
+  const event = timestampEvent(completeCard(cardRef));
+  const completeCardByRef = useAppendEventToActiveFile(event);
 
   const buttonText = "✅ Card completed";
 
