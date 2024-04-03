@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameState } from '../gamestate.js';
-import { useGameState } from './hooks.js';
+import { useGameState } from "../react/useGameState.js";
 
 interface ReactBaseViewProps {
   GameView: React.ComponentType<{ gameState: GameState }>;

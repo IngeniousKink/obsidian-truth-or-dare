@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/hooks.js';
+import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;

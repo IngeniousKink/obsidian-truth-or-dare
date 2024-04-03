@@ -169,3 +169,23 @@ export function advanceStack(): AdvanceStackEvent {
         type: 'advance_stack',
     };
 }
+
+export const serializeEventToCodeBlock = (event: TimestampedEvent) => {
+    let eventString = `\`\`\`truth-or-dare:event\n`;
+
+    // Ensure type and timestamp are always at the top
+    eventString += `type:${event.type}\n`;
+    eventString += `timestamp:${event.timestamp}\n`;
+
+    const eventWithStrKeys: { [key: string]: any } = event;
+
+    for (const key in eventWithStrKeys) {
+        if (key !== "type" && key !== "timestamp") {
+            eventString += `${key}:${eventWithStrKeys[key]}\n`;
+        }
+    }
+
+    eventString += `\`\`\`\n`;
+
+    return eventString;
+};

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ParsedCard, Annotation } from '../../parse/parse-card.js';
-import { useMediaResource } from '@obsidian-truth-or-dare/obsidian/hooks.js';
+import { useMediaResource } from '@obsidian-truth-or-dare/hooks.js';
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];

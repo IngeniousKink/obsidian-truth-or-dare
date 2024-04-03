@@ -1,6 +1,6 @@
 import React from 'react';
 import { completeCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/hooks.js';
+import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
 
 interface CompleteCardButtonProps {
   cardRef: string;

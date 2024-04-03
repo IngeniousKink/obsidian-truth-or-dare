@@ -6,8 +6,15 @@ export default defineConfig({
   plugins: [react()],
   root: 'export/',
   resolve: {
-    alias: {
-      '@obsidian-truth-or-dare': path.resolve(__dirname, './src/')
-    },
+    alias: [
+      {
+        find: '@obsidian-truth-or-dare/hooks.js',
+        replacement: path.resolve(__dirname, './export/src/hooks.web.js')
+      },
+      {
+        find: '@obsidian-truth-or-dare',
+        replacement: path.resolve(__dirname, './src/')
+      }
+    ]
   }
 })

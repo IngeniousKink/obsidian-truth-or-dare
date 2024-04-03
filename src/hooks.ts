@@ -1,12 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import type { App } from "obsidian";
-import { EventRegistryContext, EventRegistryFunction, AppContext } from "../react/context.js";
-import { GameState, createGameState } from "@obsidian-truth-or-dare/gamestate.js";
-import { fromMarkdown } from "mdast-util-from-markdown";
-import { convertMarkdownToGameTemplate } from "@obsidian-truth-or-dare/parse/parse-template.js";
-import { convertMarkdownToGameEvents } from "@obsidian-truth-or-dare/parse/parse-events.js";
+import { EventRegistryContext, EventRegistryFunction, AppContext } from "./react/context.js";
 import { GameEvent, timestampEvent } from "@obsidian-truth-or-dare/events.js";
-import { appendEventToActiveFile } from "./appendEventToActiveFile.js";
+import { appendEventToActiveFile } from "./obsidian/appendEventToActiveFile.js";
 
 export const useApp = (): App | undefined => {
   return useContext(AppContext);
@@ -78,24 +74,4 @@ export const useMediaResource = () => {
   }
 }
 
-export const useGameState = (): GameState => {
-  const [gameState, setGameState] = useState<GameState>({} as GameState);
-  const fileContents = useActiveFileContent();
-
-  useEffect(() => {
-    if (!fileContents) {
-      return;
-    }
-
-    const mast = fromMarkdown(fileContents);
-    const newGameTemplate = convertMarkdownToGameTemplate(mast);
-    const newGameEvents = convertMarkdownToGameEvents(mast);
-
-    const newGameState = createGameState(newGameTemplate, newGameEvents);
-
-    setGameState(newGameState);
-  }, [fileContents]);
-
-  return gameState;
-};
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { deleteActor } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/hooks.js';
+import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
 
 interface DeleteActorButtonProps {
   id: string;
