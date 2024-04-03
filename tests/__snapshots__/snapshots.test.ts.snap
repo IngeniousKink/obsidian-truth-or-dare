@@ -130,6 +130,37 @@ some text 1`] = `
 exports[`parses correctly:
 # Markdown Page
 
+* I [one::1] II [two::2] III [three::3] IV [four::4] V [five::5] VI [six::6] VII [seven::7] VIII [eight::8] XI [nine::9] X [ten::10]
+ 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "eight": "8",
+          "five": "5",
+          "four": "4",
+          "nine": "9",
+          "one": "1",
+          "ref": "#Markdown Page^0",
+          "seven": "7",
+          "six": "6",
+          "ten": "10",
+          "text": "I II III IV V VI VII VIII XI X",
+          "three": "3",
+          "two": "2",
+        },
+      ],
+      "name": "Markdown Page",
+      "ref": "#Markdown Page",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
+# Markdown Page
+
 * I would rate this at the end with [rating:: 9]
 
 more text 1`] = `
