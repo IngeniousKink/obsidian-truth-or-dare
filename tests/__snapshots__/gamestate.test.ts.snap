@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game State createGameState 1`] = `
+{
+  "displayedCard": "card2",
+  "events": [
+    {
+      "card": "card1",
+      "timestamp": 0,
+      "type": "card-draw",
+    },
+    {
+      "card": "card2",
+      "timestamp": 0,
+      "type": "card-draw",
+    },
+  ],
+  "previousCards": [
+    "card1",
+  ],
+  "seed": "{"stacks":[{"name":"stack1","ref":"stackRef","cards":[{"ref":"card1","text":"card1Text"},{"ref":"card2","text":"card2Text"},{"ref":"card3","text":"card3Text"}]}]}[{"type":"card-draw","card":"card1","timestamp":0},{"type":"card-draw","card":"card2","timestamp":0}]",
+  "template": {
+    "stacks": [
+      {
+        "cards": [
+          {
+            "ref": "card1",
+            "text": "card1Text",
+          },
+          {
+            "ref": "card2",
+            "text": "card2Text",
+          },
+          {
+            "ref": "card3",
+            "text": "card3Text",
+          },
+        ],
+        "name": "stack1",
+        "ref": "stackRef",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Game State findCardInGameTemplate 1`] = `
+{
+  "ref": "card1",
+  "text": "card1Text",
+}
+`;
+
+exports[`Game State getAllCards 1`] = `
+[
+  {
+    "ref": "card1",
+    "text": "card1Text",
+  },
+  {
+    "ref": "card2",
+    "text": "card2Text",
+  },
+  {
+    "ref": "card3",
+    "text": "card3Text",
+  },
+]
+`;
+
+exports[`Game State getAvailableCards 1`] = `
+[
+  {
+    "ref": "card3",
+    "text": "card3Text",
+  },
+]
+`;
