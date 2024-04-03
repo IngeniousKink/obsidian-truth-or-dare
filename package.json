@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-truth-or-dare-plugin",
-	"version": "1.0.0",
+	"version": "0.0.2",
 	"description": "This is a truth or dare plugin for Obsidian (https://obsidian.md)",
 	"exports": "./src/main.js",
 	"scripts": {
