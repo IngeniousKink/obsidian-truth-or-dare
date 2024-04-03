@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 
 import { BIP32Factory, BIP32Interface } from 'bip32';
@@ -6,44 +6,13 @@ import ecc from '@bitcoinerlab/secp256k1';
 
 import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
 
-// You need to provide the ECC library. The ECC library must implement 
-// all the methods of the `TinySecp256k1Interface` interface.
-const ECPair: ECPairAPI = ECPairFactory(ecc);
+import * as nobleSecp256k1 from 'noble-secp256k1';
 
+import { useWebApp } from '../../../web/src/hooks.web.js';
+
+const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
 
-const existingEvent = {
-  "id": "1c7ea8500d565900fa5c0a0cc87c2b33d51a12dd59ab3c4239cf8e6e31bc7d4d",
-  "pubkey": "aab1c430d0505289522ce0f28378d88f143bd3a2252ac3193d3c1f23e3b58632",
-  "created_at": 1710305239,
-  "kind": 30023,
-  "tags": [
-    [
-      "d",
-      "1710305134263"
-    ],
-    [
-      "title",
-      "A game"
-    ],
-    [
-      "summary",
-      ""
-    ],
-    [
-      "published_at",
-      "1710305239"
-    ],
-    [
-      "alt",
-      "This is a long form article, you can read it in https://habla.news/a/naddr1qqxnzde3xqenqdf3xv6ryd3nqgs24vwyxrg9q55f2gkwpu5r0rvg79pm6w3z22krry7nc8eruw6cvvsrqsqqqa28j95fz9"
-    ]
-  ],
-  "content": "This is your new *vault*.\n\nMake a note of something, [[create a link]], or try [the Importer](https://help.obsidian.md/Plugins/Importer)!\n\nWhen you're ready, delete this note and make the vault your own.\n\n* How about this external image ? ![Bondage|200](https://64.media.tumblr.com/998a6bddbab5b819bc82004fb4f64ae8/bbbd6aed813d8a59-67/s1280x1920/88d703d548d0c24ca8315259fc370355780c900f.jpg)\n\n\n```truth-or-dare:event\ntype:card-draw\ntimestamp:1708255295499\ncard: ^0\n```\n",
-  "sig": "d3308a56a92070a4b9682dc12554d3b2cb670d362b6f431d300e9d9afdad2d8dc98648b0f4a3f7a5ad88eea42742dfada3b1f1f9bf9b1e73b830f4af61a2caa8"
-}
-
-import * as nobleSecp256k1 from 'noble-secp256k1';
 
 function getSeed(): Buffer {
   return Buffer.from(window.location.toString());
@@ -64,7 +33,6 @@ function computeRawPrivkey(node: BIP32Interface): ECPairInterface | undefined {
   return ECPair.fromPrivateKey(node.privateKey);
 }
 
-
 function getPrivKeyHex(): string {
   const node = getNode();
   const path = getPath();
@@ -76,7 +44,6 @@ function getPrivKeyHex(): string {
 
   return keyPair.privateKey.toString('hex');
 }
-
 
 function getPubKey(privKey: string): string {
   return nobleSecp256k1.getPublicKey(privKey, true).substring(2);
@@ -91,24 +58,30 @@ function getKeys(): [string, string] {
 let websockets: WebSocket[] = [];
 const eventIds: { [key: string]: boolean } = {};
 
-function openWebsockets(relays: string[], pubKey: string): void {
+
+const relays = [
+  'wss://relay.snort.social',
+  'wss://nostr.wine/',
+  'wss://nos.lol',
+]
+
+function openWebsockets(pubKey: string, handleEvent: Function): void {
   for (const relay of relays) {
     const ws = new WebSocket(relay);
     websockets.push(ws);
-    addEventListeners(ws, pubKey);
+    addEventListeners(ws, pubKey, handleEvent);
   }
 }
 
-function addEventListeners(ws: WebSocket, pubKey: string): void {
+function addEventListeners(ws: WebSocket, pubKey: string, handleEvent: Function): void {
   ws.onerror = () => handleError(ws);
   ws.onopen = () => handleOpen(ws, pubKey);
-  ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey);
+  ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
 }
 
 function handleError(ws: WebSocket): void {
   websockets = websockets.filter((w) => w.url !== ws.url);
 }
-
 
 function handleOpen(ws: WebSocket, pubKey: string): void {
   const status = `${websockets.length}/${relays.length}`;
@@ -125,7 +98,7 @@ function handleOpen(ws: WebSocket, pubKey: string): void {
   sendPing(ws);
 }
 
-function handleMessage(event: MessageEvent, pubKey: string): void {
+function handleMessage(event: MessageEvent, pubKey: string, handleEvent: Function): void {
   const [msgType, subscriptionId, data] = JSON.parse(event.data);
 
   if (msgType === 'EVENT' && subscriptionId === 'with-item') {
@@ -133,59 +106,36 @@ function handleMessage(event: MessageEvent, pubKey: string): void {
   }
 }
 
-function handleEvent(data: any, pubKey: string): void {
-  const { content, id, sig } = data;
-  if (eventIds[id]) return;
-  eventIds[id] = true;
-  // nobleSecp256k1.schnorr.verify(sig, id, pubKey).then((validSig) => {
-  //   if (validSig) {
-      onNostr(content);
-  //   }
-  // });
-}
-
 function sendPing(ws: WebSocket): void {
   setInterval(() => ws.send(JSON.stringify({ event: 'ping' })), 10000);
 }
 
-function onDragStart(source: string, piece: string): void {
-  console.log('Event: onDragStart', 'Source:', source, 'Piece:', piece);
-  // Your existing code here...
-}
-
-function onDrop(source: string, target: string): void {
-  console.log('Event: onDrop', 'Source:', source, 'Target:', target);
-  // Your existing code here...
-}
-
-function onSnapEnd(): void {
-  console.log('Event: onSnapEnd');
-  // Your existing code here...
-}
-
-function onNostr(data: any): void {
-  console.log('Event: onNostr', data);
-  // Your existing code here...
-}
-
-function onFen(): void {
-  console.log('Event: onFen');
-  // Your existing code here...
-}
-
-// Initialize
-const [privKey, pubKey] = getKeys();
-const relays = [
-  'wss://relay.snort.social',
-  'wss://nostr.wine/',
-  'wss://nos.lol',
-]
-
 export const MultiplayerActiveFile = () => {
+  const [status, setStatus] = useState('connecting');
+  const { setActiveFile } = useWebApp();
 
-  openWebsockets(relays, pubKey);
+  const handleEvent = (data: any, pubKey: string): void => {
+    const { content, id, sig } = data;
+    if (eventIds[id]) return;
+    eventIds[id] = true;
+    onNostr(content);
+  };
+
+  const onNostr = (data: any): void => {
+    console.log('Event: onNostr', data);
+    setActiveFile(data);
+  };
+
+  useEffect(() => {
+    const [privKey, pubKey] = getKeys();
+    openWebsockets(pubKey, handleEvent);
+    setStatus('connected');
+  }, []);
 
   return (
-    <span>connecting</span>
+    <span>{status}</span>
   );
 };
+
+export default MultiplayerActiveFile;
+
