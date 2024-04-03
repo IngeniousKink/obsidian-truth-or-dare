@@ -24,7 +24,7 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
 
   const processAnnotation = (annotation: Annotation, i: number, text: string, lastEndPos: number) => {
     const cardElements: JSX.Element[] = [];
-    cardElements.push(createTextElement(`t-{i}`, text.slice(lastEndPos, annotation.startPos)));
+    cardElements.push(createTextElement(`t-${i}`, text.slice(lastEndPos, annotation.startPos)));
 
     const urlParts = String(annotation.url || "").split("|");
     const url = urlParts[0];
@@ -33,7 +33,7 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
     const extension = url.split('.').pop()?.toLowerCase() || IMAGE_EXTENSIONS[0];
 
     if (url.startsWith('http')) {
-      const mediaElement = createMediaElement(`m-{i}`, url, extension);
+      const mediaElement = createMediaElement(`m-${i}`, url, extension);
       if (mediaElement) {
         cardElements.push(mediaElement);
       }
