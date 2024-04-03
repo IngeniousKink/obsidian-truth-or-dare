@@ -13,9 +13,33 @@ import { useWebApp } from '../../../web/src/hooks.web.js';
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
 
+function getParamsFromHash(): { id: string, author: string, seed: string } {
+  const hashParams = new URLSearchParams(
+    window.location.hash.slice(1) // remove the '#'
+  );
+  const id = hashParams.get('id');
+  const author = hashParams.get('author');
+  let seed = hashParams.get('seed');
+
+  // If seed is not present, add it to the URL's hash part and call the function again
+  if (!seed) {
+    seed = Math.random().toString(36).substring(2, 10) +
+           Math.random().toString(36).substring(2, 10);
+    hashParams.set('seed', seed);
+    window.location.hash = hashParams.toString();
+    return getParamsFromHash();
+  }
+
+  if (!id || !author) {
+    throw new Error('Missing id or author in URL hash parameters');
+  }
+
+  return { id, author, seed };
+}
 
 function getSeed(): Buffer {
-  return Buffer.from(window.location.toString());
+  const { seed } = getParamsFromHash();
+  return Buffer.from(seed);
 }
 
 function getNode(): BIP32Interface {
@@ -86,14 +110,14 @@ function handleError(ws: WebSocket): void {
 function handleOpen(ws: WebSocket, pubKey: string): void {
   const status = `${websockets.length}/${relays.length}`;
   console.log('#relay', `Connected to ${status} relays`);
+
+  const { id, author } = getParamsFromHash();
+
   const filter = {
-    "authors": [
-      "aab1c430d0505289522ce0f28378d88f143bd3a2252ac3193d3c1f23e3b58632"
-    ],
-    "#d": [
-      "1710305134263"
-    ]
+    "authors": [author],
+    "#d": [id]
   };
+
   ws.send(JSON.stringify(['REQ', 'with-item', filter]));
   sendPing(ws);
 }

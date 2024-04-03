@@ -1,13 +1,6 @@
 import { TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 
-const initialFileContents = `# game
-
-* a truth <span data-category="truth" />
-* a dare! <span data-category="dare" />
-
-even here is text`;
-
 interface App {
   activeFile: string | null;
   setActiveFile: React.Dispatch<React.SetStateAction<string | null>>;
@@ -20,7 +13,7 @@ interface WebAppProviderProps {
 }
 
 export const WebAppProvider: React.FC<WebAppProviderProps> = ({ children }) => {
-  const [activeFile, setActiveFile] = useState<string | null>(initialFileContents);
+  const [activeFile, setActiveFile] = useState<string | null>(null);
 
   const value = {
     activeFile,
@@ -36,7 +29,7 @@ export const useWebApp = (): App | undefined => {
 
 export const useActiveFileContent = () => {
   const app = useWebApp();
-  const [content, setContent] = useState<string | null>(initialFileContents);
+  const [content, setContent] = useState<string | null>(null);
 
   useEffect(() => {
     if (!app) return;
