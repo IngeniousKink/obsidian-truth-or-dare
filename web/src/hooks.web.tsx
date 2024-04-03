@@ -1,12 +1,12 @@
 import { TimestampedEvent, serializeEventToCodeBlock } from "@obsidian-truth-or-dare/events.js";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 
-interface App {
+interface WebAppContextValue {
   activeFile: string | null;
   setActiveFile: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const WebAppContext = React.createContext<App | undefined>(undefined);
+const WebAppContext = React.createContext<WebAppContextValue | undefined>(undefined);
 
 interface WebAppProviderProps {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ export const WebAppProvider: React.FC<WebAppProviderProps> = ({ children }) => {
   return <WebAppContext.Provider value={value}>{children}</WebAppContext.Provider>;
 };
 
-export const useWebApp = (): App | undefined => {
+export const useWebApp = (): WebAppContextValue | undefined => {
   return useContext(WebAppContext);
 };
 

@@ -13,7 +13,11 @@ import { useWebApp } from '../../../web/src/hooks.web.js';
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
 
-function getParamsFromHash(): { id: string, author: string, seed: string } {
+function getParamsFromHash(): {
+  id: string | null,
+  author: string | null,
+  seed: string | null
+} {
   const hashParams = new URLSearchParams(
     window.location.hash.slice(1) // remove the '#'
   );
@@ -28,10 +32,6 @@ function getParamsFromHash(): { id: string, author: string, seed: string } {
     hashParams.set('seed', seed);
     window.location.hash = hashParams.toString();
     return getParamsFromHash();
-  }
-
-  if (!id || !author) {
-    throw new Error('Missing id or author in URL hash parameters');
   }
 
   return { id, author, seed };
@@ -84,12 +84,13 @@ const eventIds: { [key: string]: boolean } = {};
 
 
 const relays = [
-  'wss://relay.snort.social',
-  'wss://nostr.wine/',
-  'wss://nos.lol',
+  // 'wss://relay.snort.social',
+  // 'wss://nos.lol',
+  'wss://relay.damus.io'
 ]
 
 function openWebsockets(pubKey: string, handleEvent: Function): void {
+  console.log('connecting...');
   for (const relay of relays) {
     const ws = new WebSocket(relay);
     websockets.push(ws);
@@ -113,47 +114,70 @@ function handleOpen(ws: WebSocket, pubKey: string): void {
 
   const { id, author } = getParamsFromHash();
 
-  const filter = {
+  if (!id || !author) {
+    throw new Error('Missing id or author in URL hash parameters');
+  }
+
+  ws.send(JSON.stringify(['REQ', 'kinds:30023', {
     "authors": [author],
     "#d": [id]
-  };
+  }]));
 
-  ws.send(JSON.stringify(['REQ', 'with-item', filter]));
-  sendPing(ws);
+  ws.send(JSON.stringify(['REQ', 'kinds:1', {
+    "#a": [`30023:${author}:${id}`],
+    "kinds": [1]
+  }]));
 }
 
 function handleMessage(event: MessageEvent, pubKey: string, handleEvent: Function): void {
   const [msgType, subscriptionId, data] = JSON.parse(event.data);
 
-  if (msgType === 'EVENT' && subscriptionId === 'with-item') {
-    handleEvent(data, pubKey);
+  if (msgType === 'EVENT') {
+    handleEvent(data, subscriptionId, pubKey);
+  } else {
+    console.log('Unknown EVENT', event)
   }
 }
 
-function sendPing(ws: WebSocket): void {
-  setInterval(() => ws.send(JSON.stringify({ event: 'ping' })), 10000);
-}
-
 export const MultiplayerActiveFile = () => {
+  const webAppContext = useWebApp();
+
+  if (!webAppContext) {
+    throw new Error('useWebApp must be used within a WebAppProvider');
+  }
+
+  const { setActiveFile } = webAppContext;
+
+  console.log('rendering...');
+
   const [status, setStatus] = useState('connecting');
-  const { setActiveFile } = useWebApp();
 
   const handleEvent = (data: any, pubKey: string): void => {
-    const { content, id, sig } = data;
+    const { content, id, sig, kind} = data;
     if (eventIds[id]) return;
     eventIds[id] = true;
-    onNostr(content);
-  };
 
-  const onNostr = (data: any): void => {
-    console.log('Event: onNostr', data);
-    setActiveFile(data);
+    console.log('From relay:', content);
+
+    if (kind === 30023) {
+      setActiveFile(content);
+    } else if (kind === 1) {
+      setActiveFile((prevState : string) => prevState.concat('\n').concat(content));
+    } else {
+      console.log('Unknown kind:', kind, data);
+    }
   };
 
   useEffect(() => {
     const [privKey, pubKey] = getKeys();
     openWebsockets(pubKey, handleEvent);
     setStatus('connected');
+    
+    return () => {
+      console.log('Component unmounting');
+      websockets.map((ws) => ws.close());
+    };
+
   }, []);
 
   return (
