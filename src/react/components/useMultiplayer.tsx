@@ -10,9 +10,9 @@ import * as nip19 from 'nostr-tools/nip19'
 import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
 
 import * as nobleSecp256k1 from '@noble/secp256k1';
-import { useWebApp } from '../../../web/src/hooks.web.js';
 import { sha256 } from 'bitcoinjs-lib/src/crypto.js';
 import { MultiplayerContext } from './MultiplayerContext.js';
+import { useInMemoryTemplate } from '@obsidian-truth-or-dare/InMemoryTemplateContext.js';
 
 type HandleEventFunction = (data: { content: string, id: string, kind: number }, pubKey: string) => void;
 
@@ -46,13 +46,13 @@ export const useMultiplayer = () => {
 
   const { websockets, setWebsockets, eventIds, setEventIds, loadValue, setLoadValue, seedValue, setSeedValue } = multiplayerContext;
 
-  const webAppContext = useWebApp();
+  const templateValue = useInMemoryTemplate();
 
-  if (!webAppContext) {
-    throw new Error('useWebApp must be used within a WebAppProvider');
+  if (!templateValue) {
+    throw new Error('useMultiplayer must be used within a InMemoryTemplateProvider');
   }
 
-  const { templateFileContent, setTemplateFileContent, setEventsFileContent } = webAppContext;
+  const { templateFileContent, setTemplateFileContent, setEventsFileContent } = templateValue;
 
   const handleMessage = (event: MessageEvent): void => {
     const [msgType, subscriptionId, data] = JSON.parse(event.data);

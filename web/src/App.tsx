@@ -4,11 +4,12 @@ import '../../styles.css'
 
 import { PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
 import { ReactBaseView } from '@obsidian-truth-or-dare/obsidian/ReactBaseView.js';
-import { WebAppProvider } from './hooks.web.js';
+import { InMemoryTemplateProvider } from '../../src/InMemoryTemplateContext.js';
 import { MultiplayerActiveFile } from '@obsidian-truth-or-dare/react/components/MultiplayerActiveFile.js';
 import { TextareaBackedActiveFile } from './TextareaBackedActiveFile.js';
 import { MultiplayerProvider } from '@obsidian-truth-or-dare/react/components/MultiplayerProvider.js';
 import { WindowLocationHashManager } from '@obsidian-truth-or-dare/react/components/WindowLocationHashManager.js';
+import { DispatchGameEventContext, publishEventToMultiplayer } from '@obsidian-truth-or-dare/react/dispatchEvent.js';
 
 function App() {
 
@@ -19,19 +20,21 @@ function App() {
   }, []);
 
   return (
-    <WebAppProvider>
+    <InMemoryTemplateProvider>
       <MultiplayerProvider>
-        <WindowLocationHashManager />
-        <div className="game-source">
-          <TextareaBackedActiveFile />
-          <MultiplayerActiveFile />
-        </div>
+        <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
+          <WindowLocationHashManager />
+          <div className="game-source">
+            <TextareaBackedActiveFile />
+            <MultiplayerActiveFile />
+          </div>
 
-        <div className="game-play">
-          <ReactBaseView GameView={PlayView} />
-        </div>
+          <div className="game-play">
+            <ReactBaseView GameView={PlayView} />
+          </div>
+        </DispatchGameEventContext.Provider>
       </MultiplayerProvider>
-    </WebAppProvider>
+    </InMemoryTemplateProvider>
   )
 }
 

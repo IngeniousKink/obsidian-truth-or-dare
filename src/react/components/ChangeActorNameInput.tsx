@@ -1,6 +1,6 @@
 import React from 'react';
 import { changeActorName, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
+import { useDispatchGameEventHook } from '../dispatchEvent.js';
 
 interface ChangeActorNameInputProps {
   actorId: string;
@@ -8,7 +8,8 @@ interface ChangeActorNameInputProps {
 }
 
 export const ChangeActorNameInput: React.FC<ChangeActorNameInputProps> = ({ actorId, name }) => {
-  const appendEvent = useAppendGameEvent();
+  const useDispatchGameEvent = useDispatchGameEventHook();
+  const dispatchGameEvent = useDispatchGameEvent();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
@@ -16,7 +17,7 @@ export const ChangeActorNameInput: React.FC<ChangeActorNameInputProps> = ({ acto
     if (!actorId || name === newName) return;
 
     const gameEvent = timestampEvent(changeActorName(actorId, newName));
-    appendEvent(gameEvent);
+    dispatchGameEvent(gameEvent);
   };
 
   return (

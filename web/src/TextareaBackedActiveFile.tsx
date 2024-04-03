@@ -1,16 +1,16 @@
 import React from 'react';
-import { useWebApp } from './hooks.web.js';
+import { useInMemoryTemplate } from '../../src/InMemoryTemplateContext.js';
 
 export const TextareaBackedActiveFile = () => {
 
-  const app = useWebApp();
-  if (!app) return null;
+  const value = useInMemoryTemplate();
+  if (!value) return null;
 
   const {
     templateFileContent,
     setTemplateFileContent,
     eventsFileContent
-  } = app;
+  } = value;
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTemplateFileContent(event.target.value);

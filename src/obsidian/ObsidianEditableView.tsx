@@ -6,6 +6,8 @@ import { Root as ReactRoot, createRoot } from "react-dom/client";
 import React from "react";
 import { PlayView } from "../react/components/PlayView.js";
 import { ObsidianAppContext, ObsidianEventRegistryContext } from "@obsidian-truth-or-dare/hooks.js";
+import { DispatchGameEventContext } from "@obsidian-truth-or-dare/react/dispatchEvent.js";
+import { appendEventToActiveFile } from "./appendEventToActiveFile.js";
 
 export class ObsidianEditableView extends EditableFileView {
 	root: ReactRoot | null = null;
@@ -71,7 +73,9 @@ export class ObsidianEditableView extends EditableFileView {
 		this.root.render(
 			<ObsidianAppContext.Provider value={this.app}>
 				<ObsidianEventRegistryContext.Provider value={this.registerEvent.bind(this)}>
-					<ReactBaseView GameView={PlayView}/>
+					<DispatchGameEventContext.Provider value={appendEventToActiveFile}>
+						<ReactBaseView GameView={PlayView}/>
+					</DispatchGameEventContext.Provider>
 				</ObsidianEventRegistryContext.Provider>
 			</ObsidianAppContext.Provider>
 		);

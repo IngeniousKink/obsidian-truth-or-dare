@@ -1,17 +1,18 @@
 import React from 'react';
 import { completeCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
+import { useDispatchGameEventHook } from '../dispatchEvent.js';
 
 interface CompleteCardButtonProps {
   cardRef: string;
 }
 
 export const CompleteCardButton: React.FC<CompleteCardButtonProps> = ({ cardRef }) => {
-  const appendEvent = useAppendGameEvent();
+  const useDispatchGameEvent = useDispatchGameEventHook();
+  const dispatchGameEvent = useDispatchGameEvent();
 
   const handleCompleteCard = () => {
     const event = timestampEvent(completeCard(cardRef));
-    appendEvent(event);
+    dispatchGameEvent(event);
   };
 
   const buttonText = "✅ Card completed";

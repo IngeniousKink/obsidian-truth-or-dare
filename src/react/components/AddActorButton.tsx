@@ -1,13 +1,14 @@
 import React from 'react';
 import { createActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendGameEvent } from "@obsidian-truth-or-dare/hooks.js";
+import { useDispatchGameEventHook } from '../dispatchEvent.js';
 
 export const AddActorButton: React.FC = () => {
-  const appendEvent = useAppendGameEvent();
+  const useDispatchGameEvent = useDispatchGameEventHook();
+  const dispatchGameEvent = useDispatchGameEvent();
 
   const handleAddActor = () => {
     const event = timestampEvent(createActor());
-    appendEvent(event);
+    dispatchGameEvent(event);
   };
 
   const buttonText = "➕ Add player";

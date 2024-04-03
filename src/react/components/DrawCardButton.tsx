@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
+import { useDispatchGameEventHook } from '@obsidian-truth-or-dare/react/dispatchEvent.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;
@@ -17,16 +17,18 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
     categoryLabel
   }) => {
 
-  const appendEvent = useAppendGameEvent();
 
   if (!nextCard) {
     const buttonText = `(No more ${categoryLabel} cards)`;
     return <button disabled>{buttonText}</button>;
   }
 
+  const useDispatchGameEvent = useDispatchGameEventHook();
+  const dispatchGameEvent = useDispatchGameEvent();
+
   const handleDrawCard = () => {
     const event = timestampEvent(drawCard(nextCard.ref));
-    appendEvent(event);
+    dispatchGameEvent(event);
   };
 
   const buttonText = `Draw a ${categoryLabel} card (${remainingCount})`;
