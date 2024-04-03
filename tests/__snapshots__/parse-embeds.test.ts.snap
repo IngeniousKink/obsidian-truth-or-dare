@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse-embeds embed at end of textNode 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": "And here is another video: ",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "image",
+    "url": "another_video.mp4",
+  },
+]
+`;
+
+exports[`parse-embeds embed at start of textNode 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "image",
+    "url": "a_video.mp4",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": " and here goes some text",
+  },
+]
+`;
+
+exports[`parse-embeds embed in the middle of a textNode 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": "First some text ",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "image",
+    "url": "then_a_video.mp4",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": " then some more text",
+  },
+]
+`;
+
+exports[`parse-embeds embed with size info 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 54,
+        "line": 3,
+        "offset": 69,
+      },
+      "start": {
+        "column": 3,
+        "line": 3,
+        "offset": 18,
+      },
+    },
+    "type": "text",
+    "value": "Here's an embedded picture: ",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 54,
+        "line": 3,
+        "offset": 69,
+      },
+      "start": {
+        "column": 3,
+        "line": 3,
+        "offset": 18,
+      },
+    },
+    "type": "image",
+    "url": "a_picture.webp|100",
+  },
+]
+`;
+
+exports[`parse-embeds two embeds 1`] = `
+[
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": "text ",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "image",
+    "url": "video1.mp4",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": " and ",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "image",
+    "url": "picture2.webp",
+  },
+  {
+    "position": {
+      "end": {
+        "column": 40,
+        "line": 4,
+        "offset": 109,
+      },
+      "start": {
+        "column": 3,
+        "line": 4,
+        "offset": 72,
+      },
+    },
+    "type": "text",
+    "value": " the end",
+  },
+]
+`;

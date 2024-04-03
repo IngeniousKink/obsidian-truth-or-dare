@@ -147,7 +147,14 @@ exports[`parses template: media_embedded_image.md 1`] = `
     {
       "cards": [
         {
-          "annotations": [],
+          "annotations": [
+            {
+              "endPos": "53",
+              "startPos": "3",
+              "type": "image",
+              "url": "MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100",
+            },
+          ],
           "ref": "#List of one image^0",
           "text": "![[MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100]]",
         },
@@ -165,7 +172,14 @@ exports[`parses template: media_embedded_video_mp4.md 1`] = `
     {
       "cards": [
         {
-          "annotations": [],
+          "annotations": [
+            {
+              "endPos": "40",
+              "startPos": "3",
+              "type": "image",
+              "url": "a_video.mp4",
+            },
+          ],
           "ref": "^0",
           "text": "And here is a video: ![[a_video.mp4]]",
         },
@@ -233,12 +247,26 @@ exports[`parses template: media_video_external_html.md 1`] = `
     {
       "cards": [
         {
-          "annotations": [],
+          "annotations": [
+            {
+              "endPos": "54",
+              "startPos": "3",
+              "type": "image",
+              "url": "a_picture.webp|100",
+            },
+          ],
           "ref": "^0",
           "text": "Here's an embedded picture: ![[a_picture.webp|100]]",
         },
         {
-          "annotations": [],
+          "annotations": [
+            {
+              "endPos": "40",
+              "startPos": "3",
+              "type": "image",
+              "url": "a_video.mp4",
+            },
+          ],
           "ref": "^1",
           "text": "And here is a video: ![[a_video.mp4]]",
         },
