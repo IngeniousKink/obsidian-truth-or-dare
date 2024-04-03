@@ -1,5 +1,5 @@
 import type { Root, Html, Heading, List, ListItem, Paragraph, Text, PhrasingContent, Break } from "mdast";
-import { parseHTMLCard } from "./parse-card.js";
+import { parseCard } from "./parse-card.js";
 
 // Define a Card type with a reference and text
 export type Card = { ref: string; text: string; category?: string };
