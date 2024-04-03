@@ -1,10 +1,11 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-truth-or-dare-plugin",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "This is a truth or dare plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
+		"watch": "cross-env BUILD=dev obsidian-plugin dev main.ts",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
@@ -20,5 +21,10 @@
 		"obsidian": "latest",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
+	},
+	"dependencies": {
+		"cross-env": "^7.0.3",
+		"mdast-util-from-markdown": "^2.0.0",
+		"obsidian-plugin-cli": "^0.9.0"
 	}
 }
