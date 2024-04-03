@@ -138,14 +138,40 @@ function getNextActorId(gameState: GameState, lastActorId: string): string | nul
     return gameState.actors[nextActorIndex].id;
 }
 
-function updateAllocation(gameState: GameState, lastActorId: string): (string | null)[] {
+function maintainAllocation(gameState: GameState): GameState {
+    const lastActorId = gameState.preview.allocation[0] || gameState.actors[0]?.id;
+
+    if (!lastActorId) {
+        return {
+            ...gameState,
+            allocation: [],
+            preview: {
+                ...gameState.preview,
+                allocation: [],
+            },
+        };
+    }
+
+    const nextPlayerId = getNextActorId(gameState, lastActorId);
     const newAllocation = [...gameState.allocation];
 
     if (lastActorId) {
         newAllocation[0] = lastActorId;
     }
 
-    return newAllocation;
+    let previewAllocation: string[] = [];
+    if (newAllocation.length > 0 && nextPlayerId) {
+        previewAllocation = [nextPlayerId];
+    }
+
+    return {
+        ...gameState,
+        allocation: newAllocation,
+        preview: {
+            ...gameState.preview,
+            allocation: previewAllocation,
+        },
+    };
 }
 
 function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameState {
@@ -157,40 +183,15 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
         previousCards.push(gameState.displayedCard);
     }
 
-    const lastActorId = gameState.preview.allocation[0] || gameState.actors[0]?.id;
-
-    if (!lastActorId) {
-        return {
-            ...gameState,
-            allocation: [],
-            previousCards: previousCards,
-            displayedCard: card.ref,
-            preview: {
-                ...gameState.preview,
-                allocation: [],
-            },
-        }; 
-    }
-
-    const nextPlayerId = getNextActorId(gameState, lastActorId);
-    const newAllocation = updateAllocation(gameState, lastActorId);
-
-    let previewAllocation: string[] = [];
-    if (newAllocation.length > 0 && nextPlayerId) {
-        previewAllocation = [nextPlayerId];
-    }
+    let updatedGameState = maintainAllocation(gameState);
 
     return {
-        ...gameState,
-        allocation: newAllocation,
+        ...updatedGameState,
         previousCards: previousCards,
         displayedCard: card.ref,
-        preview: {
-            ...gameState.preview,
-            allocation: previewAllocation,
-        },
     };
 }
+
 
 
 function handleCompleteCardEvent(gameState: GameState, event: CompleteCardEvent): GameState {
