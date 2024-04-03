@@ -1,49 +1,61 @@
-import type { Root } from "mdast";
+import type { Root, Heading, List, ListItem, Paragraph, Text } from "mdast";
 
-export type Card = { ref: string; text: any; };
-export type CardMap = { [key: string]: Card[] };
+export type Card = { ref: string; text: string; };
+export type CardMap = Record<string, Card[]>;
 
-export function getCardsUnderHeading(node: Root): CardMap {
-	let headingText = '';
-	const allCardsUnderHeadings: CardMap = {};
+type ChildNode = Heading | List;
 
-	node.children.forEach(child => {
-		let refCounter = 0;
-		const cardsUnderHeading: Card[] = [];
+export function markdownToGameState(node: Root): CardMap {
+    return node.children.reduce<CardMap>((cardMap, child) => processChildNode(cardMap, child as ChildNode), {});
+}
 
-		if (child.type === 'heading' && child.children.length > 1 && 'value' in child.children[0]) {
-			headingText = child.children[0].value;
-			return;
-		}
+function processChildNode(cardMap: CardMap, child: ChildNode): CardMap {
+    if (child.type === 'heading') {
+        const headingText = getHeadingText(child);
+        return { ...cardMap, [headingText]: [] };
+    }
 
-		if (child.type !== 'list') {
-			return;
-		}
+    if (child.type === 'list') {
+        const headingText = getLatestHeading(cardMap);
+        const cardsUnderHeading = getCardsFromListNode(child, headingText);
+        return { ...cardMap, [headingText]: cardsUnderHeading };
+    }
 
-		child.children.forEach(listItem => {
-			listItem.children.forEach(paragraph => {
-				if (!('children' in paragraph)) {
-					return
-				}
-				paragraph.children.forEach(textNode => {
-					if (textNode.type !== 'text') {
-						return;
-					}
+    return cardMap;
+}
 
-					const filePath = '';
-					cardsUnderHeading.push({
-						ref: filePath + '#' + headingText + '^' + refCounter++,
-						text: textNode.value,
-					});
-				});
-			});
-		});
+function getHeadingText(node: Heading): string {
+    const textNode = node.children[0] as Text;
+    return textNode.value || '';
+}
 
-		console.log(`Cards under heading "${headingText}":`, cardsUnderHeading);
+function getLatestHeading(cardMap: CardMap): string {
+    return Object.keys(cardMap).pop() || '';
+}
 
-		allCardsUnderHeadings[headingText] = cardsUnderHeading;
+function getCardsFromListNode(listNode: List, headingText: string): Card[] {
+    let refCounter = 0;
+    return listNode.children.reduce<Card[]>((cards, listItem: ListItem) => {
+        const listItemCards = getListItemCards(listItem, refCounter, headingText);
+        return [...cards, ...listItemCards];
+    }, []);
+}
 
-	});
+function getListItemCards(listItem: ListItem, refCounter: number, headingText: string): Card[] {
+    return listItem.children.reduce<Card[]>((cards, paragraph: Paragraph) => {
+        const paragraphCards = getParagraphCards(paragraph, refCounter, headingText);
+        return [...cards, ...paragraphCards];
+    }, []);
+}
 
-	return allCardsUnderHeadings;
+function getParagraphCards(paragraph: Paragraph, refCounter: number, headingText: string): Card[] {
+    return paragraph.children.reduce<Card[]>((cards, textNode: Text) => {
+        if (textNode.type !== 'text') return cards;
+
+        const card = {
+            ref: '#' + headingText + '^' + refCounter++,
+            text: textNode.value,
+        };
+        return [...cards, card];
+    }, []);
 }

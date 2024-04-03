@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { getCardsUnderHeading } from './parse.js';
+import { markdownToGameState } from './parse.js';
 import type { CardMap } from './parse.js';
 import { AppendTimeButton } from './AppendTimeButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
@@ -29,7 +29,7 @@ export const ReactBaseView: React.FC = () => {
     console.log(fileContents);
 
     const mast = fromMarkdown(fileContents);
-    const newStacks = getCardsUnderHeading(mast);
+    const newStacks = markdownToGameState(mast);
     console.log(newStacks);
     setStacks(newStacks);
   }, [vault, workspace]);

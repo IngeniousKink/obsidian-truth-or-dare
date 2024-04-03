@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parses correctly:
+
+# List of one image
+* * ![[MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100]]
+ 1`] = `
+{
+  "List of one image": [],
+}
+`;
+
+exports[`parses correctly:
 # Heading one
 * card 1
 * card 1
@@ -10,13 +20,23 @@ exports[`parses correctly:
 * bar
  1`] = `
 {
-  "": [
+  "Heading one": [
     {
-      "ref": "#^0",
+      "ref": "#Heading one^0",
+      "text": "card 1",
+    },
+    {
+      "ref": "#Heading one^0",
+      "text": "card 1",
+    },
+  ],
+  "Heading two": [
+    {
+      "ref": "#Heading two^0",
       "text": "foo",
     },
     {
-      "ref": "#^1",
+      "ref": "#Heading two^0",
       "text": "bar",
     },
   ],
@@ -29,13 +49,13 @@ exports[`parses correctly:
 * card 1
  1`] = `
 {
-  "": [
+  "a heading": [
     {
-      "ref": "#^0",
+      "ref": "#a heading^0",
       "text": "card 1",
     },
     {
-      "ref": "#^1",
+      "ref": "#a heading^0",
       "text": "card 1",
     },
   ],

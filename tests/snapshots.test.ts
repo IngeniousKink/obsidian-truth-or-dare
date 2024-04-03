@@ -1,5 +1,5 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { getCardsUnderHeading } from '../src/parse.js';
+import { markdownToGameState } from '../src/parse.js';
 import fs, { read } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,7 +25,7 @@ test.each(
     )
 )('parses correctly:\n%s', (fileContents) => {
     const mast = fromMarkdown(fileContents);
-    const result = getCardsUnderHeading(mast);
+    const result = markdownToGameState(mast);
 
     expect(result).toMatchSnapshot();
 });
