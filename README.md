@@ -2,7 +2,7 @@
 
 Create and play [Truth or Dare](https://en.wikipedia.org/wiki/Truth_or_dare%3F) games from within [Obsidian](https://obsidian.md).
 
-[](./docs/screenshot.png)
+![](docs/screenshot.png)
 
 ## Installation
 
