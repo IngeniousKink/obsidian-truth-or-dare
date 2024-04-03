@@ -209,8 +209,19 @@ exports[`renders PlayView 1`] = `
       </h2>
     </div>
   </div>
+  <button
+    onClick={[Function]}
+  >
+    ✅ Card completed
+  </button>
   <br />
   <br />
-  <div />
+  <div>
+    <button
+      onClick={[Function]}
+    >
+      ➕ Add player
+    </button>
+  </div>
 </div>
 `;
