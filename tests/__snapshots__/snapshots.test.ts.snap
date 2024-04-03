@@ -85,8 +85,6 @@ even here is text 1`] = `
           "annotations": [
             {
               "actor": "0",
-            },
-            {
               "replace": "name",
             },
             {
