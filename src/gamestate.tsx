@@ -29,7 +29,9 @@ function applyEventToGameState(gameState: GameState, event: GameEvent): GameStat
     console.log('processing event', event);
     if (event.type !== 'card-draw') return gameState;
 
-    const card = selectRandomCard(gameState.template, gameState.seed);
+    if (!event.card) return gameState; // TODO this can be done in typescript ?
+
+    const card = findCardInGameTemplate(gameState.template, event.card);
     if (!card) return gameState;
 
     if (gameState.displayedCard) {
@@ -40,10 +42,10 @@ function applyEventToGameState(gameState: GameState, event: GameEvent): GameStat
     return gameState;
 }
 
-export function findCardInGameTemplate(gameTemplate: GameTemplate, x: number): Card | null {
+export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: string): Card | null {
     for (const stack of gameTemplate.stacks) {
         for (const card of stack.cards) {
-            if (card.ref.endsWith('^' + x)) {
+            if (card.ref == searchRef) {
                 return card;
             }
         }

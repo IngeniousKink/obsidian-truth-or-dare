@@ -4,7 +4,7 @@ import type { Root, Code } from "mdast";
 export type GameEvent = {
   type: string;
   timestamp: number;
-  x: number;
+  card: string | null;
 };
 
 /**
@@ -52,7 +52,7 @@ function extractEventFromCode(node: Code): GameEvent {
   const event: GameEvent = {
     type: '',
     timestamp: 0,
-    x: 0,
+    card: null,
   };
 
   for (const line of lines) {
@@ -60,8 +60,8 @@ function extractEventFromCode(node: Code): GameEvent {
       event.type = line.split(':')[1].trim();
     } else if (line.startsWith('timestamp:')) {
       event.timestamp = Number(line.split(':')[1].trim());
-    } else if (line.startsWith('x:')) {
-      event.x = Number(line.split(':')[1].trim());
+    } else if (line.startsWith('card:')) {
+      event.card = line.split(':')[1].trim();
     }
   }
 
