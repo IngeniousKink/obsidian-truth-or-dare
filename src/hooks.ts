@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import type { App } from "obsidian";
 import { EventRegistryContext, EventRegistryFunction, AppContext } from "./react/context.js";
-import { GameEvent, timestampEvent } from "@obsidian-truth-or-dare/events.js";
+import { GameEvent, TimestampedEvent, timestampEvent } from "@obsidian-truth-or-dare/events.js";
 import { appendEventToActiveFile } from "./obsidian/appendEventToActiveFile.js";
 
 export const useApp = (): App | undefined => {
@@ -36,23 +36,16 @@ export const useActiveFileContent = () => {
   return content;
 };
 
-export const useAppendEventToActiveFile = (eventAction : GameEvent) => {
+export const useAppendEventToActiveFile = () => {
   const app = useApp();
-
   if (!app) return () => null;
-
   const { vault, workspace } = app;
   const activeFile = workspace.getActiveFile();
-
-  const appendEvent = async () => {
+  
+  return async (eventAction: TimestampedEvent) => {
     if (!activeFile) return;
-
-    const event = timestampEvent(eventAction);
-
-    await appendEventToActiveFile(vault, activeFile, event);
+    await appendEventToActiveFile(vault, activeFile, eventAction);
   };
-
-  return appendEvent;
 };
 
 export const useMediaResource = () => {

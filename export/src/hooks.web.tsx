@@ -48,14 +48,14 @@ export const useActiveFileContent = () => {
   return content;
 };
 
-export const useAppendEventToActiveFile = (eventAction: TimestampedEvent) => {
+export const useAppendEventToActiveFile = () => {
   const app = useWebApp();
 
   if (!app) return () => null;
 
-  const appendEvent = useCallback(() => {
+  const appendEvent = useCallback(async (eventAction: TimestampedEvent) => {
     app.setActiveFile(data => `${data}\n${serializeEventToCodeBlock(eventAction)}`);
-  }, [app, eventAction]);
+  }, [app]);
 
   return appendEvent;
 };

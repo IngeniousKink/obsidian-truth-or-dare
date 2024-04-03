@@ -7,10 +7,15 @@ interface CompleteCardButtonProps {
 }
 
 export const CompleteCardButton: React.FC<CompleteCardButtonProps> = ({ cardRef }) => {
-  const event = timestampEvent(completeCard(cardRef));
-  const completeCardByRef = useAppendEventToActiveFile(event);
+  const appendEvent = useAppendEventToActiveFile();
+
+  const handleCompleteCard = () => {
+    const event = timestampEvent(completeCard(cardRef));
+    appendEvent(event);
+  };
 
   const buttonText = "✅ Card completed";
 
-  return <button onClick={completeCardByRef}>{buttonText}</button>;
+  return <button onClick={handleCompleteCard}>{buttonText}</button>;
 };
+

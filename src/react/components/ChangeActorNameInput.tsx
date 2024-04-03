@@ -8,15 +8,15 @@ interface ChangeActorNameInputProps {
 }
 
 export const ChangeActorNameInput: React.FC<ChangeActorNameInputProps> = ({ actorId, name }) => {
+  const appendEvent = useAppendEventToActiveFile();
+
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
 
     if (!actorId || name === newName) return;
 
     const gameEvent = timestampEvent(changeActorName(actorId, newName));
-    const changeName = useAppendEventToActiveFile(gameEvent);
-
-    changeName();
+    appendEvent(gameEvent);
   };
 
   return (

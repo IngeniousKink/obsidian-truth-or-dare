@@ -17,19 +17,19 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
     categoryLabel
   }) => {
 
+  const appendEvent = useAppendEventToActiveFile();
+
   if (!nextCard) {
     const buttonText = `(No more ${categoryLabel} cards)`;
     return <button disabled>{buttonText}</button>;
   }
 
-  const event = timestampEvent(drawCard(nextCard.ref));
-  const drawCardEvent = useAppendEventToActiveFile(event);
-
-  const handleClick = () => {
-    drawCardEvent();
+  const handleDrawCard = () => {
+    const event = timestampEvent(drawCard(nextCard.ref));
+    appendEvent(event);
   };
 
   const buttonText = `Draw a ${categoryLabel} card (${remainingCount})`;
 
-  return <button onClick={handleClick}>{buttonText}</button>;
+  return <button onClick={handleDrawCard}>{buttonText}</button>;
 };
