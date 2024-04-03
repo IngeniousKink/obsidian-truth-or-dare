@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react'
 import type { Card } from './parse-template.js';
 
 // <div class="bg-white">

@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders CurrentCard 1`] = `
+<div
+  className="card"
+>
+  <h2
+    className="card-text"
+  >
+    Do something.
+  </h2>
+</div>
+`;
+
+exports[`renders DisplayedCard = card 1`] = `
+<div
+  className="card"
+>
+  <h2
+    className="card-text"
+  >
+    Do something.
+  </h2>
+</div>
+`;
+
+exports[`renders DisplayedCard = null 1`] = `
+<p>
+  There is no card to display (yet).
+</p>
+`;
+
+exports[`renders DisplayedCard 1`] = `
+<div
+  className="card"
+>
+  <h2
+    className="card-text"
+  >
+    Do something.
+  </h2>
+</div>
+`;
+
+exports[`renders DisplayedCard 2`] = `
+<p>
+  There is no card to display (yet).
+</p>
+`;
+
+exports[`renders NoCard 1`] = `
+<p>
+  There is no card to display (yet).
+</p>
+`;
+
+exports[`renders correctly 1`] = `
+<p>
+  There is no card to display (yet).
+</p>
+`;
