@@ -2,12 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { convertMarkdownToGameTemplate } from './parse-template.js';
-import type { CardMap } from './parse-template.js';
+import type { GameTemplate } from './parse-template.js';
 import { AppendTimeButton } from './AppendTimeButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 
 export const ReactBaseView: React.FC = () => {
-  const [stacks, setStacks] = useState<CardMap>({} as CardMap);
+  const [gameTemplate, setGameTemplate] = useState<GameTemplate>({} as GameTemplate);
   const app = useApp();
   const registerEvent = useRegisterEvent();
 
@@ -29,9 +29,9 @@ export const ReactBaseView: React.FC = () => {
     console.log(fileContents);
 
     const mast = fromMarkdown(fileContents);
-    const newStacks = convertMarkdownToGameTemplate(mast);
-    console.log(newStacks);
-    setStacks(newStacks);
+    const newGameTemplate = convertMarkdownToGameTemplate(mast);
+    console.log(newGameTemplate);
+    setGameTemplate(newGameTemplate);
   }, [vault, workspace]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const ReactBaseView: React.FC = () => {
   return (
     <div>
       <h1>{heading}</h1>
-      <StacksDisplay stacks={stacks} />
+      <StacksDisplay stacks={gameTemplate.stacks} />
       <AppendTimeButton />
     </div >
   );
