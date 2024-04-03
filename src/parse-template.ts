@@ -65,7 +65,15 @@ function processMarkdownNode(gameTemplate: GameTemplate, child: ChildNode): Game
   }
 
   if (child.type === 'list') {
-    const stack = getLastStack(gameTemplate);
+    let stack = getLastStack(gameTemplate);
+    if (!stack) {
+      stack = {
+        name: "",
+        ref: "",
+        cards: extractCardsFromList(child, ""),
+      };
+      gameTemplate.stacks.push(stack);
+    }
     stack.cards = extractCardsFromList(child, stack.ref);
     return gameTemplate;
   }

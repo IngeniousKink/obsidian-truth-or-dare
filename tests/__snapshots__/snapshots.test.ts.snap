@@ -294,6 +294,30 @@ exports[`parses correctly:
 }
 `;
 
+exports[`parses correctly:
+* this document has no heading
+* but two cards
+ 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "^0",
+          "text": "this document has no heading",
+        },
+        {
+          "ref": "^1",
+          "text": "but two cards",
+        },
+      ],
+      "name": "",
+      "ref": "",
+    },
+  ],
+}
+`;
+
 exports[`parses events correctly:
 
 ## Events
