@@ -1,6 +1,6 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
 
-import { ExampleView } from "./ExampleView";
+import { ObsidianBaseView } from "./ObsidianBaseView";
 
 export const VIEW_TYPE_EXAMPLE = "truth-or-dare-view";
 
@@ -8,7 +8,7 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		this.registerView(
 			VIEW_TYPE_EXAMPLE,
-			(leaf) => new ExampleView(leaf)
+			(leaf) => new ObsidianBaseView(leaf)
 		);
 
 		this.addRibbonIcon("play", "Play truth or dare game", () => {

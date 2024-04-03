@@ -4,7 +4,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { getCardsUnderHeading } from 'parse';
 import type { CardMap } from 'parse';
 
-export const ReactView: React.FC = () => {
+export const ReactBaseView: React.FC = () => {
   const [text, setText] = useState<string>("");
   const [stacks, setStacks] = useState<CardMap>({} as CardMap);
   const app = useApp();
