@@ -6,27 +6,40 @@ export const TextareaBackedActiveFile = () => {
   const app = useWebApp();
   if (!app) return null;
 
-  const { activeFile, setActiveFile } = app;
+  const {
+    templateFileContent,
+    setTemplateFileContent,
+    eventsFileContent
+  } = app;
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setActiveFile(event.target.value);
+    setTemplateFileContent(event.target.value);
   };
 
   const style = {
     width: '100%',
-    height: '30em',
+    height: '10em',
   };
 
   return (
+    <>
+      <fieldset>
+        <legend>Template</legend>
 
-    <fieldset>
-      <legend>Template</legend>
-
-      <textarea
-        style={style}
-        value={activeFile || ''}
-        onChange={handleChange}
-      />
-    </fieldset>
+        <textarea
+          style={style}
+          value={templateFileContent || ''}
+          onChange={handleChange}
+        />
+      </fieldset>
+      <fieldset>
+        <legend>Events</legend>
+        <textarea
+          disabled
+          style={style}
+          value={eventsFileContent || ''}
+        />
+      </fieldset>
+    </>
   );
 };

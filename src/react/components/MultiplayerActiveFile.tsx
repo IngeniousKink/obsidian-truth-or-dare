@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 
 import { BIP32Factory, BIP32Interface } from 'bip32';
-import ecc, { signSchnorr, verifySchnorr } from '@bitcoinerlab/secp256k1';
+import ecc from '@bitcoinerlab/secp256k1';
 
 import * as nip19 from 'nostr-tools/nip19'
 
@@ -122,7 +122,7 @@ export const MultiplayerActiveFile = () => {
     throw new Error('useWebApp must be used within a WebAppProvider');
   }
 
-  const { setActiveFile, activeFile } = webAppContext;
+  const { templateFileContent, setTemplateFileContent, setEventsFileContent } = webAppContext;
 
   const [loadValue, setLoadValue] = useState<string | null>(getParamsFromHash().load);
   const [seedValue, setSeedValue] = useState<string | null>(getParamsFromHash().seed);
@@ -183,10 +183,9 @@ export const MultiplayerActiveFile = () => {
     console.log('From relay:', content);
 
     if (kind === 30023) {
-      setActiveFile(content);
+      setTemplateFileContent(content);
     } else if (kind === 1) {
-      setActiveFile((prevState: string) => prevState.concat('\n').concat(content));
-
+      setEventsFileContent((prevState: string) => (prevState || "").concat('\n').concat(content));
     } else {
       console.log('Unknown kind:', kind, data);
     }
@@ -204,7 +203,7 @@ export const MultiplayerActiveFile = () => {
 
     const pubKey = keyPair.publicKey;
 
-    const content = activeFile;
+    const content = templateFileContent;
     const created_at = Math.floor(Date.now() / 1000);
     const kind = 30023;
     const tags: string[] = [];
@@ -241,8 +240,7 @@ export const MultiplayerActiveFile = () => {
         ws.send(serializedEvent);
       }
     }
-  }, [activeFile]); // Add activeFile as a dependency
-
+  }, [templateFileContent]);
 
   useEffect(() => {
     const pubKey = getKeys()[1];

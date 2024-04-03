@@ -3,11 +3,11 @@ import { GameState, createGameState } from "@obsidian-truth-or-dare/gamestate.js
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { convertMarkdownToGameTemplate } from "@obsidian-truth-or-dare/parse/parse-template.js";
 import { convertMarkdownToGameEvents } from "@obsidian-truth-or-dare/parse/parse-events.js";
-import { useActiveFileContent } from "@obsidian-truth-or-dare/hooks.js";
+import { useCombinedTemplateAndEventFileContent } from "@obsidian-truth-or-dare/hooks.js";
 
 export const useGameState = (): GameState => {
   const [gameState, setGameState] = useState<GameState>({} as GameState);
-  const fileContents = useActiveFileContent();
+  const fileContents = useCombinedTemplateAndEventFileContent();
 
   useEffect(() => {
     if (!fileContents) {
