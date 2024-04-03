@@ -30,6 +30,88 @@ exports[`renders DisplayedCard = null 1`] = `
 </p>
 `;
 
+exports[`renders DisplayedCard = null 2`] = `
+<div>
+  <h1>
+    Truth or Dare
+  </h1>
+  <h2>
+    Card
+  </h2>
+  <div
+    className="card"
+  >
+    <h2
+      className="card-text"
+    >
+      one card
+    </h2>
+  </div>
+  <h2>
+    Status
+  </h2>
+  <p>
+    So far, 
+    0
+     cards have been played.
+  </p>
+  <p>
+    There are 
+    2
+     cards remaining.
+  </p>
+  <h2>
+    Buttons
+  </h2>
+  <h2>
+    Events
+  </h2>
+  <p>
+    In this game there are 
+    1
+     events played so far.
+  </p>
+  <h2>
+    Template
+  </h2>
+  <pre
+    style={
+      {
+        "fontSize": "80%",
+      }
+    }
+  >
+    [
+  {
+    "name": "first stack",
+    "ref": "#first stack",
+    "cards": [
+      {
+        "ref": "#first stack^0",
+        "text": "one card"
+      }
+    ]
+  },
+  {
+    "name": "second stack",
+    "ref": "#second stack",
+    "cards": [
+      {
+        "ref": "#second stack^0",
+        "text": "first of two cards"
+      },
+      {
+        "ref": "#second stack^1",
+        "text": "second of two cards"
+      }
+    ]
+  }
+]
+  </pre>
+  ;
+</div>
+`;
+
 exports[`renders DisplayedCard 1`] = `
 <div
   className="card"

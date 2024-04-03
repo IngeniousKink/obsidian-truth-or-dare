@@ -1,9 +1,10 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer';
 
-import { Card } from '../../src/parse-template';
+import { Card } from 'src/parse-template.js';
 
-import { NoCard, CurrentCard, DisplayedCard } from '../../src/DisplayedCard'
+import { NoCard, CurrentCard, DisplayedCard } from '@obsidian-truth-or-dare/DisplayedCard.js'
+import { GameView } from '@obsidian-truth-or-dare/GameView.js';
 
 const testCard : Card = { text: 'Do something.', ref: 'ref1'};
 
@@ -32,6 +33,54 @@ it('renders DisplayedCard = card', () => {
 it('renders DisplayedCard = null', () => {
   const tree = renderer
     .create(<DisplayedCard card={null} />)
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+const testGameState = {
+  "template": {
+      "stacks": [
+          {
+              "name": "first stack",
+              "ref": "#first stack",
+              "cards": [
+                  {
+                      "ref": "#first stack^0",
+                      "text": "one card"
+                  }
+              ]
+          },
+          {
+              "name": "second stack",
+              "ref": "#second stack",
+              "cards": [
+                  {
+                      "ref": "#second stack^0",
+                      "text": "first of two cards"
+                  },
+                  {
+                      "ref": "#second stack^1",
+                      "text": "second of two cards"
+                  }
+              ]
+          }
+      ]
+  },
+  "events": [
+      {
+          "type": "card-draw",
+          "timestamp": 1706983496470,
+          "card": "#first stack^0"
+      }
+  ],
+  "previousCards": [],
+  "seed": "{\"stacks\":[{\"name\":\"first stack\",\"ref\":\"#first stack\",\"cards\":[{\"ref\":\"#first stack^0\",\"text\":\"one card\"}]},{\"name\":\"second stack\",\"ref\":\"#second stack\",\"cards\":[{\"ref\":\"#second stack^0\",\"text\":\"first of two cards\"},{\"ref\":\"#second stack^1\",\"text\":\"second of two cards\"}]}]}[{\"type\":\"card-draw\",\"timestamp\":1706983496470,\"card\":\"#first stack^0\"}]",
+  "displayedCard": "#first stack^0"
+};
+
+it('renders DisplayedCard = null', () => {
+  const tree = renderer
+    .create(<GameView gameState={testGameState} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

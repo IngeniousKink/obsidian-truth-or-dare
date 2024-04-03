@@ -1,12 +1,23 @@
 import React from 'react';
+
+
+import { DrawCardButton } from './DrawCardButton.js';
+import { StacksDisplay } from './StacksDisplay.js';
+import { EventsDisplay } from './EventsDisplay.js';
+import { DisplayedCard } from './DisplayedCard.js';
+import { RemainingCards } from './RemainingCards.js';
+import { PreviousCards } from './PreviousCards.js';
+
+import { 
+  GameState, 
+  getAvailableCards, 
+  selectCardByRef, 
+  selectCardsByCategory, 
+  selectRandomAvailableCard, 
+  selectRandomCard 
+} from './gamestate.js';
+
 import type { Card } from './parse-template.js';
-import { DrawCardButton } from './DrawCardButton.jsx';
-import { StacksDisplay } from './StacksDisplay.jsx';
-import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, getAvailableCards, selectCardByRef, selectCardsByCategory, selectRandomAvailableCard, selectRandomCard } from './gamestate.jsx';
-import { DisplayedCard } from './DisplayedCard.jsx';
-import { RemainingCards } from './RemainingCards.jsx';
-import { PreviousCards } from './PreviousCards.jsx';
 
 export interface GameViewProps {
   gameState: GameState,

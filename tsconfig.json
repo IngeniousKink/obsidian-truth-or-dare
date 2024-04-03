@@ -13,6 +13,11 @@
     "jsx": "react",
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@obsidian-truth-or-dare/*": ["./src/*"]
+    },
+
     "lib": [
       "DOM",
       "ES5",
