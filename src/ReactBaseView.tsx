@@ -7,11 +7,19 @@ import { AppendTimeButton } from './AppendTimeButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
 import { EventsDisplay } from './EventsDisplay.jsx';
+import { GameState, createGameState } from './gamestate.jsx';
 
-type GameState = {
-  template: GameTemplate,
-  events: GameEvent[]
-};
+
+export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
+  <p>So far, {previousCards.length} cards have been played.</p>
+);
+
+
+export const DisplayedCard: React.FC<{ displayedCard: string | undefined; }> = ({ displayedCard }) => (
+  displayedCard
+    ? <p>The currently displayed card is {displayedCard}.</p>
+    : <p>There is no card to display (yet).</p>
+);
 
 export const ReactBaseView: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>({} as GameState);
@@ -38,10 +46,10 @@ export const ReactBaseView: React.FC = () => {
     const newGameTemplate = convertMarkdownToGameTemplate(mast);
     const newGameEvents = convertMarkdownToGameEvents(mast);
 
-    const newGameState: GameState = {
-      template: newGameTemplate,
-      events: newGameEvents,
-    };
+    const newGameState = createGameState(newGameTemplate, newGameEvents);
+
+    console.log('gameState', newGameState);
+
     setGameState(newGameState);
   }, [vault, workspace]);
 
@@ -66,6 +74,10 @@ export const ReactBaseView: React.FC = () => {
   return (
     <div>
       <h1>{heading}</h1>
+      <DisplayedCard displayedCard={gameState.displayedCard} />
+      {gameState.previousCards && (
+        <PreviousCards previousCards={gameState.previousCards} />
+      )}
       <h2>Buttons</h2>
       <AppendTimeButton />
       {gameState.template && gameState.events && (
@@ -83,4 +95,3 @@ export const ReactBaseView: React.FC = () => {
     </div >
   );
 };
-
