@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import '../../styles.css'
 
@@ -10,6 +10,8 @@ import { TextareaBackedActiveFile } from './TextareaBackedActiveFile.js';
 
 function App() {
 
+  const [activeTab, setActiveTab] = useState('multiplayer');
+
   useEffect(() => {
     return () => {
       console.log('App component unmounting');
@@ -18,9 +20,19 @@ function App() {
 
   return (
     <WebAppProvider>
-      <ReactBaseView GameView={PlayView} />
-      <MultiplayerActiveFile />
-      <TextareaBackedActiveFile />
+
+      <div className="game-source">
+        <button onClick={() => setActiveTab('textarea')}>Textarea</button>
+        <button onClick={() => setActiveTab('multiplayer')}>Multiplayer</button>
+        <br />
+        <br />
+        {activeTab === 'multiplayer' && <MultiplayerActiveFile />}
+        {activeTab === 'textarea' && <TextareaBackedActiveFile />}
+      </div>
+
+      <div className="game-play">
+        <ReactBaseView  GameView={PlayView} />
+      </div>
     </WebAppProvider>
   )
 }

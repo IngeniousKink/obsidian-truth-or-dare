@@ -300,3 +300,18 @@ If your plugin does not need CSS, delete this file.
     /* transform-origin: var(--better-top-left); */
     /* transform-origin: var(--better-top-center); */
 }
+.game-source, .game-play {
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .game-source {
+      width: 33.33%;
+      float: left;
+    }
+    .game-play {
+      width: 66.67%;
+      float: right;
+    }
+  }
+  
