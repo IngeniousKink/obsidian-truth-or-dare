@@ -12,6 +12,7 @@ interface ParsedCard {
 
 const REGEX_HTML_DATA_ATTRIBUTE = /<([^>]+?)>/g;
 const REGEX_DATA_ATTRIBUTE = /data-(\w+)="([^"]*)"/g;
+const REGEX_MEDIA_ATTRIBUTE = /<(img|video)\s+src="([^"]*)"/g;
 
 function createAnnotation(dataMatches: RegExpMatchArray[], match: RegExpMatchArray): Annotation {
   const annotation: Annotation = {};
@@ -29,11 +30,27 @@ function parseDataAttributes(match: RegExpMatchArray): Annotation | null {
   return createAnnotation(dataMatches, match);
 }
 
-export function parseHTMLCard(html: string): ParsedCard {
-  const matches = Array.from(html.matchAll(REGEX_HTML_DATA_ATTRIBUTE));
-  const annotations: Annotation[] = matches
+function parseMedia(match: RegExpMatchArray): Annotation {
+  const annotation: Annotation = {
+    startPos: String(match.index),
+    endPos: String((match.index || 0) + match[0].length),
+    src: match[2],
+    type: match[1],
+  };
+  return annotation;
+}
+
+export function parseCard(html: string): ParsedCard {
+  const dataMatches = Array.from(html.matchAll(REGEX_HTML_DATA_ATTRIBUTE));
+  const mediaMatches = Array.from(html.matchAll(REGEX_MEDIA_ATTRIBUTE));
+
+  const dataAnnotations: Annotation[] = dataMatches
     .map(parseDataAttributes)
     .filter((annotation): annotation is Annotation => annotation !== null);
+
+  const mediaAnnotations: Annotation[] = mediaMatches.map(parseMedia);
+
+  const annotations = [...dataAnnotations, ...mediaAnnotations];
 
   return annotations.length ? { annotations } : {};
 }

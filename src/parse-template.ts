@@ -127,7 +127,7 @@ function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: numbe
     ref: stackRef + '^' + refCounter,
     text: textValue,
     ...{
-      ...parseHTMLCard(textValue),
+      ...parseCard(textValue),
     }
   };
 }
