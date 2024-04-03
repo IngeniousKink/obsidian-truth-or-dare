@@ -6,7 +6,13 @@ exports[`parses correctly:
 * * ![[MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100]]
  1`] = `
 {
-  "List of one image": [],
+  "stacks": [
+    {
+      "cards": [],
+      "name": "List of one image",
+      "ref": "#List of one image",
+    },
+  ],
 }
 `;
 
@@ -20,24 +26,34 @@ exports[`parses correctly:
 * bar
  1`] = `
 {
-  "Heading one": [
+  "stacks": [
     {
-      "ref": "#Heading one^0",
-      "text": "card 1",
+      "cards": [
+        {
+          "ref": "#Heading one^0",
+          "text": "card 1",
+        },
+        {
+          "ref": "#Heading one^1",
+          "text": "card 1",
+        },
+      ],
+      "name": "Heading one",
+      "ref": "#Heading one",
     },
     {
-      "ref": "#Heading one^0",
-      "text": "card 1",
-    },
-  ],
-  "Heading two": [
-    {
-      "ref": "#Heading two^0",
-      "text": "foo",
-    },
-    {
-      "ref": "#Heading two^0",
-      "text": "bar",
+      "cards": [
+        {
+          "ref": "#Heading two^0",
+          "text": "foo",
+        },
+        {
+          "ref": "#Heading two^1",
+          "text": "bar",
+        },
+      ],
+      "name": "Heading two",
+      "ref": "#Heading two",
     },
   ],
 }
@@ -49,14 +65,20 @@ exports[`parses correctly:
 * card 1
  1`] = `
 {
-  "a heading": [
+  "stacks": [
     {
-      "ref": "#a heading^0",
-      "text": "card 1",
-    },
-    {
-      "ref": "#a heading^0",
-      "text": "card 1",
+      "cards": [
+        {
+          "ref": "#a heading^0",
+          "text": "card 1",
+        },
+        {
+          "ref": "#a heading^1",
+          "text": "card 1",
+        },
+      ],
+      "name": "a heading",
+      "ref": "#a heading",
     },
   ],
 }
