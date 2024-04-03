@@ -38,8 +38,8 @@ export function convertMarkdownToGameEvents(node: Root): GameEvent[] {
 
 // Process a markdown node, which can be a code block
 function processMarkdownNode(gameEvents: GameEvent[], child: Code): GameEvent[] {
-  if (child.type === 'code') {
-    const event = extractEventFromCode(child);
+  if (child.type === 'code' && child.lang === 'truth-or-dare:event') {
+    const event = extractEventFromCode(child as Code);
     return [...gameEvents, event];
   }
 
@@ -67,3 +67,4 @@ function extractEventFromCode(node: Code): GameEvent {
 
   return event;
 }
+
