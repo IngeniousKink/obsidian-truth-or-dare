@@ -57,12 +57,12 @@ export function parseCard(content: PhrasingContent[]): ParsedCard {
 
   const imageAnnotations: Annotation[] = [];
   let html = content.reduce((acc, textNode: PhrasingContent) => {
-    if (textNode.type === 'image') {
+    if (textNode.type === 'image' && textNode.position?.start.column) {
       imageAnnotations.push({
         type:'image',
         'url': textNode.url,
-        startPos: textNode.position?.start.column,
-        endPos: textNode.position?.end.column,
+        startPos: textNode.position?.start.column - 1,
+        endPos: textNode.position?.end.column + '![['.length + ']]'.length - 1,
       });
 
       return acc + '![[' + textNode.url + ']]';
