@@ -4,7 +4,7 @@ import * as renderer from 'react-test-renderer';
 import { CardWithRef } from '@obsidian-truth-or-dare/parse/parse-template.js';
 
 import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/react/components/DisplayedCard.js'
-import { PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
+import { GameStateWithDisplayedCard, PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
 import { InspectorView } from '@obsidian-truth-or-dare/react/components/InspectorView.js';
 import CurrentCard from '@obsidian-truth-or-dare/react/components/CurrentCard.js';
 import { GameState } from '@obsidian-truth-or-dare/gamestate.js';
@@ -44,7 +44,7 @@ it('renders DisplayedCard = null', () => {
   expect(tree).toMatchSnapshot();
 });
 
-const testGameState : GameState = {
+const testGameState : GameStateWithDisplayedCard = {
   "actors": [],
   "allocation": [],
   "preview": {
@@ -94,6 +94,7 @@ const testGameState : GameState = {
 };
 
 it('renders PlayView', () => {
+
   const tree = renderer
     .create(<PlayView gameState={testGameState} />)
     .toJSON();

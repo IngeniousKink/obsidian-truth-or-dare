@@ -19,7 +19,8 @@ describe('Game State', () => {
 
   const mockGameEvents: TimestampedEvent[] = [
     { type: 'draw_card', cardRef: 'card1', timestamp: 0},
-    { type: 'draw_card', cardRef: 'card2', timestamp: 0}
+    { type: 'complete_card', cardRef: 'card1', timestamp: 0},
+    { type: 'draw_card', cardRef: 'card2', timestamp: 0},
   ]
 
   test('createGameState', () => {

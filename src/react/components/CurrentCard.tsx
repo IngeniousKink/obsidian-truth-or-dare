@@ -69,8 +69,15 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
   }, [card]);
 
   return (
-    <div className="card">
-      <h2 className="card-text">{textWithImages}</h2>
+    <div className="card-stack">
+      <div className="card"></div>
+      <div className="card"></div>
+      <div className="card"></div>
+      <div className="card"></div>
+      <div className="card"></div>
+      <div className="card">
+        <h2 className="card-text">{textWithImages}</h2>
+      </div>
     </div>
   );
 }

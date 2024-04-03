@@ -2,29 +2,67 @@
 
 exports[`renders CurrentCard 1`] = `
 <div
-  className="card"
+  className="card-stack"
 >
-  <h2
-    className="card-text"
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
   >
-    <span>
-      Do something.
-    </span>
-  </h2>
+    <h2
+      className="card-text"
+    >
+      <span>
+        Do something.
+      </span>
+    </h2>
+  </div>
 </div>
 `;
 
 exports[`renders DisplayedCard = card 1`] = `
 <div
-  className="card"
+  className="card-stack"
 >
-  <h2
-    className="card-text"
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
+  />
+  <div
+    className="card"
   >
-    <span>
-      Do something.
-    </span>
-  </h2>
+    <h2
+      className="card-text"
+    >
+      <span>
+        Do something.
+      </span>
+    </h2>
+  </div>
 </div>
 `;
 
@@ -171,9 +209,6 @@ exports[`renders PlayView 1`] = `
       </h2>
     </div>
   </div>
-  <h2>
-    Buttons
-  </h2>
   <br />
   <br />
   <div />

@@ -105,12 +105,12 @@ function extractEventFromCode(node: Code): TimestampedEvent {
       }
       break;
     case 'skip_card':
-      if ('cardId' in event) {
+      if ('cardRef' in event) {
         return event as SkipCardEvent & WithTimestamp;
       }
       break;
     case 'complete_card':
-      if ('cardId' in event) {
+      if ('cardRef' in event) {
         return event as CompleteCardEvent & WithTimestamp;
       }
       break;

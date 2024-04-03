@@ -61,6 +61,7 @@ export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: st
 }
 
 export function getAllCards(gameTemplate: GameTemplate): CardWithRef[] {
+    if (!gameTemplate.stacks) return [];
     return gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as CardWithRef[]);
 }
 
@@ -78,6 +79,7 @@ export function selectRandomAvailableCard(gameState: GameState): CardWithRef | n
 }
 
 export function getAvailableCards(gameState: GameState): CardWithRef[] {
+    if (!gameState.template) { return []; }
     const allCards = getAllCards(gameState.template);
     const unavailableCards = [gameState.displayedCard, ...gameState.previousCards];
     return allCards.filter(card => !unavailableCards.includes(card.ref));
@@ -182,16 +184,10 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
     const card = findCardInGameTemplate(gameState.template, event.cardRef);
     if (!card) return gameState;
 
-    let previousCards = [...gameState.previousCards];
-    if (gameState.displayedCard) {
-        previousCards.push(gameState.displayedCard);
-    }
-
     let updatedGameState = maintainAllocation(gameState);
 
     return {
         ...updatedGameState,
-        previousCards: previousCards,
         displayedCard: card.ref,
     };
 }
@@ -199,10 +195,18 @@ function handleDrawCardEvent(gameState: GameState, event: DrawCardEvent): GameSt
 
 
 function handleCompleteCardEvent(gameState: GameState, event: CompleteCardEvent): GameState {
+    const card = findCardInGameTemplate(gameState.template, event.cardRef);
+
+    let previousCards = [...gameState.previousCards];
+    if (card) {
+        previousCards.push(card.ref);
+    }
+
     return {
         ...gameState,
         allocation: [],
         displayedCard: undefined,
+        previousCards: previousCards,
     };
 }
 
