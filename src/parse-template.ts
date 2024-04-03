@@ -1,5 +1,7 @@
-import type { Root, Html, Heading, List, ListItem, Paragraph, Text, PhrasingContent, Break } from "mdast";
+import type { Root, Html, Heading, List, ListItem, Paragraph, Text, Image } from "mdast";
 import { parseCard } from "./parse-card.js";
+import type { ParsedCard } from "./parse-card.js";
+import { PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
 
 // Define a Card type with a reference and text
 export type Card = { ref: string; text: string; category?: string };
@@ -110,7 +112,7 @@ function extractCardsFromListItem(listItem: ListItem, refCounter: number, stackR
 }
 
 function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): Card {
-  let children = [];
+  let children : PhrasingContent[]  = [];
 
   if (paragraph.type == 'html') {
     children = [paragraph];
@@ -118,16 +120,9 @@ function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: numbe
     children = paragraph.children;
   }
 
-  let textValue = children.reduce((acc, textNode: Text | Html) => {
-    if (textNode.type !== 'text' && textNode.type !== 'html') return acc;
-    return acc + textNode.value;
-  }, '');
 
   return {
     ref: stackRef + '^' + refCounter,
-    text: textValue,
-    ...{
-      ...parseCard(textValue),
-    }
+    ...parseCard(children),
   };
 }

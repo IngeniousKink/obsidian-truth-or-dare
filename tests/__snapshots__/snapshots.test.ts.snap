@@ -147,8 +147,9 @@ exports[`parses template: media_embedded_image.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "#List of one image^0",
-          "text": "",
+          "text": "![[MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100]]",
         },
       ],
       "name": "List of one image",
@@ -164,6 +165,7 @@ exports[`parses template: media_embedded_video_mp4.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "^0",
           "text": "And here is a video: ![[a_video.mp4]]",
         },
@@ -181,8 +183,16 @@ exports[`parses template: media_image_external.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [
+            {
+              "endPos": "139",
+              "startPos": "29",
+              "type": "image",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
+            },
+          ],
           "ref": "^0",
-          "text": "Here is an external image ",
+          "text": "Here is an external image ![[https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg]]",
         },
       ],
       "name": "",
@@ -223,16 +233,26 @@ exports[`parses template: media_video_external_html.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "^0",
           "text": "Here's an embedded picture: ![[a_picture.webp|100]]",
         },
         {
+          "annotations": [],
           "ref": "^1",
           "text": "And here is a video: ![[a_video.mp4]]",
         },
         {
+          "annotations": [
+            {
+              "endPos": "139",
+              "startPos": "29",
+              "type": "image",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
+            },
+          ],
           "ref": "^2",
-          "text": "Here is an external image ",
+          "text": "Here is an external image ![[https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg]]",
         },
         {
           "annotations": [
@@ -272,10 +292,12 @@ exports[`parses template: no_heading.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "^0",
           "text": "this document has no heading",
         },
         {
+          "annotations": [],
           "ref": "^1",
           "text": "but two cards",
         },
@@ -293,10 +315,12 @@ exports[`parses template: one_heading.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "#a heading^0",
           "text": "card 1",
         },
         {
+          "annotations": [],
           "ref": "#a heading^1",
           "text": "card 1",
         },
@@ -314,6 +338,7 @@ exports[`parses template: regression_html_tag_with_children.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "#Regression HTML Tag with children^0",
           "text": "Do something <b>bold</b>!",
         },
@@ -331,10 +356,12 @@ exports[`parses template: two_headings.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "#Heading one^0",
           "text": "card 1",
         },
         {
+          "annotations": [],
           "ref": "#Heading one^1",
           "text": "card 1",
         },
@@ -345,10 +372,12 @@ exports[`parses template: two_headings.md 1`] = `
     {
       "cards": [
         {
+          "annotations": [],
           "ref": "#Heading two^0",
           "text": "foo",
         },
         {
+          "annotations": [],
           "ref": "#Heading two^1",
           "text": "bar",
         },
