@@ -64,8 +64,8 @@ function extractEventFromCode(node: Code): TimestampedEvent {
   for (const line of lines) {
     const [key, value] = line.split(':');
 
-    if (key && value) {
-      event[key.trim()] = value.trim();
+    if (key) {
+      event[key.trim()] = (value || "").trim();
     }
   }
 

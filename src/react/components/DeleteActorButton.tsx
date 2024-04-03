@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from "../hooks.js";
 import { deleteActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
+import { appendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/appendEventToActiveFile.js';
 
 interface DeleteActorButtonProps {
   id: string;
@@ -18,15 +19,7 @@ export const DeleteActorButton: React.FC<DeleteActorButtonProps> = ({ id }) => {
 
     const event = timestampEvent(deleteActor(id));
 
-    await vault.process(activeFile, (data) => {
-      return `${data}
-\`\`\`truth-or-dare:event
-type:${event.type}
-timestamp:${event.timestamp}
-actorId:${event.actorId}
-\`\`\`
-`;
-    });
+    await appendEventToActiveFile(vault, activeFile, event);
   };
 
   const buttonText = "❌";

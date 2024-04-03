@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
 import { useApp } from "../hooks.js";
 import { changeActorName, timestampEvent } from '@obsidian-truth-or-dare/events.js';
+import { appendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/appendEventToActiveFile.js';
 
 interface ChangeActorNameInputProps {
   actorId: string;
@@ -17,20 +19,11 @@ export const ChangeActorNameInput: React.FC<ChangeActorNameInputProps> = ({ acto
   const handleNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
 
-    if (!activeFile || !actorId || !newName || name === newName) return;
+    if (!activeFile || !actorId || name === newName) return;
 
     const gameEvent = timestampEvent(changeActorName(actorId, newName));
 
-    await vault.process(activeFile, (data) => {
-      return `${data}
-\`\`\`truth-or-dare:event
-type:${gameEvent.type}
-timestamp:${gameEvent.timestamp}
-actorId:${gameEvent.actorId}
-value:${gameEvent.value}
-\`\`\`
-`;
-    });
+    await appendEventToActiveFile(vault, activeFile, gameEvent);
   };
 
   return (

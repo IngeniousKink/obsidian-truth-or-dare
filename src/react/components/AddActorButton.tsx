@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from "../hooks.js";
 import { createActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
+import { appendEventToActiveFile } from "@obsidian-truth-or-dare/obsidian/appendEventToActiveFile.js";
 
 export const AddActorButton: React.FC = () => {
   const app = useApp();
@@ -14,15 +15,7 @@ export const AddActorButton: React.FC = () => {
 
     const event = timestampEvent(createActor());
 
-    await vault.process(activeFile, (data) => {
-      return `${data}
-\`\`\`truth-or-dare:event
-type:${event.type}
-timestamp:${event.timestamp}
-actorId:${event.actorId}
-\`\`\`
-`;
-    });
+    await appendEventToActiveFile(vault, activeFile, event);
   };
 
   const buttonText = "➕ Add player";
