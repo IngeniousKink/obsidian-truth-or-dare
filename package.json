@@ -10,7 +10,7 @@
 		"watch": "cross-env BUILD=dev obsidian-plugin dev src/main.ts",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"web-dev": "vite",
-		"web-build": "npm run build && vite build",
+		"web-build": "npm run build && vite build --base=./",
 		"web-preview": "vite preview",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives"
 	},
