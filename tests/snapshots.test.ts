@@ -1,5 +1,5 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { markdownToGameState } from '../src/parse.js';
+import { convertMarkdownToGameTemplate } from '../src/parse.js';
 import fs, { read } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,7 +25,7 @@ test.each(
     )
 )('parses correctly:\n%s', (fileContents) => {
     const mast = fromMarkdown(fileContents);
-    const result = markdownToGameState(mast);
+    const result = convertMarkdownToGameTemplate(mast);
 
     expect(result).toMatchSnapshot();
 });
