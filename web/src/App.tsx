@@ -7,7 +7,8 @@ import { ReactBaseView } from '@obsidian-truth-or-dare/obsidian/ReactBaseView.js
 import { WebAppProvider } from './hooks.web.js';
 import { MultiplayerActiveFile } from '@obsidian-truth-or-dare/react/components/MultiplayerActiveFile.js';
 import { TextareaBackedActiveFile } from './TextareaBackedActiveFile.js';
-import { MultiplayerProvider } from '@obsidian-truth-or-dare/react/components/useMultiplayer.js';
+import { MultiplayerProvider } from '@obsidian-truth-or-dare/react/components/MultiplayerProvider.js';
+import { WindowLocationHashManager } from '@obsidian-truth-or-dare/react/components/WindowLocationHashManager.js';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
   return (
     <WebAppProvider>
       <MultiplayerProvider>
+        <WindowLocationHashManager />
         <div className="game-source">
           <TextareaBackedActiveFile />
           <MultiplayerActiveFile />

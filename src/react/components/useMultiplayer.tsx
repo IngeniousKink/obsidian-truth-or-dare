@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useContext, createContext, useState } from 'react';
+import React, { useCallback, useEffect, useContext } from 'react';
 import { Buffer } from 'buffer';
 
 import { BIP32Factory, BIP32Interface } from 'bip32';
@@ -12,6 +12,7 @@ import { ECPairFactory, ECPairAPI, ECPairInterface } from 'ecpair';
 import * as nobleSecp256k1 from '@noble/secp256k1';
 import { useWebApp } from '../../../web/src/hooks.web.js';
 import { sha256 } from 'bitcoinjs-lib/src/crypto.js';
+import { MultiplayerContext } from './MultiplayerContext.js';
 
 type HandleEventFunction = (data: { content: string, id: string, kind: number }, pubKey: string) => void;
 
@@ -35,48 +36,6 @@ const relays = [
   'wss://relay.damus.io',
   'wss://offchain.pub',
 ]
-
-type MultiplayerContextType = {
-  websockets: WebSocket[];
-  setWebsockets: React.Dispatch<React.SetStateAction<WebSocket[]>>;
-  eventIds: { [key: string]: boolean };
-  setEventIds: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
-  loadValue: string | null;
-  setLoadValue: React.Dispatch<React.SetStateAction<string | null>>;
-  seedValue: string | null;
-  setSeedValue: React.Dispatch<React.SetStateAction<string | null>>;
-};
-
-export const MultiplayerContext = createContext<MultiplayerContextType | undefined>(undefined);
-
-type MultiplayerProviderProps = {
-    children: React.ReactNode;
-  };
-  
-  export const MultiplayerProvider: React.FC<MultiplayerProviderProps> = ({ children }) => {
-    const [websockets, setWebsockets] = useState<WebSocket[]>([]);
-    const [eventIds, setEventIds] = useState<{ [key: string]: boolean }>({});
-    const [loadValue, setLoadValue] = useState<string | null>(null);
-    const [seedValue, setSeedValue] = useState<string | null>(null);
-  
-    const multiplayerValue: MultiplayerContextType = {
-      websockets,
-      setWebsockets,
-      eventIds,
-      setEventIds,
-      loadValue,
-      setLoadValue,
-      seedValue,
-      setSeedValue,
-    };
-  
-    return (
-      <MultiplayerContext.Provider value={multiplayerValue}>
-        {children}
-      </MultiplayerContext.Provider>
-    );
-  };
-    
 
 export const useMultiplayer = () => {
   const multiplayerContext = useContext(MultiplayerContext);
@@ -223,7 +182,9 @@ export const useMultiplayer = () => {
   }, [templateFileContent, websockets]);
 
   useEffect(() => {
-    openWebsockets(handleEvent);
+    if (websockets.length < 1) {
+      openWebsockets();
+    }
 
     return () => {
       console.log('Component unmounting');
