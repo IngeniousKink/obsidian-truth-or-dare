@@ -1,32 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parses correctly:
-
-# List of one image
-* * ![[MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100]]
- 1`] = `
-{
-  "stacks": [
-    {
-      "cards": [
-        {
-          "ref": "#List of one image^0",
-          "text": "",
-        },
-      ],
-      "name": "List of one image",
-      "ref": "#List of one image",
-    },
-  ],
-}
+exports[`parses events: irrelevant_code_block.md 1`] = `
+[
+  {
+    "card": null,
+    "timestamp": 1706012788684,
+    "type": "card-draw",
+  },
+]
 `;
 
-exports[`parses correctly:
-# HTML inline field
+exports[`parses events: simple.md 1`] = `
+[
+  {
+    "card": null,
+    "timestamp": 1706012788684,
+    "type": "card-draw",
+  },
+  {
+    "card": null,
+    "timestamp": 1706012792713,
+    "type": "card-draw",
+  },
+  {
+    "card": null,
+    "timestamp": 1706012795173,
+    "type": "card-draw",
+  },
+]
+`;
 
-* <span data-category="truth" />
-
-even here is text 1`] = `
+exports[`parses template: inline_fields_inline_html.md 1`] = `
 {
   "stacks": [
     {
@@ -50,14 +54,7 @@ even here is text 1`] = `
 }
 `;
 
-exports[`parses correctly:
-# HTML inline field
-
-* <span data-category="truth" />
-* <span data-category="truth" /> * <span data-category="dare" />
-* <span data-actor="0" data-replace="name">Peter</span> does something. <span data-category="dare" />
-
-even here is text 1`] = `
+exports[`parses template: inline_fields_inline_html_multiple.md 1`] = `
 {
   "stacks": [
     {
@@ -114,15 +111,96 @@ even here is text 1`] = `
 }
 `;
 
-exports[`parses correctly:
-# Heading one
-* card 1
-* card 1
+exports[`parses template: inline_fields_span_with_children.md 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "annotations": [
+            {
+              "actor": "0",
+              "endPos": "71",
+              "replace": "genitive",
+              "startPos": "26",
+            },
+            {
+              "category": "dare",
+              "endPos": "124",
+              "startPos": "95",
+            },
+          ],
+          "ref": "#Span with children^0",
+          "text": "one card: do something to <span data-replace="genitive" data-actor="0">a player's</span> hair. <span data-category="dare" />",
+        },
+      ],
+      "name": "Span with children",
+      "ref": "#Span with children",
+    },
+  ],
+}
+`;
 
-# Heading two
-* foo
-* bar
- 1`] = `
+exports[`parses template: no_heading.md 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "^0",
+          "text": "this document has no heading",
+        },
+        {
+          "ref": "^1",
+          "text": "but two cards",
+        },
+      ],
+      "name": "",
+      "ref": "",
+    },
+  ],
+}
+`;
+
+exports[`parses template: one_heading.md 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "#a heading^0",
+          "text": "card 1",
+        },
+        {
+          "ref": "#a heading^1",
+          "text": "card 1",
+        },
+      ],
+      "name": "a heading",
+      "ref": "#a heading",
+    },
+  ],
+}
+`;
+
+exports[`parses template: regression_html_tag_with_children.md 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "ref": "#Regression HTML Tag with children^0",
+          "text": "Do something <b>bold</b>!",
+        },
+      ],
+      "name": "Regression HTML Tag with children",
+      "ref": "#Regression HTML Tag with children",
+    },
+  ],
+}
+`;
+
+exports[`parses template: two_headings.md 1`] = `
 {
   "stacks": [
     {
@@ -157,101 +235,71 @@ exports[`parses correctly:
 }
 `;
 
-exports[`parses correctly:
-# Regression HTML Tag with children
-
-* Do something <b>bold</b>!
-
-even here is text 1`] = `
+exports[`parses template: with_image.md 1`] = `
 {
   "stacks": [
     {
       "cards": [
         {
-          "ref": "#Regression HTML Tag with children^0",
-          "text": "Do something <b>bold</b>!",
+          "ref": "#List of one image^0",
+          "text": "",
         },
       ],
-      "name": "Regression HTML Tag with children",
-      "ref": "#Regression HTML Tag with children",
+      "name": "List of one image",
+      "ref": "#List of one image",
     },
   ],
 }
 `;
 
-exports[`parses correctly:
-# Span with children
-
-* one card: do something to <span data-replace="genitive" data-actor="0">a player's</span> hair. <span data-category="dare" /> 1`] = `
-{
-  "stacks": [
-    {
-      "cards": [
-        {
-          "annotations": [
-            {
-              "actor": "0",
-              "endPos": "71",
-              "replace": "genitive",
-              "startPos": "26",
-            },
-            {
-              "category": "dare",
-              "endPos": "124",
-              "startPos": "95",
-            },
-          ],
-          "ref": "#Span with children^0",
-          "text": "one card: do something to <span data-replace="genitive" data-actor="0">a player's</span> hair. <span data-category="dare" />",
-        },
-      ],
-      "name": "Span with children",
-      "ref": "#Span with children",
-    },
-  ],
-}
-`;
-
-exports[`parses correctly:
-# a heading
-* card 1
-* card 1
- 1`] = `
-{
-  "stacks": [
-    {
-      "cards": [
-        {
-          "ref": "#a heading^0",
-          "text": "card 1",
-        },
-        {
-          "ref": "#a heading^1",
-          "text": "card 1",
-        },
-      ],
-      "name": "a heading",
-      "ref": "#a heading",
-    },
-  ],
-}
-`;
-
-exports[`parses correctly:
-* this document has no heading
-* but two cards
- 1`] = `
+exports[`parses template: with_pictures.md 1`] = `
 {
   "stacks": [
     {
       "cards": [
         {
           "ref": "^0",
-          "text": "this document has no heading",
+          "text": "Here's an embedded picture: ![[a_picture.webp|100]]",
         },
         {
           "ref": "^1",
-          "text": "but two cards",
+          "text": "And here is a video: ![[a_video.mp4]]",
+        },
+        {
+          "annotations": [
+            {
+              "endPos": "128",
+              "src": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
+              "startPos": "26",
+              "type": "img",
+            },
+          ],
+          "ref": "^2",
+          "text": "Here is an external image <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg" />",
+        },
+        {
+          "annotations": [
+            {
+              "endPos": "129",
+              "src": "https://upload.wikimedia.org/wikipedia/commons/6/66/Adult_male_Royal_Bengal_tiger.jpg",
+              "startPos": "33",
+              "type": "img",
+            },
+          ],
+          "ref": "^3",
+          "text": "and an external image using HTML <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Adult_male_Royal_Bengal_tiger.jpg" /> ..",
+        },
+        {
+          "annotations": [
+            {
+              "endPos": "119",
+              "src": "https://upload.wikimedia.org/wikipedia/commons/b/b2/A_walk_with_the_Tigress.webm",
+              "startPos": "26",
+              "type": "video",
+            },
+          ],
+          "ref": "^4",
+          "text": "external video using HTML <video src="https://upload.wikimedia.org/wikipedia/commons/b/b2/A_walk_with_the_Tigress.webm" />",
         },
       ],
       "name": "",
@@ -259,69 +307,4 @@ exports[`parses correctly:
     },
   ],
 }
-`;
-
-exports[`parses events correctly:
-
-## Events
-
-\`\`\`truth-or-dare:event
-type:card-draw
-timestamp: 1706012788684
-x: 2
-\`\`\`
-
-\`\`\`truth-or-dare:event
-type:card-draw
-timestamp: 1706012792713
-x: 2
-\`\`\`
-
-\`\`\`truth-or-dare:event
-type:card-draw
-timestamp: 1706012795173
-x: 2
-\`\`\`
- 1`] = `
-[
-  {
-    "card": null,
-    "timestamp": 1706012788684,
-    "type": "card-draw",
-  },
-  {
-    "card": null,
-    "timestamp": 1706012792713,
-    "type": "card-draw",
-  },
-  {
-    "card": null,
-    "timestamp": 1706012795173,
-    "type": "card-draw",
-  },
-]
-`;
-
-exports[`parses events correctly:
-
-## Events
-
-\`\`\`truth-or-dare:event
-type:card-draw
-timestamp: 1706012788684
-x: should be present in parsed result
-\`\`\`
-
-\`\`\`javascript
-THIS SHOULD NOT BE PRESENT IN PARSED RESULT
-\`\`\`
-
- 1`] = `
-[
-  {
-    "card": null,
-    "timestamp": 1706012788684,
-    "type": "card-draw",
-  },
-]
 `;
