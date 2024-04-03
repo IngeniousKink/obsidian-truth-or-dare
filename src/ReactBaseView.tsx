@@ -7,8 +7,8 @@ import { DrawCardButton } from './DrawCardButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
 import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, createGameState, getAvailableCards, selectCardsByCategory, selectRandomAvailableCard, selectRandomCard } from './gamestate.jsx';
-
+import { GameState, createGameState, getAvailableCards, selectCardByRef, selectCardsByCategory, selectRandomAvailableCard, selectRandomCard } from './gamestate.jsx';
+import { DisplayedCard } from './DisplayedCard.jsx';
 
 export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
   <p>So far, {previousCards.length} cards have been played.</p>
@@ -16,12 +16,6 @@ export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previous
 
 export const RemainingCards: React.FC<{ remainingCards: Card[]; }> = ({ remainingCards }) => (
   <p>There are {remainingCards.length} cards remaining.</p>
-);
-
-export const DisplayedCard: React.FC<{ displayedCard: string | undefined; }> = ({ displayedCard }) => (
-  displayedCard
-    ? <p>The currently displayed card is {displayedCard}.</p>
-    : <p>There is no card to display (yet).</p>
 );
 
 export const ReactBaseView: React.FC = () => {
@@ -33,7 +27,7 @@ export const ReactBaseView: React.FC = () => {
 
   const { vault, metadataCache, workspace } = app;
 
-  const heading: string = vault.getName() + 'xxx';
+  const heading: string = "Truth or Dare"
 
   const update = useCallback(async () => {
     console.log(new Date().getTime(), 'updating');
@@ -85,7 +79,12 @@ export const ReactBaseView: React.FC = () => {
   return (
     <div>
       <h1>{heading}</h1>
-      <DisplayedCard displayedCard={gameState.displayedCard} />
+
+      <h2>Card</h2>
+      <DisplayedCard card={selectCardByRef(gameState, gameState.displayedCard)} />
+
+      <h2>Status</h2>
+
       {gameState.previousCards && (
         <PreviousCards previousCards={gameState.previousCards} />
       )}

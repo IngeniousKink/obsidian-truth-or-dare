@@ -97,3 +97,15 @@ export function selectCardsByCategory(gameState: GameState): { [key: string]: Ca
 
     return cardsByCategory;
 }
+
+export function selectCardByRef(gameState: GameState, ref: string | undefined): Card | null {
+    if (!ref) return null;
+
+    const allCards = getAllCards(gameState.template);
+    for (const card of allCards) {
+        if (card.ref === ref) {
+            return card;
+        }
+    }
+    return null;
+}
