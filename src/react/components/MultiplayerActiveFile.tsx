@@ -106,16 +106,19 @@ function openWebsockets(pubKey: Uint8Array, handleEvent: HandleEventFunction): v
   }
 }
 
+
 function addEventListeners(ws: WebSocket, pubKey: Uint8Array, handleEvent: HandleEventFunction): void {
-  ws.onerror = () => handleError(ws);
+  ws.onerror = (error: ErrorEvent) => {
+    console.log('HANDLE ERROR! Error occurred:', error.message);
+    websockets = websockets.filter((w) => w.url !== ws.url);
+  };
   ws.onopen = () => handleOpen(ws, pubKey);
   ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
+  ws.onclose = (event: CloseEvent) => {
+    console.log(`Socket closed. Reason: ${event.reason ? event.reason : 'None provided'}. Code: ${event.code}`);
+  };
 }
 
-function handleError(ws: WebSocket): void {
-  console.log('HANDLE ERROR!');
-  websockets = websockets.filter((w) => w.url !== ws.url);
-}
 
 function handleOpen(ws: WebSocket, pubKey: Uint8Array): void {
   const status = `${websockets.length}/${relays.length}`;
@@ -172,6 +175,7 @@ export const MultiplayerActiveFile = () => {
       setActiveFile(content);
     } else if (kind === 1) {
       setActiveFile((prevState : string) => prevState.concat('\n').concat(content));
+
     } else {
       console.log('Unknown kind:', kind, data);
     }
