@@ -34,6 +34,8 @@ const relays = [
   'wss://offchain.pub',
 ]
 
+const messagesToSendOnEstablishedConnection: string[] = [];
+
 export const useMultiplayer = () => {
   const multiplayerContext = useContext(MultiplayerContext);
 
@@ -75,12 +77,19 @@ export const useMultiplayer = () => {
       console.log('HANDLE ERROR! Error occurred:', error.message);
       setWebsockets(websockets.filter((w) => w.url !== ws.url));
     };
-    ws.onopen = () => console.log(`Connected to relay ${ws.url}`);
+    ws.onopen = () => {
+      console.log(`Connected to relay ${ws.url}`);
+
+      messagesToSendOnEstablishedConnection.forEach((message) => {
+        ws.send(message);
+      });
+    };
     ws.onmessage = (event: MessageEvent) => handleMessage(event);
     ws.onclose = (event: CloseEvent) => {
       console.log(`Socket closed. Reason: ${event.reason ? event.reason : 'None provided'}. Code: ${event.code}`);
     };
   };
+
 
   const handleEvent = (data: { content: string, id: string, kind: number, pubkey: string }): void => {
     const { content, id, kind } = data;
@@ -108,17 +117,23 @@ export const useMultiplayer = () => {
 
     if (decoded.type != 'naddr') { return; }
 
-    for (const ws of websockets) {
-      ws.send(JSON.stringify(['REQ', 'kinds:30023', {
+    if (websockets.length < 1) {
+      openWebsockets();
+    }
+
+    messagesToSendOnEstablishedConnection.push(
+      JSON.stringify(['REQ', 'kinds:30023', {
         "authors": [decoded.data.pubkey],
         "#d": [decoded.data.identifier]
-      }]));
+      }])
+    );
 
-      ws.send(JSON.stringify(['REQ', 'kinds:1', {
+    messagesToSendOnEstablishedConnection.push(
+      JSON.stringify(['REQ', 'kinds:1', {
         "#a": [`30023:${decoded.data.pubkey}:${decoded.data.identifier}`],
         "kinds": [1]
-      }]));
-    }
+      }])
+    );
   }, [loadValue]);
 
   const publishMultiplayerData = useCallback(async (kind: number, content: string, tags: string[][] = []) => {
@@ -202,15 +217,8 @@ export const useMultiplayer = () => {
   }, [loadValue, publishMultiplayerData]);
 
   useEffect(() => {
-    if (websockets.length < 1) {
-      openWebsockets();
-    }
-
     return () => {
-      console.log('Component unmounting');
-      websockets.map((ws) => ws.close());
-      setWebsockets([]);
-      setEventIds({});
+      console.log('Component with useMultiplayer unmounting');
     };
   }, []);
 
