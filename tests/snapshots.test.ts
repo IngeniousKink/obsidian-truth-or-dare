@@ -1,6 +1,6 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
 
-import { convertMarkdownToGameTemplate } from '../src/parse.js';
+import { convertMarkdownToGameTemplate } from '../src/parse-template.js';
 import { convertMarkdownToGameEvents } from '../src/parse-events.js';
 import { readFileContents } from './readFileContents.js';
 
