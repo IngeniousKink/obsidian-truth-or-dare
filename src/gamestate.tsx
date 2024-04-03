@@ -53,11 +53,21 @@ export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: st
     return null;
 }
 
-export function selectRandomCard(gameTemplate: GameTemplate, seed: string): Card | null {
-    const allCards = gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as Card[]);
+export function getAllCards(gameTemplate: GameTemplate): Card[] {
+    return gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as Card[]);
+}
+
+export function selectRandomAvailableCard(gameState: GameState): Card | null {
+    const allCards = getAvailableCards(gameState);
     if (allCards.length === 0) return null;
 
-    const rng = seedrandom(seed);
+    const rng = seedrandom(gameState.seed);
     const randomIndex = Math.floor(rng() * allCards.length);
     return allCards[randomIndex];
+}
+
+export function getAvailableCards(gameState: GameState): Card[] {
+    const allCards = getAllCards(gameState.template);
+    const unavailableCards = [gameState.displayedCard, ...gameState.previousCards];
+    return allCards.filter(card => !unavailableCards.includes(card.ref));
 }

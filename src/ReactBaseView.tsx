@@ -2,16 +2,20 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { convertMarkdownToGameTemplate } from './parse-template.js';
-import type { GameTemplate } from './parse-template.js';
+import type { Card, GameTemplate } from './parse-template.js';
 import { DrawCardButton } from './DrawCardButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
 import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, createGameState, selectRandomCard } from './gamestate.jsx';
+import { GameState, createGameState, getAvailableCards, selectRandomAvailableCard } from './gamestate.jsx';
 
 
 export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
   <p>So far, {previousCards.length} cards have been played.</p>
+);
+
+export const RemainingCards: React.FC<{ remainingCards: Card[]; }> = ({ remainingCards }) => (
+  <p>There are {remainingCards.length} cards remaining.</p>
 );
 
 export const DisplayedCard: React.FC<{ displayedCard: string | undefined; }> = ({ displayedCard }) => (
@@ -77,10 +81,13 @@ export const ReactBaseView: React.FC = () => {
       {gameState.previousCards && (
         <PreviousCards previousCards={gameState.previousCards} />
       )}
-      <h2>Buttons</h2>
-      {gameState.template && (<>
 
-        <DrawCardButton nextCard={selectRandomCard(gameState.template, gameState.seed)} />
+      {gameState.template && (<>
+        <RemainingCards remainingCards={getAvailableCards(gameState)} />
+
+        <h2>Buttons</h2>
+
+        <DrawCardButton nextCard={selectRandomAvailableCard(gameState)} />
 
         {gameState.events && (
           <>

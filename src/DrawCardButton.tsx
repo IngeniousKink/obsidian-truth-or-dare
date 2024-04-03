@@ -28,5 +28,6 @@ card: ${nextCard.ref}
     });
   };
 
-  return <button onClick={drawCard}>DrawCard</button>;
+  const buttonText = nextCard ? "Draw a card" : "(No more cards)";
+  return <button onClick={drawCard} disabled={!nextCard}>{buttonText}</button>;
 };
