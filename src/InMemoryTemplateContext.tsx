@@ -14,8 +14,8 @@ interface InMemoryTemplateProviderProps {
 }
 
 export const InMemoryTemplateProvider: React.FC<InMemoryTemplateProviderProps> = ({ children }) => {
-  const [templateFileContent, setTemplateFileContent] = useState<string | null>(null);
-  const [eventsFileContent, setEventsFileContent] = useState<string | null>(null);
+  const [templateFileContent, setTemplateFileContent] = useState<string | null>('');
+  const [eventsFileContent, setEventsFileContent] = useState<string | null>('');
 
   const value = {
     templateFileContent,
@@ -30,16 +30,3 @@ export const InMemoryTemplateProvider: React.FC<InMemoryTemplateProviderProps> =
 export const useInMemoryTemplate = (): InMemoryTemplateContextValue | undefined => {
   return useContext(InMemoryTemplateContext);
 };
-
-// export const useTemplateFileContent = () => {
-//   const value = useInMemoryTemplate();
-//   const [content, setContent] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     if (!value) return;
-
-//     setContent(value.templateFileContent);
-//   }, [value]);
-
-//   return content;
-// };

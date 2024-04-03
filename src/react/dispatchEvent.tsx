@@ -20,7 +20,7 @@ export const appendEventToEventsFile : DispatchGameEventHook = () => {
 
   return async (eventAction: TimestampedEvent) =>  {
     if (!value) return;
-    value.setEventsFileContent(data => `${data}\n${serializeEventToCodeBlock(eventAction)}`);
+    value.setEventsFileContent(data => `${data || ''}\n${serializeEventToCodeBlock(eventAction)}`);
   }
 };
 
