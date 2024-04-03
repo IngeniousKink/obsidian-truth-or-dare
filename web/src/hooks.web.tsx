@@ -64,8 +64,9 @@ export const useCombinedTemplateAndEventFileContent = () => {
   return content;
 };
 
-/** legacy name, rename to useAppendGameEvent or something! */
-export const useAppendEventToActiveFile = () => {
+type AppendGameEventFunction = (eventAction: TimestampedEvent) => Promise<void> | null;
+
+export const useAppendGameEvent = (): AppendGameEventFunction => {
   const app = useWebApp();
 
   if (!app) return () => null;
@@ -76,18 +77,6 @@ export const useAppendEventToActiveFile = () => {
     } else {
       app.setTemplateFileContent(data => `${data}\n${serializeEventToCodeBlock(eventAction)}`);
     }
-  }, [app]);
-
-  return appendEvent;
-};
-
-export const useAppendEventToEventsFileContent = () => {
-  const app = useWebApp();
-
-  if (!app) return () => null;
-
-  const appendEvent = useCallback(async (eventAction: TimestampedEvent) => {
-    app.setEventsFileContent(data => `${data}\n${serializeEventToCodeBlock(eventAction)}`);
   }, [app]);
 
   return appendEvent;

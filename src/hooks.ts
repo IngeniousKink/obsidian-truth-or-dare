@@ -1,20 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import type { App } from "obsidian";
-import { EventRegistryContext, EventRegistryFunction, AppContext } from "./react/context.js";
 import { TimestampedEvent } from "@obsidian-truth-or-dare/events.js";
 import { appendEventToActiveFile } from "./obsidian/appendEventToActiveFile.js";
 
-export const useApp = (): App | undefined => {
-  return useContext(AppContext);
+import { createContext } from "react";
+import { App, EventRef } from "obsidian";
+
+export const ObsidianAppContext = createContext<App | undefined>(undefined);
+
+export type EventRegistryFunction = (eventRef: EventRef) => void;
+export const ObsidianEventRegistryContext = createContext<EventRegistryFunction | undefined>(undefined);
+
+const useApp = (): App | undefined => {
+  return useContext(ObsidianAppContext);
 };
 
-export const useRegisterEvent = (): EventRegistryFunction | undefined => {
-  return useContext(EventRegistryContext);
-};
-
-export const useActiveFileContent = () => {
-  const app = useContext(AppContext);
-  const registerEvent = useContext(EventRegistryContext);
+export const useCombinedTemplateAndEventFileContent = () => {
+  const app = useContext(ObsidianAppContext);
+  const registerEvent = useContext(ObsidianEventRegistryContext);
   const [content, setContent] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,7 +38,9 @@ export const useActiveFileContent = () => {
   return content;
 };
 
-export const useAppendEventToActiveFile = () => {
+type AppendGameEventFunction = (eventAction: TimestampedEvent) => Promise<void> | null;
+
+export const useAppendGameEvent = (): AppendGameEventFunction => {
   const app = useApp();
   if (!app) return () => null;
   const { vault, workspace } = app;

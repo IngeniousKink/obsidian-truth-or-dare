@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
+import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;
@@ -17,7 +17,7 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
     categoryLabel
   }) => {
 
-  const appendEvent = useAppendEventToActiveFile();
+  const appendEvent = useAppendGameEvent();
 
   if (!nextCard) {
     const buttonText = `(No more ${categoryLabel} cards)`;

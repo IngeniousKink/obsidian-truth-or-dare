@@ -2,10 +2,10 @@ import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
 import { ReactBaseView } from "./ReactBaseView.js";
 import { TRUTH_OR_DARE_EDITABLE_VIEW } from "./TruthOrDarePlugin.js";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
-import { AppContext, EventRegistryContext } from "../react/context.js";
 
 import React from "react";
 import { PlayView } from "../react/components/PlayView.js";
+import { ObsidianAppContext, ObsidianEventRegistryContext } from "@obsidian-truth-or-dare/hooks.js";
 
 export class ObsidianEditableView extends EditableFileView {
 	root: ReactRoot | null = null;
@@ -69,11 +69,11 @@ export class ObsidianEditableView extends EditableFileView {
 
 		this.root = createRoot(this.containerEl.children[1]);
 		this.root.render(
-			<AppContext.Provider value={this.app}>
-				<EventRegistryContext.Provider value={this.registerEvent.bind(this)}>
+			<ObsidianAppContext.Provider value={this.app}>
+				<ObsidianEventRegistryContext.Provider value={this.registerEvent.bind(this)}>
 					<ReactBaseView GameView={PlayView}/>
-				</EventRegistryContext.Provider>
-			</AppContext.Provider>
+				</ObsidianEventRegistryContext.Provider>
+			</ObsidianAppContext.Provider>
 		);
 
 		return true;

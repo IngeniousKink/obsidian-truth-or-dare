@@ -1,13 +1,13 @@
 import React from 'react';
 import { deleteActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
+import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
 
 interface DeleteActorButtonProps {
   id: string;
 }
 
 export const DeleteActorButton: React.FC<DeleteActorButtonProps> = ({ id }) => {
-  const appendEvent = useAppendEventToActiveFile();
+  const appendEvent = useAppendGameEvent();
   
   const handleDeleteActor = () => {
     const event = timestampEvent(deleteActor(id));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { changeActorName, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from '@obsidian-truth-or-dare/hooks.js';
+import { useAppendGameEvent } from '@obsidian-truth-or-dare/hooks.js';
 
 interface ChangeActorNameInputProps {
   actorId: string;
@@ -8,7 +8,7 @@ interface ChangeActorNameInputProps {
 }
 
 export const ChangeActorNameInput: React.FC<ChangeActorNameInputProps> = ({ actorId, name }) => {
-  const appendEvent = useAppendEventToActiveFile();
+  const appendEvent = useAppendGameEvent();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
-import { useAppendEventToActiveFile } from "@obsidian-truth-or-dare/hooks.js";
+import { useAppendGameEvent } from "@obsidian-truth-or-dare/hooks.js";
 
 export const AddActorButton: React.FC = () => {
-  const appendEvent = useAppendEventToActiveFile();
+  const appendEvent = useAppendGameEvent();
 
   const handleAddActor = () => {
     const event = timestampEvent(createActor());
