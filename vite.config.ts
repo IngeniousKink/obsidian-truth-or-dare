@@ -1,9 +1,20 @@
 import { defineConfig } from 'vite'
+
 import react from '@vitejs/plugin-react'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    nodePolyfills(),
+  ],
+  define: {
+    // By default, Vite doesn't include shims for NodeJS/
+    // necessary for ecpair.js to work
+    global: {},
+  },
   root: 'web/',
   resolve: {
     alias: [
