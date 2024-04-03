@@ -10,6 +10,8 @@ import * as nobleSecp256k1 from 'noble-secp256k1';
 
 import { useWebApp } from '../../../web/src/hooks.web.js';
 
+type HandleEventFunction = (data: { content: string, id: string, kind: number}, pubKey: string) => void;
+
 const ECPair: ECPairAPI = ECPairFactory(ecc);
 const bip32 = BIP32Factory(ecc);
 
@@ -39,8 +41,12 @@ function getParamsFromHash(): {
 
 function getSeed(): Buffer {
   const { seed } = getParamsFromHash();
+  if (seed === null) {
+      throw new Error('Seed is null');
+  }
   return Buffer.from(seed);
 }
+
 
 function getNode(): BIP32Interface {
   return bip32.fromSeed(getSeed());
@@ -89,7 +95,7 @@ const relays = [
   'wss://relay.damus.io'
 ]
 
-function openWebsockets(pubKey: string, handleEvent: Function): void {
+function openWebsockets(pubKey: string, handleEvent: HandleEventFunction): void {
   console.log('connecting...');
   for (const relay of relays) {
     const ws = new WebSocket(relay);
@@ -98,7 +104,7 @@ function openWebsockets(pubKey: string, handleEvent: Function): void {
   }
 }
 
-function addEventListeners(ws: WebSocket, pubKey: string, handleEvent: Function): void {
+function addEventListeners(ws: WebSocket, pubKey: string, handleEvent: HandleEventFunction): void {
   ws.onerror = () => handleError(ws);
   ws.onopen = () => handleOpen(ws, pubKey);
   ws.onmessage = (event: MessageEvent) => handleMessage(event, pubKey, handleEvent);
@@ -129,11 +135,11 @@ function handleOpen(ws: WebSocket, pubKey: string): void {
   }]));
 }
 
-function handleMessage(event: MessageEvent, pubKey: string, handleEvent: Function): void {
+function handleMessage(event: MessageEvent, pubKey: string, handleEvent: HandleEventFunction): void {
   const [msgType, subscriptionId, data] = JSON.parse(event.data);
 
   if (msgType === 'EVENT') {
-    handleEvent(data, subscriptionId, pubKey);
+    handleEvent(data, subscriptionId);
   } else {
     console.log('Unknown EVENT', [msgType, subscriptionId, data])
   }
@@ -152,8 +158,8 @@ export const MultiplayerActiveFile = () => {
 
   const [status, setStatus] = useState('connecting');
 
-  const handleEvent = (data: any, pubKey: string): void => {
-    const { content, id, sig, kind} = data;
+  const handleEvent = (data: { content: string, id: string, kind: number}, pubKey: string): void => {
+    const { content, id, kind } = data;
     if (eventIds[id]) return;
     eventIds[id] = true;
 
@@ -169,7 +175,7 @@ export const MultiplayerActiveFile = () => {
   };
 
   useEffect(() => {
-    const [privKey, pubKey] = getKeys();
+    const pubKey = getKeys()[1];
     openWebsockets(pubKey, handleEvent);
     setStatus('connected');
     
