@@ -11,7 +11,7 @@ interface ParsedCard {
 }
 
 const REGEX_HTML_DATA_ATTRIBUTE = /<([^>]+?)>/g;
-const REGEX_DATA_ATTRIBUTE = /data-(\w+)="([^"]+)"/g;
+const REGEX_DATA_ATTRIBUTE = /data-(\w+)="([^"]*)"/g;
 
 function createAnnotation(dataMatches: RegExpMatchArray[], match: RegExpMatchArray): Annotation {
   const annotation: Annotation = {};

@@ -180,6 +180,39 @@ even here is text 1`] = `
 `;
 
 exports[`parses correctly:
+# Span with children
+
+* one card: do something to <span data-replace="genitive" data-actor="0">a player's</span> hair. <span data-category="dare" /> 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "annotations": [
+            {
+              "actor": "0",
+              "endPos": "71",
+              "replace": "genitive",
+              "startPos": "26",
+            },
+            {
+              "category": "dare",
+              "endPos": "124",
+              "startPos": "95",
+            },
+          ],
+          "ref": "#Span with children^0",
+          "text": "one card: do something to <span data-replace="genitive" data-actor="0">a player's</span> hair. <span data-category="dare" />",
+        },
+      ],
+      "name": "Span with children",
+      "ref": "#Span with children",
+    },
+  ],
+}
+`;
+
+exports[`parses correctly:
 # a heading
 * card 1
 * card 1
