@@ -3,17 +3,16 @@ import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { convertMarkdownToGameTemplate } from './parse-template.js';
 import type { GameTemplate } from './parse-template.js';
-import { AppendTimeButton } from './AppendTimeButton.jsx';
+import { DrawCardButton } from './DrawCardButton.jsx';
 import { StacksDisplay } from './StacksDisplay.jsx';
 import { GameEvent, convertMarkdownToGameEvents } from './parse-events.js';
 import { EventsDisplay } from './EventsDisplay.jsx';
-import { GameState, createGameState } from './gamestate.jsx';
+import { GameState, createGameState, selectRandomCard } from './gamestate.jsx';
 
 
 export const PreviousCards: React.FC<{ previousCards: string[]; }> = ({ previousCards }) => (
   <p>So far, {previousCards.length} cards have been played.</p>
 );
-
 
 export const DisplayedCard: React.FC<{ displayedCard: string | undefined; }> = ({ displayedCard }) => (
   displayedCard
@@ -79,19 +78,24 @@ export const ReactBaseView: React.FC = () => {
         <PreviousCards previousCards={gameState.previousCards} />
       )}
       <h2>Buttons</h2>
-      <AppendTimeButton />
-      {gameState.template && gameState.events && (
-        <>
-          <h2>Events</h2>
-          <EventsDisplay events={gameState.events} />
-        </>
-      )}
-      {gameState.template && gameState.template.stacks && (
-        <>
-          <h2>Template</h2>
-          <StacksDisplay stacks={gameState.template.stacks} />
-        </>
-      )}
+      {gameState.template && (<>
+
+        <DrawCardButton nextCard={selectRandomCard(gameState.template, gameState.seed)} />
+
+        {gameState.events && (
+          <>
+            <h2>Events</h2>
+            <EventsDisplay events={gameState.events} />
+          </>
+        )}
+        {gameState.template.stacks && (
+          <>
+            <h2>Template</h2>
+            <StacksDisplay stacks={gameState.template.stacks} />
+          </>
+        )}
+
+      </>)}
     </div >
   );
 };

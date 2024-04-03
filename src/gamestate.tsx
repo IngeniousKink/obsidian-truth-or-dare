@@ -40,7 +40,7 @@ function applyEventToGameState(gameState: GameState, event: GameEvent): GameStat
     return gameState;
 }
 
-function findCardInGameTemplate(gameTemplate: GameTemplate, x: number): Card | null {
+export function findCardInGameTemplate(gameTemplate: GameTemplate, x: number): Card | null {
     for (const stack of gameTemplate.stacks) {
         for (const card of stack.cards) {
             if (card.ref.endsWith('^' + x)) {
@@ -51,7 +51,7 @@ function findCardInGameTemplate(gameTemplate: GameTemplate, x: number): Card | n
     return null;
 }
 
-function selectRandomCard(gameTemplate: GameTemplate, seed: string): Card | null {
+export function selectRandomCard(gameTemplate: GameTemplate, seed: string): Card | null {
     const allCards = gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as Card[]);
     if (allCards.length === 0) return null;
 
