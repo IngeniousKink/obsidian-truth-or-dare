@@ -1,13 +1,18 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer';
 
-import { Card } from 'src/parse-template.js';
+import { CardWithRef } from 'src/parse-template.js';
 
-import { NoCard, CurrentCard, DisplayedCard } from '@obsidian-truth-or-dare/DisplayedCard.js'
+import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/DisplayedCard.js'
 import { PlayView } from '@obsidian-truth-or-dare/PlayView.js';
 import { InspectorView } from '@obsidian-truth-or-dare/InspectorView.js';
+import CurrentCard from '@obsidian-truth-or-dare/CurrentCard.js';
 
-const testCard : Card = { text: 'Do something.', ref: 'ref1'};
+const testCard : CardWithRef = {
+   text: 'Do something.',
+   ref: 'ref1',
+   annotations: [],
+};
 
 it('renders NoCard', () => {
   const tree = renderer
@@ -47,7 +52,8 @@ const testGameState = {
               "cards": [
                   {
                       "ref": "#first stack^0",
-                      "text": "one card"
+                      "text": "one card",
+                      "annotations": [],
                   }
               ]
           },
@@ -57,11 +63,13 @@ const testGameState = {
               "cards": [
                   {
                       "ref": "#second stack^0",
-                      "text": "first of two cards"
+                      "text": "first of two cards",
+                      "annotations": [],
                   },
                   {
                       "ref": "#second stack^1",
-                      "text": "second of two cards"
+                      "text": "second of two cards",
+                      "annotations": [],
                   }
               ]
           }

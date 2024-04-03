@@ -18,20 +18,23 @@ exports[`Game State createGameState 1`] = `
   "previousCards": [
     "card1",
   ],
-  "seed": "{"stacks":[{"name":"stack1","ref":"stackRef","cards":[{"ref":"card1","text":"card1Text"},{"ref":"card2","text":"card2Text"},{"ref":"card3","text":"card3Text"}]}]}[{"type":"card-draw","card":"card1","timestamp":0},{"type":"card-draw","card":"card2","timestamp":0}]",
+  "seed": "{"stacks":[{"name":"stack1","ref":"stackRef","cards":[{"ref":"card1","text":"card1Text","annotations":[]},{"ref":"card2","text":"card2Text","annotations":[]},{"ref":"card3","text":"card3Text","annotations":[]}]}]}[{"type":"card-draw","card":"card1","timestamp":0},{"type":"card-draw","card":"card2","timestamp":0}]",
   "template": {
     "stacks": [
       {
         "cards": [
           {
+            "annotations": [],
             "ref": "card1",
             "text": "card1Text",
           },
           {
+            "annotations": [],
             "ref": "card2",
             "text": "card2Text",
           },
           {
+            "annotations": [],
             "ref": "card3",
             "text": "card3Text",
           },
@@ -46,6 +49,7 @@ exports[`Game State createGameState 1`] = `
 
 exports[`Game State findCardInGameTemplate 1`] = `
 {
+  "annotations": [],
   "ref": "card1",
   "text": "card1Text",
 }
@@ -54,14 +58,17 @@ exports[`Game State findCardInGameTemplate 1`] = `
 exports[`Game State getAllCards 1`] = `
 [
   {
+    "annotations": [],
     "ref": "card1",
     "text": "card1Text",
   },
   {
+    "annotations": [],
     "ref": "card2",
     "text": "card2Text",
   },
   {
+    "annotations": [],
     "ref": "card3",
     "text": "card3Text",
   },
@@ -71,6 +78,7 @@ exports[`Game State getAllCards 1`] = `
 exports[`Game State getAvailableCards 1`] = `
 [
   {
+    "annotations": [],
     "ref": "card3",
     "text": "card3Text",
   },

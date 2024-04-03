@@ -1,10 +1,10 @@
 import { Html, Image, PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
 
-interface Annotation {
+export interface Annotation {
   actor?: string;
-  [key: string]: string | undefined;
-  startPos?: string | undefined;
-  endPos?: string | undefined;
+  startPos?: number;
+  endPos?: number;
+  [key: string]: string | number | undefined;
 }
 
 export interface ParsedCard {
@@ -22,12 +22,12 @@ function createAnnotation(
   match: RegExpMatchArray,
   annotationData?: Partial<Annotation>
 ): Annotation {
-  const annotation: Annotation = annotationData || {};
+  const annotation: Partial<Annotation> = annotationData || {};
   dataMatches.forEach((dataMatch) => {
     annotation[dataMatch[1]] = dataMatch[2];
   });
-  annotation.startPos = String(match.index);
-  annotation.endPos = String((match.index || 0) + match[0].length);
+  annotation.startPos = match.index;
+  annotation.endPos = ((match.index || 0) + match[0].length);
   return annotation;
 }
 
@@ -61,8 +61,8 @@ export function parseCard(content: PhrasingContent[]): ParsedCard {
       imageAnnotations.push({
         type:'image',
         'url': textNode.url,
-        startPos: String(textNode.position?.start.column),
-        endPos: String(textNode.position?.end.column),
+        startPos: textNode.position?.start.column,
+        endPos: textNode.position?.end.column,
       });
 
       return acc + '![[' + textNode.url + ']]';

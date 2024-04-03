@@ -7,7 +7,9 @@ exports[`renders CurrentCard 1`] = `
   <h2
     className="card-text"
   >
-    Do something.
+    <span>
+      Do something.
+    </span>
   </h2>
 </div>
 `;
@@ -19,7 +21,9 @@ exports[`renders DisplayedCard = card 1`] = `
   <h2
     className="card-text"
   >
-    Do something.
+    <span>
+      Do something.
+    </span>
   </h2>
 </div>
 `;
@@ -74,7 +78,8 @@ exports[`renders InspectorView 1`] = `
     "cards": [
       {
         "ref": "#first stack^0",
-        "text": "one card"
+        "text": "one card",
+        "annotations": []
       }
     ]
   },
@@ -84,11 +89,13 @@ exports[`renders InspectorView 1`] = `
     "cards": [
       {
         "ref": "#second stack^0",
-        "text": "first of two cards"
+        "text": "first of two cards",
+        "annotations": []
       },
       {
         "ref": "#second stack^1",
-        "text": "second of two cards"
+        "text": "second of two cards",
+        "annotations": []
       }
     ]
   }
@@ -115,7 +122,9 @@ exports[`renders PlayView 1`] = `
     <h2
       className="card-text"
     >
-      one card
+      <span>
+        one card
+      </span>
     </h2>
   </div>
   <h2>

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Card } from './parse-template.js';
+import type { CardWithRef } from './parse-template.js';
 
 
-export const RemainingCards: React.FC<{ remainingCards: Card[]; }> = ({ remainingCards }) => (
+export const RemainingCards: React.FC<{ remainingCards: CardWithRef[]; }> = ({ remainingCards }) => (
   <p>There are {remainingCards.length} cards remaining.</p>
 );

@@ -39,8 +39,8 @@ exports[`parses template: inline_fields_inline_html.md 1`] = `
           "annotations": [
             {
               "category": "truth",
-              "endPos": "30",
-              "startPos": "0",
+              "endPos": 30,
+              "startPos": 0,
             },
           ],
           "ref": "#HTML inline field^0",
@@ -63,8 +63,8 @@ exports[`parses template: inline_fields_inline_html_multiple.md 1`] = `
           "annotations": [
             {
               "category": "truth",
-              "endPos": "30",
-              "startPos": "0",
+              "endPos": 30,
+              "startPos": 0,
             },
           ],
           "ref": "#HTML inline field^0",
@@ -74,13 +74,13 @@ exports[`parses template: inline_fields_inline_html_multiple.md 1`] = `
           "annotations": [
             {
               "category": "truth",
-              "endPos": "30",
-              "startPos": "0",
+              "endPos": 30,
+              "startPos": 0,
             },
             {
               "category": "dare",
-              "endPos": "62",
-              "startPos": "33",
+              "endPos": 62,
+              "startPos": 33,
             },
           ],
           "ref": "#HTML inline field^1",
@@ -90,14 +90,14 @@ exports[`parses template: inline_fields_inline_html_multiple.md 1`] = `
           "annotations": [
             {
               "actor": "0",
-              "endPos": "41",
+              "endPos": 41,
               "replace": "name",
-              "startPos": "0",
+              "startPos": 0,
             },
             {
               "category": "dare",
-              "endPos": "99",
-              "startPos": "70",
+              "endPos": 99,
+              "startPos": 70,
             },
           ],
           "ref": "#HTML inline field^2",
@@ -120,14 +120,14 @@ exports[`parses template: inline_fields_span_with_children.md 1`] = `
           "annotations": [
             {
               "actor": "0",
-              "endPos": "71",
+              "endPos": 71,
               "replace": "genitive",
-              "startPos": "26",
+              "startPos": 26,
             },
             {
               "category": "dare",
-              "endPos": "124",
-              "startPos": "95",
+              "endPos": 124,
+              "startPos": 95,
             },
           ],
           "ref": "#Span with children^0",
@@ -149,8 +149,8 @@ exports[`parses template: media_embedded_image.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "46",
-              "startPos": "1",
+              "endPos": 46,
+              "startPos": 1,
               "type": "image",
               "url": "MAM_8533239_SHOP_IMAGE_1.8.png 1.webp|100x100",
             },
@@ -174,8 +174,8 @@ exports[`parses template: media_embedded_video_mp4.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "33",
-              "startPos": "22",
+              "endPos": 33,
+              "startPos": 22,
               "type": "image",
               "url": "a_video.mp4",
             },
@@ -191,6 +191,31 @@ exports[`parses template: media_embedded_video_mp4.md 1`] = `
 }
 `;
 
+exports[`parses template: media_image.md 1`] = `
+{
+  "stacks": [
+    {
+      "cards": [
+        {
+          "annotations": [
+            {
+              "endPos": 45,
+              "startPos": 3,
+              "type": "image",
+              "url": "",
+            },
+          ],
+          "ref": "#List of one image^0",
+          "text": "![[]]",
+        },
+      ],
+      "name": "List of one image",
+      "ref": "#List of one image",
+    },
+  ],
+}
+`;
+
 exports[`parses template: media_image_external.md 1`] = `
 {
   "stacks": [
@@ -199,8 +224,8 @@ exports[`parses template: media_image_external.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "139",
-              "startPos": "29",
+              "endPos": 139,
+              "startPos": 29,
               "type": "image",
               "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
             },
@@ -224,9 +249,9 @@ exports[`parses template: media_image_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "129",
+              "endPos": 129,
               "src": "https://upload.wikimedia.org/wikipedia/commons/6/66/Adult_male_Royal_Bengal_tiger.jpg",
-              "startPos": "33",
+              "startPos": 33,
               "type": "img",
             },
           ],
@@ -249,8 +274,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "47",
-              "startPos": "29",
+              "endPos": 47,
+              "startPos": 29,
               "type": "image",
               "url": "a_picture.webp|100",
             },
@@ -261,8 +286,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "33",
-              "startPos": "22",
+              "endPos": 33,
+              "startPos": 22,
               "type": "image",
               "url": "a_video.mp4",
             },
@@ -273,8 +298,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "139",
-              "startPos": "29",
+              "endPos": 139,
+              "startPos": 29,
               "type": "image",
               "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
             },
@@ -285,9 +310,9 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "129",
+              "endPos": 129,
               "src": "https://upload.wikimedia.org/wikipedia/commons/6/66/Adult_male_Royal_Bengal_tiger.jpg",
-              "startPos": "33",
+              "startPos": 33,
               "type": "img",
             },
           ],
@@ -297,9 +322,9 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": "119",
+              "endPos": 119,
               "src": "https://upload.wikimedia.org/wikipedia/commons/b/b2/A_walk_with_the_Tigress.webm",
-              "startPos": "26",
+              "startPos": 26,
               "type": "video",
             },
           ],

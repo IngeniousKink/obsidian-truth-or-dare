@@ -1,9 +1,9 @@
 import React from 'react';
 import { useApp } from "./hooks.js";
-import { Card } from './parse-template.js';
+import { CardWithRef } from './parse-template.js';
 
 interface DrawCardButtonProps {
-  nextCard: Card | null;
+  nextCard: CardWithRef | null;
   remainingCount: number;
   categoryLabel: string;
 }

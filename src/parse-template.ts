@@ -4,11 +4,10 @@ import type { ParsedCard } from "./parse-card.js";
 import { PhrasingContent } from "node_modules/mdast-util-from-markdown/lib/index.js";
 import { parseEmbeds } from "./parse-embeds.js";
 
-// Define a Card type with a reference and text
-export type Card = { ref: string; text: string; category?: string };
+export type CardWithRef = ParsedCard & { ref: string; category?: string };
 
 // Define a Stack type with a name, reference and an array of cards
-export type Stack = { name: string; ref: string; cards: Card[]; };
+export type Stack = { name: string; ref: string; cards: CardWithRef[]; };
 
 // Define a GameTemplate type with an array of stacks
 export type GameTemplate = { stacks: Stack[]; };
@@ -96,23 +95,23 @@ function getLastStack(gameTemplate: GameTemplate): Stack {
 }
 
 // Extract cards from a list node
-function extractCardsFromList(listNode: List, stackRef: string): Card[] {
+function extractCardsFromList(listNode: List, stackRef: string): CardWithRef[] {
   let refCounter = 0;
-  return listNode.children.reduce<Card[]>((cards, listItem: ListItem) => {
+  return listNode.children.reduce<CardWithRef[]>((cards, listItem: ListItem) => {
     const listItemCards = extractCardsFromListItem(listItem, refCounter++, stackRef);
     return [...cards, ...listItemCards];
   }, []);
 }
 
 // Extract cards from a list item
-function extractCardsFromListItem(listItem: ListItem, refCounter: number, stackRef: string): Card[] {
-  return listItem.children.reduce<Card[]>((cards, paragraph: Paragraph | Html) => {
+function extractCardsFromListItem(listItem: ListItem, refCounter: number, stackRef: string): CardWithRef[] {
+  return listItem.children.reduce<CardWithRef[]>((cards, paragraph: Paragraph | Html) => {
     const paragraphCard = extractCardFromParagraph(paragraph, refCounter, stackRef);
     return [...cards, paragraphCard];
   }, []);
 }
 
-export function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): Card {
+export function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter: number, stackRef: string): CardWithRef {
   let children : PhrasingContent[]  = [];
 
   if (paragraph.type == 'html') {
@@ -122,7 +121,7 @@ export function extractCardFromParagraph(paragraph: Paragraph | Html, refCounter
   }
 
   return {
-    ref: stackRef + '^' + refCounter,
     ...parseCard(parseEmbeds(children)),
+    ref: stackRef + '^' + refCounter,
   };
 }

@@ -1,5 +1,5 @@
 import { GameEvent } from "./parse-events.js";
-import { Card, GameTemplate } from "./parse-template.js";
+import { CardWithRef, GameTemplate } from "./parse-template.js";
 import seedrandom from 'seedrandom';
 
 export type GameState = {
@@ -41,7 +41,7 @@ function applyEventToGameState(gameState: GameState, event: GameEvent): GameStat
     return gameState;
 }
 
-export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: string): Card | null {
+export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: string): CardWithRef | null {
     for (const stack of gameTemplate.stacks) {
         for (const card of stack.cards) {
             if (card.ref == searchRef) {
@@ -52,11 +52,11 @@ export function findCardInGameTemplate(gameTemplate: GameTemplate, searchRef: st
     return null;
 }
 
-export function getAllCards(gameTemplate: GameTemplate): Card[] {
-    return gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as Card[]);
+export function getAllCards(gameTemplate: GameTemplate): CardWithRef[] {
+    return gameTemplate.stacks.reduce((arr, stack) => arr.concat(stack.cards), [] as CardWithRef[]);
 }
 
-export function selectRandomCard(cards: Card[], gameState: GameState): Card | null {
+export function selectRandomCard(cards: CardWithRef[], gameState: GameState): CardWithRef | null {
     if (cards.length === 0) return null;
 
     const rng = seedrandom(gameState.seed);
@@ -64,12 +64,12 @@ export function selectRandomCard(cards: Card[], gameState: GameState): Card | nu
     return cards[randomIndex];
 }
 
-export function selectRandomAvailableCard(gameState: GameState): Card | null {
+export function selectRandomAvailableCard(gameState: GameState): CardWithRef | null {
     const allCards = getAvailableCards(gameState);
     return selectRandomCard(allCards, gameState);
 }
 
-export function getAvailableCards(gameState: GameState): Card[] {
+export function getAvailableCards(gameState: GameState): CardWithRef[] {
     const allCards = getAllCards(gameState.template);
     const unavailableCards = [gameState.displayedCard, ...gameState.previousCards];
     return allCards.filter(card => !unavailableCards.includes(card.ref));
@@ -84,10 +84,10 @@ export function selectCategories(gameState: GameState): string[] {
     return [...new Set(categories)];
 }
 
-export function selectCardsByCategory(gameState: GameState): { [key: string]: Card[] } {
+export function selectCardsByCategory(gameState: GameState): { [key: string]: CardWithRef[] } {
     const categories = selectCategories(gameState);
     const availableCards = getAvailableCards(gameState);
-    const cardsByCategory: { [key: string]: Card[] } = {};
+    const cardsByCategory: { [key: string]: CardWithRef[] } = {};
 
     for (const category of categories) {
         cardsByCategory[category] = availableCards
@@ -97,7 +97,7 @@ export function selectCardsByCategory(gameState: GameState): { [key: string]: Ca
     return cardsByCategory;
 }
 
-export function selectCardByRef(gameState: GameState, ref: string | undefined): Card | null {
+export function selectCardByRef(gameState: GameState, ref: string | undefined): CardWithRef | null {
     if (!ref) return null;
 
     const allCards = getAllCards(gameState.template);

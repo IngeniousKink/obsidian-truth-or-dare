@@ -17,7 +17,7 @@ import {
   selectRandomCard 
 } from './gamestate.js';
 
-import type { Card } from './parse-template.js';
+import type { CardWithRef } from './parse-template.js';
 
 export interface PlayViewProps {
   gameState: GameState,
@@ -48,7 +48,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
           nextCard={selectRandomAvailableCard(gameState)} />
 
         {Object.keys(cardsByCategory).map(key => {
-          const value: Card[] = cardsByCategory[key];
+          const value: CardWithRef[] = cardsByCategory[key];
           const nextCard = selectRandomCard(value, gameState);
           return (
             <DrawCardButton

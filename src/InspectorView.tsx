@@ -17,7 +17,7 @@ import {
   selectRandomCard 
 } from './gamestate.js';
 
-import type { Card } from './parse-template.js';
+import type { CardWithRef } from './parse-template.js';
 
 export interface InspectorViewProps {
   gameState: GameState,
@@ -46,7 +46,7 @@ export const InspectorView: React.FC<InspectorViewProps> = ({ gameState }: Inspe
         <RemainingCards remainingCards={getAvailableCards(gameState)} />
 
         {Object.keys(cardsByCategory).map(key => {
-          const value: Card[] = cardsByCategory[key];
+          const value: CardWithRef[] = cardsByCategory[key];
           const nextCard = selectRandomCard(value, gameState);
           return (
             <DrawCardButton
