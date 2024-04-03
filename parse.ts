@@ -1,9 +1,9 @@
-import type { Root as MarkdownRoot } from "mdast-util-from-markdown/lib";
+import type { Root } from "mdast";
 
 export type Card = { ref: string; text: any; };
 export type CardMap = { [key: string]: Card[] };
 
-export function getCardsUnderHeading(node: MarkdownRoot): CardMap {
+export function getCardsUnderHeading(node: Root): CardMap {
 	let headingText = '';
 	const allCardsUnderHeadings: CardMap = {};
 

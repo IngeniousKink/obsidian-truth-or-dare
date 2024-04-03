@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApp } from "./hooks";
+import { useApp } from "./hooks.js";
 
 export const AppendTimeButton: React.FC = () => {
   const app = useApp();

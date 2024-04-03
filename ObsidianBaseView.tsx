@@ -1,8 +1,8 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
-import { AppContext, EventRegistryContext } from "context";
-import { ReactBaseView } from "./ReactBaseView";
-import { VIEW_TYPE_EXAMPLE } from "main";
+import { AppContext, EventRegistryContext } from "./context.js";
+import { ReactBaseView } from "./ReactBaseView.js";
+import { VIEW_TYPE_EXAMPLE } from "./TruthOrDarePlugin.js";
 
 import React from "react";
 
