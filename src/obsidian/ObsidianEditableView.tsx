@@ -1,5 +1,5 @@
 import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
-import { ReactBaseView } from "../react/components/ReactBaseView.js";
+import { ReactBaseView } from "./ReactBaseView.js";
 import TruthOrDarePlugin, { TRUTH_OR_DARE_EDITABLE_VIEW } from "./TruthOrDarePlugin.js";
 import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "../react/context.js";

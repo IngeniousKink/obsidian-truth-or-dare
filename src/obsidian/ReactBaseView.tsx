@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useApp, useRegisterEvent } from "../hooks.js";
+import { useApp, useRegisterEvent } from "./hooks.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { convertMarkdownToGameTemplate } from '../../parse/parse-template.js';
-import { convertMarkdownToGameEvents } from '../../parse/parse-events.js';
-import { GameState, createGameState } from '../../gamestate.js';
+import { convertMarkdownToGameTemplate } from '../parse/parse-template.js';
+import { convertMarkdownToGameEvents } from '../parse/parse-events.js';
+import { GameState, createGameState } from '../gamestate.js';
 
 interface ReactBaseViewProps {
   GameView: React.ComponentType<{ gameState: GameState }>;

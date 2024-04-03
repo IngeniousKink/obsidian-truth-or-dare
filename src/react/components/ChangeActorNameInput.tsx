@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useApp } from "../hooks.js";
+import { useApp } from "../../obsidian/hooks.js";
 import { changeActorName, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { appendEventToActiveFile } from '@obsidian-truth-or-dare/obsidian/appendEventToActiveFile.js';
 

@@ -5,7 +5,7 @@ import { Root as ReactRoot, createRoot } from "react-dom/client";
 import { AppContext, EventRegistryContext } from "../react/context.js";
 import { TRUTH_OR_DARE_SIDEBAR_VIEW } from "./TruthOrDarePlugin.js";
 
-import { ReactBaseView } from "../react/components/ReactBaseView.js";
+import { ReactBaseView } from "./ReactBaseView.js";
 import { InspectorView } from "../react/components/InspectorView.js";
 
 export class ObsidianSidebarView extends ItemView {

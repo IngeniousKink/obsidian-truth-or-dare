@@ -1,27 +1,39 @@
 import React from 'react'
 
-import { useState } from 'react'
-import './App.css'
-import { JsonStringifyOutput } from '@obsidian-truth-or-dare/react/components/JsonStringifyOutput.js';
+import '../../styles.css'
+
+import { fromMarkdown } from 'mdast-util-from-markdown';
+
+import { GameStateWithDisplayedCard, PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
+import { convertMarkdownToGameTemplate } from '@obsidian-truth-or-dare/parse/parse-template.js';
+import { convertMarkdownToGameEvents } from '@obsidian-truth-or-dare/parse/parse-events.js';
+import { createGameState } from '@obsidian-truth-or-dare/gamestate.js';
+
+const fileContents = `# game
+
+* xx <span data-category="truth" />
+* dare! <span data-category="dare" />
+
+even here is text`;
+
+function createNewGameState(fileContents: string): GameStateWithDisplayedCard {
+  const mast = fromMarkdown(fileContents);
+  const newGameTemplate = convertMarkdownToGameTemplate(mast);
+  const newGameEvents = convertMarkdownToGameEvents(mast);
+
+  const newGameState = createGameState(newGameTemplate, newGameEvents);
+
+  return {
+    ...newGameState,
+    displayedCard: '#game^0'
+  }
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const newGameState = createNewGameState(fileContents);
   return (
     <>
-      <JsonStringifyOutput javascriptObject={{'a': 1}}/>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <PlayView gameState={newGameState} />
     </>
   )
 }

@@ -102,6 +102,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
       <br />
       <br />
 
+      {gameState.template && <AddActorButton />}
       {gameState.template && <ActorList actors={gameState.actors} />}
     </div>
   );

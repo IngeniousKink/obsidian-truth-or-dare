@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApp } from "../hooks.js";
+import { useApp } from "../../obsidian/hooks.js";
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 

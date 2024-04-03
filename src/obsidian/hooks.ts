@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import type { App } from "obsidian";
-import { EventRegistryContext, EventRegistryFunction, AppContext } from "./context.js";
+import { EventRegistryContext, EventRegistryFunction, AppContext } from "../react/context.js";
 
 export const useApp = (): App | undefined => {
   return useContext(AppContext);
