@@ -123,7 +123,37 @@ function parseLine(line: string): ParsedLine {
   if (textMatch) {
     result.text = textMatch[1].trim();
   }
-  const inlineFieldMatches = line.matchAll(/(\[|\()(\w+)::\ ?([^\]]+|\([^\)]+\)|[^ ]+)(\]|\))/g);
+  // Creating a regex pattern as a string to explain each part of it
+  const regexPattern = 
+    "(" + // Start of capturing group 1
+      "\\[" + // Match a literal '[' character
+      "|" + // OR
+      "\\(" + // Match a literal '(' character
+    ")" + // End of capturing group 1
+    "(" + // Start of capturing group 2
+      "\\w+" + // Match one or more word characters (a-z, A-Z, 0-9, _)
+    ")" + // End of capturing group 2
+    "::\\ ?" + // Match the string '::' followed by an optional space
+    "(" + // Start of capturing group 3
+      "[^\\]]+" + // Match one or more characters that are not a ']' character
+      "|" + // OR
+      "\\([^\\)]+\\)" + // Match a string that starts with '(' and ends with ')' and has one or more characters that are not a ')' character in between
+      "|" + // OR
+      "[^ ]+" + // Match one or more characters that are not a space character
+    ")" + // End of capturing group 3
+    "(" + // Start of capturing group 4
+      "\\]" + // Match a literal ']' character
+      "|" + // OR
+      "\\)" + // Match a literal ')' character
+    ")"; // End of capturing group 4
+  
+  // Creating a regex from the pattern string with global flag
+  const regex = new RegExp(regexPattern, 'g');
+  
+  // Using the regex to find all matches in the line
+  const inlineFieldMatches = line.matchAll(regex);
+  
+  // Getting the text from the result or an empty string if it does not exist
   let annotatedText = result.text || '';
   for (const match of inlineFieldMatches) {
     let value = match[3];
