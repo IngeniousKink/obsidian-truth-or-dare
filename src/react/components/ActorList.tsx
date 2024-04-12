@@ -9,6 +9,7 @@ export const ActorList: React.FC<{ actors: Actor[]; }> = ({ actors }) => {
 
   return (
     <div>
+      <h2>Players</h2>
       {actors.map((actor) => (
         <span key={actor.id}>
           <ChangeActorNameInput name={actor.name} actorId={actor.id} />

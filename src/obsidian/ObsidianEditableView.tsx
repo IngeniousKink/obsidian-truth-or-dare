@@ -75,7 +75,9 @@ export class ObsidianEditableView extends EditableFileView {
 			<ObsidianAppContext.Provider value={this.app}>
 				<ObsidianEventRegistryContext.Provider value={this.registerEvent.bind(this)}>
 					<DispatchGameEventContext.Provider value={appendEventToActiveFile}>
-						<ReactBaseView GameView={PlayView}/>
+						<div className="grid_parent">
+							<ReactBaseView GameView={PlayView}/>
+						</div>
 					</DispatchGameEventContext.Provider>
 				</ObsidianEventRegistryContext.Provider>
 			</ObsidianAppContext.Provider>

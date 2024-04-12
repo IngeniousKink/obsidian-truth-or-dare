@@ -24,17 +24,6 @@ interface PlayViewProps {
   gameState: GameStateWithDisplayedCard;
 }
 
-const PerformCard: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
-  const card = selectCardByRef(gameState, gameState.displayedCard);
-
-  return (
-    <>
-      <DisplayedCard card={card} />
-      <CompleteCardButton cardRef={gameState.displayedCard} />
-    </>
-  );
-};
-
 
 export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) => {
   let heading = "Truth or Dare";
@@ -80,28 +69,52 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
     );
   };
 
+  const NoTemplateLoaded: React.FC = () => {
+    return (
+      <div>
+        <h2>Players</h2>
+        {'Load a template first, then you can add players.'}
+      </div>
+    );
+  };
+
+  const card = selectCardByRef(gameState, gameState.displayedCard);
 
   return (
-    <div className="obsidian-truth-or-dare-container">
-      <h1>{heading}</h1>
+    <>
+      <div className="grid_heading">
+        <h1>{heading}</h1>
+      </div>
 
+      <div className='grid_display_or_choose'>
+        { 
+          gameState.displayedCard // TODO css transition to the right
+          ? <DisplayedCard card={card} />
+          : (
+            getAvailableCards(gameState).length > 0
+            ? <ChooseCategoryButtons />
+            : <OutOfCards />
+          )
+        }
 
-      {gameState.displayedCard
-        ? <PerformCard gameState={gameState} />
-        : (
-          <div>
-            {getAvailableCards(gameState).length > 0
-              ? <ChooseCategoryButtons />
-              : <OutOfCards />
-            }
-          </div>
-        )
-      }
+      </div>
 
-      <br />
-      <br />
+      <div className="grid_complete_or_skip">
 
-      {gameState.template && <ActorList actors={gameState.actors} />}
-    </div>
+        {
+          gameState.displayedCard // TODO css transition to the bottom
+          ? <CompleteCardButton cardRef={gameState.displayedCard} /> 
+          : 'Please draw a card.'
+        }
+      </div>
+
+      <div className="grid_players">
+        {
+          gameState.template !== undefined
+            ? <ActorList actors={gameState.actors} />
+            : <NoTemplateLoaded />
+        }
+      </div>
+    </>
   );
 };

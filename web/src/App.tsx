@@ -24,12 +24,13 @@ function App() {
       <MultiplayerProvider>
         <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
           <WindowLocationHashManager />
-          <div className="game-source">
-            <TextareaBackedActiveFile />
-            <MultiplayerActiveFile />
-          </div>
+          <div className="grid_parent">
 
-          <div className="game-play">
+            <div className="grid_web_sidebar">
+              <TextareaBackedActiveFile />
+              <MultiplayerActiveFile />
+            </div>
+
             <ReactBaseView GameView={PlayView} />
           </div>
         </DispatchGameEventContext.Provider>
