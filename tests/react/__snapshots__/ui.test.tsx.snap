@@ -2,67 +2,29 @@
 
 exports[`renders CurrentCard 1`] = `
 <div
-  className="card-stack"
+  className="card"
 >
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
+  <h2
+    className="card-text"
   >
-    <h2
-      className="card-text"
-    >
-      <span>
-        Do something.
-      </span>
-    </h2>
-  </div>
+    <span>
+      Do something.
+    </span>
+  </h2>
 </div>
 `;
 
 exports[`renders DisplayedCard = card 1`] = `
 <div
-  className="card-stack"
+  className="card"
 >
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
-  />
-  <div
-    className="card"
+  <h2
+    className="card-text"
   >
-    <h2
-      className="card-text"
-    >
-      <span>
-        Do something.
-      </span>
-    </h2>
-  </div>
+    <span>
+      Do something.
+    </span>
+  </h2>
 </div>
 `;
 
@@ -173,30 +135,17 @@ exports[`renders NoCard 1`] = `
 `;
 
 exports[`renders PlayView 1`] = `
-<div
-  className="obsidian-truth-or-dare-container"
->
-  <h1>
-    Truth or Dare?
-  </h1>
+[
   <div
-    className="card-stack"
+    className="grid_heading"
   >
-    <div
-      className="card"
-    />
-    <div
-      className="card"
-    />
-    <div
-      className="card"
-    />
-    <div
-      className="card"
-    />
-    <div
-      className="card"
-    />
+    <h1>
+      Truth or Dare?
+    </h1>
+  </div>,
+  <div
+    className="grid_display_or_choose"
+  >
     <div
       className="card"
     >
@@ -208,20 +157,29 @@ exports[`renders PlayView 1`] = `
         </span>
       </h2>
     </div>
-  </div>
-  <button
-    onClick={[Function]}
+  </div>,
+  <div
+    className="grid_complete_or_skip"
   >
-    ✅ Card completed
-  </button>
-  <br />
-  <br />
-  <div>
     <button
       onClick={[Function]}
     >
-      ➕ Add player
+      ✅ Card completed
     </button>
-  </div>
-</div>
+  </div>,
+  <div
+    className="grid_players"
+  >
+    <div>
+      <h2>
+        Players
+      </h2>
+      <button
+        onClick={[Function]}
+      >
+        ➕ Add player
+      </button>
+    </div>
+  </div>,
+]
 `;
