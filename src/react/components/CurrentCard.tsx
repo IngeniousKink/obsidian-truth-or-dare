@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ParsedCard, Annotation } from '../../parse/parse-card.js';
 import { useMediaResource } from '@obsidian-truth-or-dare/hooks.js';
+import { Card } from '@tremor/react';
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];
@@ -59,9 +60,13 @@ const CurrentCard: React.FC<{ card: ParsedCard }> = ({ card }) => {
   }, [card]);
 
   return (
-    <div className="card">
-      <h2 className="card-text">{textWithImages}</h2>
-    </div>
+    <Card
+      className="mx-auto max-w-xl"
+    >
+      <p className="text-3xl text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">
+        {textWithImages}
+      </p>
+    </Card>
   );
 }
 

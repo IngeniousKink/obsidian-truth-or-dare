@@ -1,6 +1,9 @@
 import React from 'react';
 import { createActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { useDispatchGameEventHook } from '../dispatchEvent.js';
+import { RiUserAddLine } from '@remixicon/react';
+
+import { Button } from '@tremor/react';
 
 export const AddActorButton: React.FC = () => {
   const useDispatchGameEvent = useDispatchGameEventHook();
@@ -11,7 +14,5 @@ export const AddActorButton: React.FC = () => {
     dispatchGameEvent(event);
   };
 
-  const buttonText = "➕ Add player";
-
-  return <button onClick={handleAddActor}>{buttonText}</button>;
+  return <Button icon={RiUserAddLine} onClick={handleAddActor}>Add Player</Button>;
 };

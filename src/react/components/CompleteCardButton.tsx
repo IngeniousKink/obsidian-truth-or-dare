@@ -1,4 +1,7 @@
 import React from 'react';
+import { RiCheckLine } from '@remixicon/react';
+import { Button } from '@tremor/react';
+
 import { completeCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { useDispatchGameEventHook } from '../dispatchEvent.js';
 
@@ -15,8 +18,6 @@ export const CompleteCardButton: React.FC<CompleteCardButtonProps> = ({ cardRef 
     dispatchGameEvent(event);
   };
 
-  const buttonText = "✅ Card completed";
-
-  return <button onClick={handleCompleteCard}>{buttonText}</button>;
+  return <Button icon={RiCheckLine} onClick={handleCompleteCard}>Card completed</Button>;
 };
 

@@ -2,13 +2,14 @@ import React from 'react';
 import { CardWithRef } from '../../parse/parse-template.js';
 import { drawCard, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { useDispatchGameEventHook } from '@obsidian-truth-or-dare/react/dispatchEvent.js';
+import { RiStackLine } from '@remixicon/react';
+import { Button } from '@tremor/react';
 
 interface DrawCardButtonProps {
   nextCard: CardWithRef | null;
   remainingCount: number;
   categoryLabel: string;
 }
-
 
 export const DrawCardButton: React.FC<DrawCardButtonProps> = (
   {
@@ -20,7 +21,7 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
 
   if (!nextCard) {
     const buttonText = `(No more ${categoryLabel} cards)`;
-    return <button disabled>{buttonText}</button>;
+    return <Button icon={RiStackLine} disabled>{buttonText}</Button>;
   }
 
   const useDispatchGameEvent = useDispatchGameEventHook();
@@ -33,5 +34,5 @@ export const DrawCardButton: React.FC<DrawCardButtonProps> = (
 
   const buttonText = `Draw a ${categoryLabel} card (${remainingCount})`;
 
-  return <button onClick={handleDrawCard}>{buttonText}</button>;
+  return <Button icon={RiStackLine} onClick={handleDrawCard}>{buttonText}</Button>;
 };

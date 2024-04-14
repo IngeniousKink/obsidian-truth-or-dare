@@ -83,7 +83,9 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
   return (
     <>
       <div className="grid_heading">
-        <h1>{heading}</h1>
+        <h1 className="text-3xl font-bold">
+          {heading}
+        </h1>
       </div>
 
       <div className='grid_display_or_choose'>

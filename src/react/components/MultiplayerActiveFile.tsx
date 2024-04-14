@@ -1,6 +1,8 @@
 import React from 'react';
 import { useMultiplayer } from './useMultiplayer.js';
 import { NDKRelay } from "@nostr-dev-kit/ndk";
+import { Button } from '@tremor/react';
+import { RiDownloadLine, RiUploadLine } from '@remixicon/react';
 
 export const LoadEntityInput = () => {
   const { loadValue, setLoadValue } = useMultiplayer();
@@ -37,7 +39,7 @@ export const PublishButton = () => {
   const { publishTemplate } = useMultiplayer();
 
   return (
-    <button onClick={publishTemplate}>Publish Template</button>
+    <Button icon={RiUploadLine} onClick={publishTemplate}>Publish Template</Button>
   );
 };
 
@@ -45,7 +47,7 @@ export const LoadButton = () => {
   const { loadEvents } = useMultiplayer();
 
   return (
-    <button onClick={loadEvents}>Load Template</button>
+    <Button icon={RiDownloadLine} onClick={loadEvents}>Load Template</Button>
   );
 };
 

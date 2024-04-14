@@ -1,6 +1,8 @@
 import React from 'react';
 import { deleteActor, timestampEvent } from '@obsidian-truth-or-dare/events.js';
 import { useDispatchGameEventHook } from '../dispatchEvent.js';
+import { RiDeleteBin7Line } from '@remixicon/react';
+import { Button } from '@tremor/react';
 
 interface DeleteActorButtonProps {
   id: string;
@@ -15,7 +17,5 @@ export const DeleteActorButton: React.FC<DeleteActorButtonProps> = ({ id }) => {
     dispatchGameEvent(event);
   };
 
-  const buttonText = "❌";
-
-  return <button onClick={handleDeleteActor}>{buttonText}</button>;
+  return <Button icon={RiDeleteBin7Line} onClick={handleDeleteActor}></Button>;
 };
