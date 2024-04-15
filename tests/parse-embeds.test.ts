@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { parseEmbeds } from '../src/parse/parse-embeds.js';
 
 describe('parse-embeds', () => {

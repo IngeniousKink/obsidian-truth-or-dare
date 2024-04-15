@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parse-embeds embed at end of textNode 1`] = `
+exports[`parse-embeds > embed at end of textNode 1`] = `
 [
   {
     "position": {
@@ -37,7 +37,7 @@ exports[`parse-embeds embed at end of textNode 1`] = `
 ]
 `;
 
-exports[`parse-embeds embed in the middle of a textNode 1`] = `
+exports[`parse-embeds > embed in the middle of a textNode 1`] = `
 [
   {
     "position": {
@@ -90,7 +90,7 @@ exports[`parse-embeds embed in the middle of a textNode 1`] = `
 ]
 `;
 
-exports[`parse-embeds embed with size info 1`] = `
+exports[`parse-embeds > embed with size info 1`] = `
 [
   {
     "position": {
@@ -127,7 +127,7 @@ exports[`parse-embeds embed with size info 1`] = `
 ]
 `;
 
-exports[`parse-embeds two embeds 1`] = `
+exports[`parse-embeds > two embeds 1`] = `
 [
   {
     "position": {

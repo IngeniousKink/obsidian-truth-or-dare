@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Game State createGameState 1`] = `
+exports[`Game State > createGameState 1`] = `
 {
   "actors": [],
   "allocation": [],
@@ -57,7 +57,7 @@ exports[`Game State createGameState 1`] = `
 }
 `;
 
-exports[`Game State findCardInGameTemplate 1`] = `
+exports[`Game State > findCardInGameTemplate 1`] = `
 {
   "annotations": [],
   "ref": "card1",
@@ -65,7 +65,7 @@ exports[`Game State findCardInGameTemplate 1`] = `
 }
 `;
 
-exports[`Game State getAllCards 1`] = `
+exports[`Game State > getAllCards 1`] = `
 [
   {
     "annotations": [],
@@ -85,7 +85,7 @@ exports[`Game State getAllCards 1`] = `
 ]
 `;
 
-exports[`Game State getAvailableCards 1`] = `
+exports[`Game State > getAvailableCards 1`] = `
 [
   {
     "annotations": [],

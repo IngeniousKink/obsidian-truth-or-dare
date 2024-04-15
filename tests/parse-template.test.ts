@@ -1,5 +1,6 @@
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { Paragraph } from 'node_modules/mdast-util-from-markdown/lib/index.js';
+import { describe, expect, test } from 'vitest';
 
 describe('parse-template', () => {
 

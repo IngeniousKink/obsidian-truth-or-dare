@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+
 import * as React from 'react'
 import * as renderer from 'react-test-renderer';
 
@@ -7,6 +9,7 @@ import { NoCard, DisplayedCard } from '@obsidian-truth-or-dare/react/components/
 import { GameStateWithDisplayedCard, PlayView } from '@obsidian-truth-or-dare/react/components/PlayView.js';
 import { InspectorView } from '@obsidian-truth-or-dare/react/components/InspectorView.js';
 import CurrentCard from '@obsidian-truth-or-dare/react/components/CurrentCard.js';
+import { expect, test } from 'vitest';
 
 const testCard : CardWithRef = {
    text: 'Do something.',
@@ -14,7 +17,7 @@ const testCard : CardWithRef = {
    annotations: [],
 };
 
-it('renders NoCard', () => {
+test('renders NoCard', () => {
   const tree = renderer
     .create(<NoCard />)
     .toJSON();
@@ -22,21 +25,21 @@ it('renders NoCard', () => {
 });
 
 
-it('renders CurrentCard', () => {
+test('renders CurrentCard', () => {
   const tree = renderer
     .create(<CurrentCard card={testCard} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-it('renders DisplayedCard = card', () => {
+test('renders DisplayedCard = card', () => {
   const tree = renderer
     .create(<DisplayedCard card={testCard} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-it('renders DisplayedCard = null', () => {
+test('renders DisplayedCard = null', () => {
   const tree = renderer
     .create(<DisplayedCard card={null} />)
     .toJSON();
@@ -92,7 +95,7 @@ const testGameState : GameStateWithDisplayedCard = {
   "displayedCard": "#first stack^0"
 };
 
-it('renders PlayView', () => {
+test('renders PlayView', () => {
 
   const tree = renderer
     .create(<PlayView gameState={testGameState} />)
@@ -100,7 +103,7 @@ it('renders PlayView', () => {
   expect(tree).toMatchSnapshot();
 });
 
-it('renders InspectorView', () => {
+test('renders InspectorView', () => {
   const tree = renderer
     .create(<InspectorView gameState={testGameState} />)
     .toJSON();

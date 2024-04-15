@@ -1,6 +1,7 @@
 import { TimestampedEvent } from '@obsidian-truth-or-dare/events.js';
 import { createGameState, findCardInGameTemplate, getAllCards, getAvailableCards, selectCardsByCategory, GameState } from '../src/gamestate.js';
 import { CardWithRef, GameTemplate, Stack } from '@obsidian-truth-or-dare/parse/parse-template.js';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 describe('Game State', () => {
   const mockGameTemplate = {
@@ -66,7 +67,7 @@ describe('selectCardsByCategory', () => {
     gameState = createGameState(gameTemplate, []);
   });
 
-  it('should return cards grouped by category', () => {
+  test('should return cards grouped by category', () => {
     const result = selectCardsByCategory(gameState);
     expect(result).toEqual({
       'Category 1': [
@@ -84,7 +85,7 @@ describe('selectCardsByCategory', () => {
     });
   });
 
-  it('should return an empty object if there are no categories', () => {
+  test('should return an empty object if there are no categories', () => {
     const result = selectCardsByCategory({
       ...gameState,
       template: {
@@ -95,7 +96,7 @@ describe('selectCardsByCategory', () => {
     expect(result).toEqual({});
   });
 
-  it('should return an empty array for each category if there are no available cards', () => {
+  test('should return an empty array for each category if there are no available cards', () => {
     const result = selectCardsByCategory({
       ...gameState,
       previousCards: ['1', '2', '3', '4', '5', '6']
@@ -104,7 +105,7 @@ describe('selectCardsByCategory', () => {
   });
 
 
-  it('should only include cards that are available', () => {
+  test('should only include cards that are available', () => {
     gameState = {
       ...gameState,
       previousCards: ['4']
@@ -113,7 +114,7 @@ describe('selectCardsByCategory', () => {
     expect(result['Category 1']).not.toContain('4');
   });
 
-  it('should not include categories that have no available cards', () => {
+  test('should not include categories that have no available cards', () => {
     gameState = {
       ...gameState,
       previousCards: ['1', '4']
