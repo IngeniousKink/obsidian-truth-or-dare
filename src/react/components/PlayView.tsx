@@ -88,7 +88,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
         </h1>
       </div>
 
-      <div className='row-start-2 column-start-3 row-end-3 column-end-4 text-center'>
+      <div className='row-start-2 col-start-3 row-end-3 col-end-4 text-center'>
         { 
           gameState.displayedCard // TODO css transition to the right
           ? <DisplayedCard card={card} />
@@ -101,7 +101,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
 
       </div>
 
-      <div className="row-start-3 col-start-3 row-end-4 grid-column-end-4 text-center">
+      <div className="row-start-3 col-start-3 row-end-4 col-end-4 text-center">
         {
           gameState.displayedCard // TODO css transition to the bottom
           ? <CompleteCardButton cardRef={gameState.displayedCard} /> 
