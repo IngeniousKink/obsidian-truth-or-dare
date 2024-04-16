@@ -5,6 +5,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./web/**/*.{js,ts,jsx,tsx}",
 
     // Path to Tremor module
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
@@ -14,6 +15,7 @@ export default {
     current: 'currentColor',
     extend: {
       colors: {
+
         // light mode
         tremor: {
           brand: {

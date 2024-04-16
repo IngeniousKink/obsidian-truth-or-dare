@@ -82,13 +82,13 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
 
   return (
     <>
-      <div className="grid_heading">
-        <h1 className="text-3xl font-bold">
+      <div className="row-start-1 col-start-3 col-end-4 row-end-2 text-center align-middle">
+        <h1 className="text-3xl font-bold size-full">
           {heading}
         </h1>
       </div>
 
-      <div className='grid_display_or_choose'>
+      <div className='row-start-2 column-start-3 row-end-3 column-end-4 text-center'>
         { 
           gameState.displayedCard // TODO css transition to the right
           ? <DisplayedCard card={card} />
@@ -101,8 +101,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
 
       </div>
 
-      <div className="grid_complete_or_skip">
-
+      <div className="row-start-3 col-start-3 row-end-4 grid-column-end-4 text-center">
         {
           gameState.displayedCard // TODO css transition to the bottom
           ? <CompleteCardButton cardRef={gameState.displayedCard} /> 
@@ -110,7 +109,7 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
         }
       </div>
 
-      <div className="grid_players">
+      <div className="row-start-2 col-start-2 row-end-4 col-end-3">
         {
           gameState.template !== undefined
             ? <ActorList actors={gameState.actors} />

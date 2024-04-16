@@ -5,7 +5,7 @@
 	"exports": "./src/main.js",
 	"scripts": {
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
-		"test": "npm run gen-snapshot-tests && vitest --dir tests/ --globals",
+		"test": "npm run gen-snapshot-tests && vitest --dir tests/",
 		"gen-snapshot-tests": "node --loader ts-node/esm  tests/gen-snapshot-tests.ts  > tests/snapshots.test.ts",
 		"dev": "node esbuild.config.mjs",
 		"watch": "cross-env BUILD=dev obsidian-plugin dev src/main.ts",
@@ -32,6 +32,7 @@
 		"builtin-modules": "3.3.0",
 		"cross-env": "^7.0.3",
 		"esbuild": "0.17.3",
+		"esbuild-style-plugin": "^1.6.3",
 		"esm": "^3.2.25",
 		"jsdom": "^24.0.0",
 		"obsidian": "latest",

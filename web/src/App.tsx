@@ -24,9 +24,9 @@ function App() {
       <MultiplayerProvider>
         <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
           <WindowLocationHashManager />
-          <div className="grid_parent">
+          <div className="grid grid-rows-3 grid-cols-[20%,20%,60%] grid-flow-col gap-4 h-screen w-screen">
 
-            <div className="grid_web_sidebar">
+            <div className="row-start-1 col-start-1 row-end-4 col-end-1">
               <TextareaBackedActiveFile />
               <MultiplayerActiveFile />
             </div>

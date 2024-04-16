@@ -22,3 +22,5 @@ data.json
 .DS_Store
 docs/.obsidian/workspace.json
 web/dist
+styles.js
+styles.css
