@@ -25,8 +25,8 @@ function App() {
     setMenuVisible(prev => !prev);
   };
 
-  const gridClasses = `grid grid-rows-3 duration-1000 grid-flow-col gap-4 h-screen w-screen ${
-    menuVisible ? 'grid-cols-[30%,10%,60%]' : 'grid-cols-[0%,30%,60%]'
+  const gridClasses = `grid grid-rows-[10%,60%,30%] duration-1000 grid-flow-col h-screen w-screen ${
+    menuVisible ? 'grid-cols-[30%,0%,80%]' : 'grid-cols-[0%,30%,70%]'
   }`;
 
   return (
@@ -35,13 +35,13 @@ function App() {
         <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
           <WindowLocationHashManager />
 
-          <Button className='' onClick={toggleMenu}>
+          <Button className='absolute top-4 left-4' onClick={toggleMenu}>
             {menuVisible ? 'hide menu' : 'show menu'}
           </Button>
 
           <div className={gridClasses}>
 
-            <div className="row-start-1 col-start-1 row-end-4 col-end-1 overflow-hidden">
+            <div className="row-start-1 col-start-1 row-end-4 col-end-1 overflow-hidden mt-16 ml-4">
               <TextareaBackedActiveFile />
               <MultiplayerActiveFile />
             </div>
