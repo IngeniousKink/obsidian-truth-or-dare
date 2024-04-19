@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import '../../styles.css'
 
@@ -10,8 +10,10 @@ import { TextareaBackedActiveFile } from './TextareaBackedActiveFile.js';
 import { MultiplayerProvider } from '@obsidian-truth-or-dare/react/components/MultiplayerProvider.js';
 import { WindowLocationHashManager } from '@obsidian-truth-or-dare/react/components/WindowLocationHashManager.js';
 import { DispatchGameEventContext, publishEventToMultiplayer } from '@obsidian-truth-or-dare/react/dispatchEvent.js';
+import { Button } from '@tremor/react';
 
 function App() {
+  const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -19,14 +21,27 @@ function App() {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setMenuVisible(prev => !prev);
+  };
+
+  const gridClasses = `grid grid-rows-3 duration-1000 grid-flow-col gap-4 h-screen w-screen ${
+    menuVisible ? 'grid-cols-[30%,10%,60%]' : 'grid-cols-[0%,30%,60%]'
+  }`;
+
   return (
     <InMemoryTemplateProvider>
       <MultiplayerProvider>
         <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
           <WindowLocationHashManager />
-          <div className="grid grid-rows-3 grid-cols-[20%,20%,60%] grid-flow-col gap-4 h-screen w-screen">
 
-            <div className="row-start-1 col-start-1 row-end-4 col-end-1">
+          <Button className='' onClick={toggleMenu}>
+            {menuVisible ? 'hide menu' : 'show menu'}
+          </Button>
+
+          <div className={gridClasses}>
+
+            <div className="row-start-1 col-start-1 row-end-4 col-end-1 overflow-hidden">
               <TextareaBackedActiveFile />
               <MultiplayerActiveFile />
             </div>
@@ -38,5 +53,6 @@ function App() {
     </InMemoryTemplateProvider>
   )
 }
+
 
 export default App
