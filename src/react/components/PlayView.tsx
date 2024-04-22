@@ -15,6 +15,7 @@ import {
 import type { CardWithRef } from '../../parse/parse-template.js';
 import { ActorList } from './ActorList.js';
 import { CompleteCardButton } from './CompleteCardButton.js';
+import AnimatedContent from './AnimatedContent.js';
 
 export interface GameStateWithDisplayedCard extends GameState {
   displayedCard: string;
@@ -81,36 +82,34 @@ export const PlayView: React.FC<PlayViewProps> = ({ gameState }: PlayViewProps) 
 
   return (
     <>
-      <div className="row-start-1 col-start-3 col-end-4 row-end-2 flex">
-        <h1 className="text-3xl font-bold m-auto align-middle">
-          {heading}
-        </h1>
+      <div className="row-start-1 col-start-3 col-end-4 row-end-2">
+
+        <AnimatedContent direction="top" showFirstChild={!gameState.displayedCard}>
+          <h1 className="text-3xl font-bold m-auto align-middle">
+            {heading}
+          </h1>
+          <br />
+        </AnimatedContent>
       </div>
 
-      <div className='row-start-2 col-start-3 row-end-3 col-end-4 text-center flex overflow-scroll'>
-        <div className="m-auto align-middle">
+      <div className='row-start-2 col-start-3 row-end-3 col-end-4 overflow-hidden'>
+        <AnimatedContent direction="right" showFirstChild={!!gameState.displayedCard}>
+          <DisplayedCard card={card} />
           {
-            gameState.displayedCard // TODO css transition to the right
-              ? <DisplayedCard card={card} />
-              : (
-                getAvailableCards(gameState).length > 0
-                  ? <ChooseCategoryButtons />
-                  : <OutOfCards />
-              )
+            getAvailableCards(gameState).length > 0
+              ? <ChooseCategoryButtons />
+              : <OutOfCards />
           }
-
-        </div>
+        </AnimatedContent>
       </div>
 
-      <div className="row-start-3 col-start-3 row-end-4 col-end-4 flex">
-        <div className="m-auto align-middle">
-          {
-            gameState.displayedCard // TODO css transition to the bottom
-              ? <CompleteCardButton cardRef={gameState.displayedCard} />
-              : 'Please draw a card.'
-          }
-        </div>
+      <div className="row-start-3 col-start-3 row-end-4 col-end-4">
+        <AnimatedContent direction="bottom" showFirstChild={!!gameState.displayedCard}>
+          <CompleteCardButton cardRef={gameState.displayedCard} />
+          <p>Please draw a card.</p>
+        </AnimatedContent>
       </div>
+
 
       <div className="row-start-2 col-start-2 row-end-4 col-end-3 ml-4 flex overflow-hidden">
         <div className="m-auto align-middle">

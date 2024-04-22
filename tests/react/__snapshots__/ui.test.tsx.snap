@@ -137,19 +137,41 @@ exports[`renders NoCard 1`] = `
 exports[`renders PlayView 1`] = `
 [
   <div
-    className="row-start-1 col-start-3 col-end-4 row-end-2 flex"
-  >
-    <h1
-      className="text-3xl font-bold m-auto align-middle"
-    >
-      Truth or Dare?
-    </h1>
-  </div>,
-  <div
-    className="row-start-2 col-start-3 row-end-3 col-end-4 text-center flex overflow-scroll"
+    className="row-start-1 col-start-3 col-end-4 row-end-2"
   >
     <div
-      className="m-auto align-middle"
+      className="
+      flex 
+      items-center 
+      text-center 
+      justify-center 
+      h-full 
+      width-full 
+      transition-transform 
+      duration-500 
+      ease-in-out 
+      translate-x-0 translate-y-0
+    "
+    >
+      <br />
+    </div>
+  </div>,
+  <div
+    className="row-start-2 col-start-3 row-end-3 col-end-4 overflow-hidden"
+  >
+    <div
+      className="
+      flex 
+      items-center 
+      text-center 
+      justify-center 
+      h-full 
+      width-full 
+      transition-transform 
+      duration-500 
+      ease-in-out 
+      translate-x-0 translate-y-0
+    "
     >
       <div
         className="tremor-Card-root relative w-full text-left ring-1 rounded-tremor-default p-6 bg-tremor-background ring-tremor-ring shadow-tremor-card dark:bg-dark-tremor-background dark:ring-dark-tremor-ring dark:shadow-dark-tremor-card border-tremor-brand dark:border-dark-tremor-brand mx-auto max-w-xl"
@@ -165,10 +187,21 @@ exports[`renders PlayView 1`] = `
     </div>
   </div>,
   <div
-    className="row-start-3 col-start-3 row-end-4 col-end-4 flex"
+    className="row-start-3 col-start-3 row-end-4 col-end-4"
   >
     <div
-      className="m-auto align-middle"
+      className="
+      flex 
+      items-center 
+      text-center 
+      justify-center 
+      h-full 
+      width-full 
+      transition-transform 
+      duration-500 
+      ease-in-out 
+      translate-x-0 translate-y-0
+    "
     >
       <button
         className="tremor-Button-root shrink-0 inline-flex justify-center items-center group font-medium outline-none rounded-tremor-default border shadow-tremor-input dark:shadow-dark-tremor-input px-4 py-2 text-sm bg-tremor-brand dark:bg-dark-tremor-brand border-tremor-brand dark:border-dark-tremor-brand text-tremor-brand-inverted dark:text-dark-tremor-brand-inverted hover:bg-tremor-brand-emphasis dark:hover:bg-dark-tremor-brand-emphasis hover:border-tremor-brand-emphasis dark:hover:border-dark-tremor-brand-emphasis"
