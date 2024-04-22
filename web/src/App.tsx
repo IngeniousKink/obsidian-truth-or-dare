@@ -11,6 +11,7 @@ import { MultiplayerProvider } from '@obsidian-truth-or-dare/react/components/Mu
 import { WindowLocationHashManager } from '@obsidian-truth-or-dare/react/components/WindowLocationHashManager.js';
 import { DispatchGameEventContext, publishEventToMultiplayer } from '@obsidian-truth-or-dare/react/dispatchEvent.js';
 import { Button } from '@tremor/react';
+import AnimatedContent from '@obsidian-truth-or-dare/react/components/AnimatedContent.js';
 
 function App() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -25,9 +26,7 @@ function App() {
     setMenuVisible(prev => !prev);
   };
 
-  const gridClasses = `grid grid-rows-[10%,60%,30%] duration-1000 grid-flow-col h-screen w-screen ${
-    menuVisible ? 'grid-cols-[30%,0%,80%]' : 'grid-cols-[0%,30%,70%]'
-  }`;
+  const gridClasses = `grid grid-rows-[10%,60%,30%] duration-1000 grid-flow-col h-screen w-screen grid-cols-[0%,25%,75%]`;
 
   return (
     <InMemoryTemplateProvider>
@@ -35,19 +34,27 @@ function App() {
         <DispatchGameEventContext.Provider value={publishEventToMultiplayer}>
           <WindowLocationHashManager />
 
-          <Button className='absolute top-4 left-4' onClick={toggleMenu}>
-            {menuVisible ? 'hide menu' : 'show menu'}
-          </Button>
-
           <div className={gridClasses}>
-
-            <div className="row-start-1 col-start-1 row-end-4 col-end-1 overflow-hidden mt-16 ml-4">
-              <TextareaBackedActiveFile />
-              <MultiplayerActiveFile />
+            <div className="row-start-1 col-start-1 row-end-1 col-end-1">
+              <Button className='absolute top-4 left-4' onClick={toggleMenu}>
+                {menuVisible ? 'hide menu' : 'show menu'}
+              </Button>
             </div>
 
+            <div className="absolute w-1/4 top-20 bg-blue-200">
+              <AnimatedContent direction="left" showFirstChild={!!menuVisible}>
+                <div>
+                  <h2 className='text-2xl'>Settings</h2>
+                  <br/>
+                  <TextareaBackedActiveFile />
+                  <MultiplayerActiveFile />
+                </div>
+                <span />
+              </AnimatedContent>
+            </div>
             <ReactBaseView GameView={PlayView} />
           </div>
+
         </DispatchGameEventContext.Provider>
       </MultiplayerProvider>
     </InMemoryTemplateProvider>
