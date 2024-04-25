@@ -199,8 +199,8 @@ exports[`parses template: media_image.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": 49,
-              "startPos": 2,
+              "endPos": 5,
+              "startPos": 0,
               "type": "image",
               "url": "",
             },
@@ -224,8 +224,8 @@ exports[`parses template: media_image_external.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": 143,
-              "startPos": 28,
+              "endPos": 122,
+              "startPos": 26,
               "type": "image",
               "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
             },
@@ -298,8 +298,8 @@ exports[`parses template: media_video_external_html.md 1`] = `
         {
           "annotations": [
             {
-              "endPos": 143,
-              "startPos": 28,
+              "endPos": 122,
+              "startPos": 26,
               "type": "image",
               "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Panthera_tigris_sumatran_subspecies.jpg",
             },
