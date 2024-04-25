@@ -53,9 +53,22 @@ function parseObsidianEmbed(match: RegExpMatchArray): Annotation {
   return createAnnotation([], match, annotationData);
 }
 
+type ParseFunction = (match: RegExpMatchArray) => Annotation | null;
+
 export function parseCard(content: PhrasingContent[]): ParsedCard {
   let position = 0;
   const annotations: Annotation[] = [];
+
+  const processMatches = (matches: RegExpMatchArray[], parseFunction: ParseFunction) => {
+    matches.forEach(match => {
+      const annotation = parseFunction(match);
+      if (annotation) {
+        annotation.startPos = (annotation.startPos || 0) + position;
+        annotation.endPos = (annotation.endPos || 0) + position;
+        annotations.push(annotation);
+      }
+    });
+  };
   
   const html = content.reduce((acc, textNode: PhrasingContent) => {
     let value = '';
@@ -70,29 +83,9 @@ export function parseCard(content: PhrasingContent[]): ParsedCard {
       value = '![[' + textNode.url + ']]';
     } else if (textNode.type === 'text' || textNode.type === 'html') {
       value = textNode.value;
-      const dataMatches = Array.from(value.matchAll(REGEX_HTML_DATA_ATTRIBUTE));
-      dataMatches.forEach(match => {
-        const annotation = parseDataAttributes(match);
-        if (annotation) {
-          annotation.startPos = (annotation.startPos || 0) + position;
-          annotation.endPos = (annotation.endPos || 0) + position;
-          annotations.push(annotation);
-        }
-      });
-      const mediaMatches = Array.from(value.matchAll(REGEX_MEDIA_ATTRIBUTE));
-      mediaMatches.forEach(match => {
-        const annotation = parseMedia(match);
-        annotation.startPos = (annotation.startPos || 0) + position;
-        annotation.endPos = (annotation.endPos || 0) + position;
-        annotations.push(annotation);
-      });
-      const obsidianMatches = Array.from(value.matchAll(REGEX_OBSIDIAN_EMBED));
-      obsidianMatches.forEach(match => {
-        const annotation = parseObsidianEmbed(match);
-        annotation.startPos = (annotation.startPos || 0) + position;
-        annotation.endPos = (annotation.endPos || 0) + position;
-        annotations.push(annotation);
-      });
+      processMatches(Array.from(value.matchAll(REGEX_HTML_DATA_ATTRIBUTE)), parseDataAttributes);
+      processMatches(Array.from(value.matchAll(REGEX_MEDIA_ATTRIBUTE)), parseMedia);
+      processMatches(Array.from(value.matchAll(REGEX_OBSIDIAN_EMBED)), parseObsidianEmbed);
     }
     position += value.length;
     return acc + value;
